@@ -1,0 +1,31 @@
+{
+  "name": "cna-chakra-ui-template",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.1",
+    "@chakra-ui/react": "^2.1.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@fontsource/poppins": "^4.5.8",
+    "@types/nprogress": "^0.2.0",
+    "framer-motion": "6.5.1",
+    "hamburger-react": "^2.5.0",
+    "next": "13.0.7",
+    "next-seo": "^5.4.0",
+    "nprogress": "^0.2.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.40",
+    "eslint": "8.17.0",
+    "eslint-config-next": "^12.1.6",
+    "typescript": "^4.7.3"
+  }
+}
