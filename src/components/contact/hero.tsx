@@ -14,15 +14,15 @@ type Props = {};
 
 const Hero = (props: Props) => {
   return (
-    <Container
+    <Container //Response always put that plz
       display={"flex"}
       flexDir={"column"}
       alignItems={"center"}
       justifyContent={"center"}
       maxW={"7xl"}
-      h={"100%"}
+      h={"100%"} //to determine center of the page
     >
-      <Box
+      <Box  //bos = dev
         bgColor={"white"}
         p={10}
         borderRadius={"3xl"}
@@ -49,6 +49,7 @@ const Hero = (props: Props) => {
         <Button
           variant={"ghost"}
           bgColor={"black"}
+          color="white"
           _hover={{
             bgColor: "unset",
             color: "black",
