@@ -1,13 +1,10 @@
-import NextLink from "next/link";
-
-import { chakra } from "@chakra-ui/react";
+import Image from "next/image";
+import Link from "next/link";
 
 const Logo = () => (
-  <NextLink href="/" passHref>
-    <chakra.a userSelect="none" fontSize="2rem" fontWeight="700">
-      LOGO
-    </chakra.a>
-  </NextLink>
+  <Link href="/" passHref>
+    <Image src={"/flower.webp"} alt={""} width={50} height={50} />
+  </Link>
 );
 
 export default Logo;
