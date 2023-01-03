@@ -17,6 +17,7 @@ const HamburgerMenu = ({ toggled, toggle }: Props) => (
       toggled={toggled}
       toggle={toggle}
       direction="right"
+      
     />
   </Box>
 );
