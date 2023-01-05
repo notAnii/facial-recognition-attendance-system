@@ -1,0 +1,144 @@
+#backup for sql
+
+DROP TABLE Attendance;
+DROP TABLE Enrolment;
+DROP TABLE Session;
+DROP TABLE Teacher;
+DROP TABLE Subject;
+DROP TABLE Student;
+
+CREATE TABLE `Student` (
+	`student_id` INT,
+	`student_name` VARCHAR(50),
+	PRIMARY KEY (`student_id`)
+);
+
+CREATE TABLE `Subject` (
+	`subject_code` VARCHAR(50),
+	`subject_name` VARCHAR(100),
+	`subject_description` VARCHAR(250),
+	PRIMARY KEY (`subject_code`)
+);
+
+
+CREATE TABLE `Teacher` (
+	`teacher_id` INT,
+	`teacher_name` VARCHAR(100),
+	PRIMARY KEY (`teacher_id`)
+);
+
+
+CREATE TABLE `Session` (
+	`session_id` INT,
+	`subject_code` VARCHAR(50),
+	`day` VARCHAR(20),
+	`start_time` TIME,
+	`end_time` TIME,
+	`room` VARCHAR(20),
+	`teacher_id` INT,
+	PRIMARY KEY (`session_id`),
+	FOREIGN KEY (`subject_code`) REFERENCES Subject(subject_code),
+	FOREIGN KEY (`teacher_id`) REFERENCES Teacher(teacher_id)	
+);
+
+
+CREATE TABLE `Enrolment` (
+	`enrolment_id` INT,
+	`student_id` INT,
+	`session_id` INT,
+	PRIMARY KEY (`enrolment_id`),
+	FOREIGN KEY (`student_id`) REFERENCES Student(student_id),
+	FOREIGN KEY (`session_id`) REFERENCES Session(session_id)
+);
+
+
+CREATE TABLE `Attendance` (
+	`attendance_id` INT,
+	`enrolment_id` INT,
+	`date` DATE,
+	`status` VARCHAR(20),
+	PRIMARY KEY (`attendance_id`),
+	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id)
+);
+
+
+#inserting students
+INSERT INTO Student VALUES (6633249, 'Abshir');
+INSERT INTO Student VALUES (6536177, 'Ismail');
+INSERT INTO Student VALUES (6616781, 'Aeron');
+INSERT INTO Student VALUES (6698360, 'Layton');
+INSERT INTO Student VALUES (6683113, 'Yassin');
+INSERT INTO Student VALUES (1234567, 'Odowa');
+INSERT INTO Student VALUES (7654321, 'Cat');
+
+#inserting subjects
+INSERT INTO Subject VALUES ('CSIT321', 'Project', 'Graduation project subject.');
+INSERT INTO Subject VALUES ('CSIT111', 'Programming', 'Simpple programming.');
+INSERT INTO Subject VALUES ('CSIT214', 'Project Management', 'Teaches how to manage projects.');
+INSERT INTO Subject VALUES ('CSCI369', 'Ethical Hacking', 'Teaches how to hack.');
+INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
+
+#inserting teachers
+INSERT INTO Teacher VALUES (123, 'Not Sloy');
+INSERT INTO Teacher VALUES (456, 'Mai');
+INSERT INTO Teacher VALUES (789, 'Farhad');
+
+#inserting sessions
+INSERT INTO Session VALUES (1, 'CSCI369', 'Monday', '13:30', '16:30', '5.11', 456);
+INSERT INTO Session VALUES (2, 'CSIT321', 'Thursday', '13:30', '15:30', '4.42', 789);
+INSERT INTO Session VALUES (3, 'CSIT111', 'Tuesday', '13:30', '15:30', '5.11', 123);
+INSERT INTO Session VALUES (4, 'MATH221', 'Tuesday', '09:30', '10:30', '3.43', 123);
+INSERT INTO Session VALUES (5, 'CSCI369', 'Sunday', '09:30', '11:30', '4.21', 456);
+
+#inserting enrolments
+INSERT INTO Enrolment VALUES (1, 6633249, 1);
+INSERT INTO Enrolment VALUES (2, 6633249, 2);
+INSERT INTO Enrolment VALUES (3, 6536177, 2);
+INSERT INTO Enrolment VALUES (4, 6536177, 3);
+INSERT INTO Enrolment VALUES (5, 6536177, 4);
+INSERT INTO Enrolment VALUES (6, 6616781, 1);
+INSERT INTO Enrolment VALUES (7, 6698360, 2);
+INSERT INTO Enrolment VALUES (8, 6698360, 4);
+INSERT INTO Enrolment VALUES (9, 6683113, 1);
+INSERT INTO Enrolment VALUES (10, 6683113, 3);
+INSERT INTO Enrolment VALUES (11, 1234567, 5);
+
+#inserting attendance
+INSERT INTO Attendance VALUES (1, 1, "2023-01-02", "Present");
+INSERT INTO Attendance VALUES (2, 2, "2023-01-05", "Absent");
+INSERT INTO Attendance VALUES (3, 3, "2023-01-05", "Absent");
+INSERT INTO Attendance VALUES (4, 4, "2023-01-03", "Present");
+INSERT INTO Attendance VALUES (5, 5, "2023-01-03", "Excused");
+INSERT INTO Attendance VALUES (6, 6, "2023-01-02", "Present");
+INSERT INTO Attendance VALUES (7, 7, "2023-01-05", "Present");
+INSERT INTO Attendance VALUES (8, 8, "2023-01-03", "Excused");
+INSERT INTO Attendance VALUES (9, 9, "2023-01-02", "Excused");
+INSERT INTO Attendance VALUES (10, 10, "2023-01-03", "Present");
+INSERT INTO Attendance VALUES (11, 1, "2023-01-09", "Present");
+INSERT INTO Attendance VALUES (12, 1, "2023-01-16", "Excused");
+
+SELECT Student.student_id, Student.student_name, Attendance.status, Subject.subject_code, Session.day, Session.start_time
+FROM Enrolment, Student, Subject, Session, Attendance
+WHERE Student.student_id = Enrolment.student_id AND 
+Subject.subject_code = Session.subject_code AND 
+Session.session_id = Enrolment.session_id AND
+Attendance.enrolment_id = Enrolment.enrolment_id AND Student.student_id = 6633249;
+
+# all students in  a specific subject
+SELECT Student.student_id, Student.student_name, Teacher.teacher_name, Session.day, CONCAT(Session.start_time, " - " , Session.end_time) AS "class Times"
+FROM Enrolment, Student, Subject, Session, Attendance, Teacher
+WHERE Student.student_id = Enrolment.student_id AND 
+Subject.subject_code = Session.subject_code AND 
+Session.session_id = Enrolment.session_id AND
+Teacher.teacher_id = Session.teacher_id AND
+Attendance.enrolment_id = Enrolment.enrolment_id AND Subject.subject_code= 'CSCI369';
+
+SELECT Student.student_id, Student.student_name, Teacher.teacher_name, Session.day, FORMAT(Session.start_time, 'MM')
+FROM Enrolment, Student, Subject, Session,Teacher
+WHERE Student.student_id = Enrolment.student_id AND 
+Subject.subject_code = Session.subject_code AND 
+Session.session_id = Enrolment.session_id AND
+Teacher.teacher_id = Session.teacher_id AND
+Subject.subject_code= 'CSCI369'
+AND day = "Monday" AND start_time = "13:30"
+;
