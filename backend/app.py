@@ -5,6 +5,8 @@ from api.teacher.read import all_teachers, single_teacher
 
 app = Flask(__name__)
 
+#added a new line
+
 #login
 @app.route('/api/login', methods = ['POST'])
 def login():
