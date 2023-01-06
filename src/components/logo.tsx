@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logo = () => (
   <Link href="/" passHref>
-    <Image src={"/flower.webp"} alt={""} width={50} height={50} />
+    <Image src={"/logo.png"} alt={""} width={60} height={60} />
   </Link>
 );
 

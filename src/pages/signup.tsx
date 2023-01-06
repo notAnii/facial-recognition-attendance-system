@@ -1,17 +1,17 @@
 import { NextSeo } from 'next-seo'
 import React from 'react'
-import Hero from '../components/messi/hero'
+import Hero from '../components/signup/hero'
 import Header from '../components/header'
 
 type Props = {}
 
-const Messi = (props: Props) => {
+const Signup = (props: Props) => {
   return (
     <>
-    <NextSeo title="Messi" />
+    <NextSeo title="Signup" />
     <Hero/>
   </>
   )
 }
 
-export default Messi
+export default Signup

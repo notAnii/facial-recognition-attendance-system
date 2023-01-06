@@ -1,5 +1,8 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Container,
   Heading,
@@ -22,6 +25,7 @@ const Hero = (props: Props) => {
       maxW={"7xl"}
       h={"100%"} //to determine center of the page
     >
+
       <Box  //bos = dev
         bgColor={"white"}
         p={10}
@@ -30,9 +34,9 @@ const Hero = (props: Props) => {
         flexDir={"column"}
         alignItems={"center"}
       >
-        <Image src={"/flower.webp"} alt={""} width={150} height={150} />
-        <Heading mt={4}>Sign In</Heading>
-        <VStack spacing={4} mt={8} mb={10}>
+        <Image src={"/logo.png"} alt={""} width={150} height={150} />
+        <Heading mt={4}>Log In</Heading>
+        <VStack spacing={2} mt={8} mb={10}>
           <Box>
             <Text>Username </Text>
             <Input border={"2px solid black"} borderRadius={"xl"} />
@@ -55,11 +59,34 @@ const Hero = (props: Props) => {
             color: "black",
             border: "2px solid black",
           }}
+          mb={2}
         >
           Log In
         </Button>
+
+        <Breadcrumb fontWeight='medium' fontSize='sm' //FOR NAVIGATION
+        > 
+  <BreadcrumbItem>
+    <BreadcrumbLink href='/'> 
+    <Button
+          variant={"ghost"}
+          bgColor={"black"}
+          color="white"
+          _hover={{
+            bgColor: "unset",
+            color: "black",
+            border: "2px solid black",
+          }}
+        >
+          Go Back
+        </Button>
+    </BreadcrumbLink>
+  </BreadcrumbItem>
+  </Breadcrumb>
+
+        
       </Box>
-      {/* <Image src={reactLogo} alt="React logo" /> */}
+     
     </Container>
   );
 };
