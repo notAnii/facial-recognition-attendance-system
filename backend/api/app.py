@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from test import sayhi
-from student.read import all_students, single_student, students_subject
+from student.read import *
 from teacher.read import all_teachers, single_teacher
 
 app = Flask(__name__)
@@ -54,6 +54,13 @@ def get_students_subject(subject_code):
     time = request.args.get('time')
     result = students_subject(subject_code, day, time)
     return jsonify(result), 200
+
+#getting attendance for a specific class
+@app.route('/api/subjects/<subject_code>', methods = ['GET'])
+def get_session_attendance(subject_code):
+    result = session_attendance(subject_code)
+    return jsonify(result), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
