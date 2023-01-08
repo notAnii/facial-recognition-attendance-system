@@ -2,20 +2,36 @@ from flask import Flask, jsonify, request
 from test import sayhi
 from student.read import *
 from teacher.read import all_teachers, single_teacher
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 app = Flask(__name__)
 
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
+
 #login
-@app.route('/api/login', methods = ['POST'])
+# @app.route('/api/login', methods = ['POST'])
+# def login():
+#     try:
+#     # placeholder
+#         teacher_id = request.json['teacher_id']
+#         email = request.json['email']
+#         password = request.json['password']
+#         return teacher_id, 200
+#     except Exception as e:
+#         return e, 404
+
+@app.route("/api/login", methods=["POST"])
 def login():
-    try:
-    # placeholder
-        teacher_id = request.json['teacher_id']
-        email = request.json['email']
-        password = request.json['password']
-        return teacher_id, 200
-    except Exception as e:
-        return e, 404
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    if username != "abshir" or password != "123456":
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify(access_token=access_token)
 
 #starting the attendance 
 @app.route('/api/startRecognition', methods = ['GET'])
