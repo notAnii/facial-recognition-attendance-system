@@ -7,6 +7,7 @@ import {
   Container,
   Heading,
   Input,
+  Link,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -50,7 +51,9 @@ const Hero = (props: Props) => {
             />
           </Box>
         </VStack>
-        <Button
+        <Link href='/user_home' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <Button
+          marginBottom={2}
           variant={"ghost"}
           bgColor={"black"}
           color="white"
@@ -59,15 +62,13 @@ const Hero = (props: Props) => {
             color: "black",
             border: "2px solid black",
           }}
-          mb={2}
         >
           Log In
         </Button>
+    </Link>
+ 
 
-        <Breadcrumb fontWeight='medium' fontSize='sm' //FOR NAVIGATION
-        > 
-  <BreadcrumbItem>
-    <BreadcrumbLink href='/'> 
+  <Link href="/" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
     <Button
           variant={"ghost"}
           bgColor={"black"}
@@ -80,9 +81,8 @@ const Hero = (props: Props) => {
         >
           Go Back
         </Button>
-    </BreadcrumbLink>
-  </BreadcrumbItem>
-  </Breadcrumb>
+    </Link>
+  
 
         
       </Box>

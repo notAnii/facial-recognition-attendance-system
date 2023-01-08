@@ -4,7 +4,7 @@ type Props = {}
 
 const Hero = (props: Props) => {
   return (
-    <h1>Encara Messi</h1>
+    <h1>Sign Up Page</h1>
   )
 }
 
