@@ -3,12 +3,14 @@ from test import sayhi
 from student.read import *
 from teacher.read import all_teachers, single_teacher
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
-
+from datetime import timedelta
 app = Flask(__name__)
 
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
 jwt = JWTManager(app)
 
 #login
@@ -35,6 +37,7 @@ def login():
 
 #starting the attendance 
 @app.route('/api/startRecognition', methods = ['GET'])
+@jwt_required()
 def start_recognition():
     sayhi()
     return "Success", 200
