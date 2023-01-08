@@ -25,7 +25,7 @@ const Login = (props: Props) => {
       />
 
 
-      <Hero />
+      <Hero/>
       
     </Box>
   );
