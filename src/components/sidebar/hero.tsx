@@ -21,6 +21,8 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Breadcrumb,
+  Image,
 } from '@chakra-ui/react';
 import {
   FiHome,
@@ -39,12 +41,17 @@ interface LinkItemProps {
   name: string;
   icon: IconType;
 }
-const LinkItems: Array<LinkItemProps> = [
+
+const FirstLink: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
+];
+
+const SecondLink: Array<LinkItemProps> = [
+  { name: 'Favourites', icon: FiStar},
+];
+
+const ThirdLink: Array<LinkItemProps> = [
+  { name: 'Settings', icon: FiSettings},
 ];
 
 export default function SidebarWithHeader({
@@ -53,7 +60,7 @@ export default function SidebarWithHeader({
   children: ReactNode;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [navSize, changeNavSize] = useState("large")
+ 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
@@ -67,7 +74,7 @@ export default function SidebarWithHeader({
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full">
+        size="xs">
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
@@ -96,17 +103,45 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}>
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+      <Flex h="20" alignItems="center" justifyContent="space-between">
+
+      <Image //LOGO HERE
+        src={"/logo.png"}
+        alt={""}
+        width={50}
+        height={50}
+        marginLeft={4}
+        ></Image>
+
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
+
+      
+      <Link //LINK FOR FIRST BUTTON
+      href="/" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      {FirstLink.map((link) => (
         <NavItem key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
+      </Link>
+
+      <Link //LINK FOR SECOND BUTTON
+      href="/login" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      {SecondLink.map((link) => (
+        <NavItem key={link.name} icon={link.icon}>
+          {link.name}
+        </NavItem>
+      ))}
+      </Link>
+      <Link //LINK FOR THIRD BUTTON
+      href="/signup" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      {ThirdLink.map((link) => (
+        <NavItem key={link.name} icon={link.icon}>
+          {link.name}
+        </NavItem>
+      ))}
+      </Link>
     </Box>
   );
 };
@@ -117,7 +152,7 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    
       <Flex
         align="center"
         p="4"
@@ -126,7 +161,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'black',
           color: 'white',
         }}
         {...rest}>
@@ -142,7 +177,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         )}
         {children}
       </Flex>
-    </Link>
+
   );
 };
 
@@ -173,12 +208,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       <Text
         display={{ base: 'flex', md: 'none' }}
         fontSize="2xl"
-        fontFamily="monospace"
+        fontFamily="sans-serif"
         fontWeight="bold">
-        Logo
+        Kaisen
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack //icons on phone horizontal bar
+       spacing={{ base: '0', md: '6' }}>
         <IconButton
           size="lg"
           variant="ghost"
