@@ -26,16 +26,18 @@ import {
 } from '@chakra-ui/react';
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
   FiStar,
   FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiMail,
 } from 'react-icons/fi';
+import {BiCalendar,} from "react-icons/bi";
+import {SiGoogleclassroom,} from "react-icons/si";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import Hero from "../../components/afterLogin/home/hero"
 
 interface LinkItemProps {
   name: string;
@@ -47,11 +49,19 @@ const FirstLink: Array<LinkItemProps> = [
 ];
 
 const SecondLink: Array<LinkItemProps> = [
-  { name: 'Favourites', icon: FiStar},
+  { name: 'Notifications', icon: FiBell},
 ];
 
 const ThirdLink: Array<LinkItemProps> = [
-  { name: 'Settings', icon: FiSettings},
+  { name: 'Calendar', icon: BiCalendar},
+];
+
+const FourthLink: Array<LinkItemProps> = [
+  { name: 'Mail', icon: FiMail},
+];
+
+const FifthLink: Array<LinkItemProps> = [
+  { name: 'Classes', icon: SiGoogleclassroom},
 ];
 
 export default function SidebarWithHeader({
@@ -66,6 +76,7 @@ export default function SidebarWithHeader({
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
+        backgroundColor={"#333333"}
       />
       <Drawer
         autoFocus={false}
@@ -74,14 +85,15 @@ export default function SidebarWithHeader({
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="xs">
+        size="xs"
+        >
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 40 }}>
         {children}
       </Box>
     </Box>
@@ -96,10 +108,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
+      bg={useColorModeValue('#333333', 'gray.900')}
       borderRight="1px"
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
+      w={{ base: 'full', md: 40 }} //TASKBAR WIDTH
       pos="fixed"
       h="full"
       {...rest}>
@@ -110,38 +122,72 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         alt={""}
         width={50}
         height={50}
-        marginLeft={4}
+        marginLeft={1}
         ></Image>
 
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <CloseButton mr={1.5} color={"white"} display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-
       
+      <Box marginLeft={-4}>
       <Link //LINK FOR FIRST BUTTON
-      href="/" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      href="/afterLogin/home" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {FirstLink.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem 
+        textColor={"white"}
+        key={link.name} icon={link.icon}
+        >
           {link.name}
         </NavItem>
       ))}
       </Link>
 
       <Link //LINK FOR SECOND BUTTON
-      href="/login" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      href="/afterLogin/notifications" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {SecondLink.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem 
+        textColor={"white"}
+        key={link.name} icon={link.icon}
+        >
           {link.name}
         </NavItem>
       ))}
       </Link>
       <Link //LINK FOR THIRD BUTTON
-      href="/signup" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      href="/afterLogin/calender" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {ThirdLink.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem 
+        textColor={"white"}
+        key={link.name} icon={link.icon}
+        >
           {link.name}
         </NavItem>
       ))}
       </Link>
+
+      <Link //LINK FOR FOURTH BUTTON
+      href="/afterLogin/mail" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      {FourthLink.map((link) => (
+        <NavItem 
+        textColor={"white"}
+        key={link.name} icon={link.icon}
+        >
+          {link.name}
+        </NavItem>
+      ))}
+      </Link>
+
+      <Link //LINK FOR FIFTH BUTTON
+      href="/afterLogin/classes" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      {FifthLink.map((link) => (
+        <NavItem 
+        textColor={"white"}
+        key={link.name} icon={link.icon}
+        >
+          {link.name}
+        </NavItem>
+      ))}
+      </Link>
+      </Box>
     </Box>
   );
 };
@@ -154,6 +200,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
   return (
     
       <Flex
+        transition="0.7s ease"
         align="center"
         p="4"
         mx="4"
@@ -190,11 +237,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     <Flex
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       {...rest}>
       <IconButton
@@ -203,60 +245,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
+        bgColor="#333333"
+        color="grey"
       />
-
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize="2xl"
-        fontFamily="sans-serif"
-        fontWeight="bold">
-        Kaisen
-      </Text>
-
-      <HStack //icons on phone horizontal bar
-       spacing={{ base: '0', md: '6' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
-        <Flex alignItems={'center'}>
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: 'none' }}>
-              <HStack>
-                <Avatar
-                  size={'sm'}
-                  src={"/basha.jpg"}
-                />
-                <VStack
-                  display={{ base: 'none', md: 'flex' }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2">
-                  <Text fontSize="sm">Ismail Hussein</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Teacher
-                  </Text>
-                </VStack>
-                <Box display={{ base: 'none', md: 'flex' }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
-            </MenuButton>
-            <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                <Link href="/" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-              <MenuItem>Log out</MenuItem>
-              </Link>
-            </MenuList>
-          </Menu>
-        </Flex>
-      </HStack>
     </Flex>
   );
 };
