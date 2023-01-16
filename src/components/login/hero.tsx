@@ -29,7 +29,7 @@ const Hero = (props: Props) => {
 
       <Box  //bos = dev
         bgColor={"white"}
-        p={10}
+        p={6}
         borderRadius={"3xl"}
         display={"flex"}
         flexDir={"column"}
@@ -51,7 +51,7 @@ const Hero = (props: Props) => {
             />
           </Box>
         </VStack>
-        <Link href='/user_home' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+        <Link href='/afterLogin/home' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
     <Button
           marginBottom={2}
           variant={"ghost"}

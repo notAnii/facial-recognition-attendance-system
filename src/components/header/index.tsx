@@ -30,7 +30,7 @@ const Header = () => {
       pos={"fixed"}
       w={"100%"}
       zIndex={9}
-      py={[8]}
+      py={[2]} //height of the taskbar
       top={0}
       bgColor={"black"}
     >
