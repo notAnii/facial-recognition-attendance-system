@@ -8,6 +8,9 @@ from PIL import Image # 1
 import matplotlib.pyplot as plt # 1
 
 # Imports for training model using faces extracted in previous section (2)
+from tensorflow.python.framework.ops import disable_eager_execution
+disable_eager_execution()
+
 import pandas as pd # 2
 import tensorflow.python.keras as keras # 2
 from tensorflow.python.keras.layers import Dense, GlobalAveragePooling2D # 2
@@ -115,32 +118,57 @@ NO_CLASSES = len(train_generator.class_indices.values())
 
 
 # Building the model (3)
-base_model = VGGFace(include_top=True,      # When 'True', these seven layers represent the three fully connected output layers used to recognize faces.
+base_model = VGGFace(include_top=False,      # When 'True', these seven layers represent the three fully connected output layers used to recognize faces.
     # weights=None,
     model='vgg16',
     input_shape=(224, 224, 3))
 base_model.summary()
 
-print(len(base_model.layers))
-# 26 layers in the original VGG-Face
+print(len(base_model.layers))   # prints '19' due to removing the bottom seven layers
 
 x = base_model.output
-print("this is x: ")
+print("this is x before gap2d: ")
 print(x)
 x = GlobalAveragePooling2D()(x)
-
+print(x)
 x = Dense(1024, activation='relu')(x)
+print(x)
 x = Dense(1024, activation='relu')(x)
+print(x)
 x = Dense(512, activation='relu')(x)
+print(x)
 
 # final layer with softmax activation
-preds = Dense(NO_CLASSES, activation='softmax')(x)
+x = Dense(NO_CLASSES, activation='softmax')(x)      # variable name was originally "preds"
+print(x)
 
-# # don't train the first 19 layers - 0..18
-# for layer in model.layers[:19]:
-#     layer.trainable = False
+nmodel = Model(inputs=base_model.input, outputs=x)
 
-# # train the rest of the layers - 19 onwards
-# for layer in model.layers[19:]:
-#     layer.trainable = True
+print("NETWORK AFTER ADDING CUSTOM LAYERS:")
+nmodel.summary()
 
+# print("Below are the Model.layers:")
+# print(Model.layers)
+
+# don't train the first 19 layers - 0..18
+for layer in base_model.layers[:19]:
+    layer.trainable = False
+
+# train the rest of the layers - 19 onwards
+for layer in base_model.layers[19:]:
+    layer.trainable = True
+
+# --------------------------------------------New Stuff---------------------------------------------------
+# Compiling and training the model
+
+# Compiling
+base_model.compile(optimizer='Adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy'])
+
+# Training
+base_model.fit(train_generator,
+    # batch_size = 1,
+    verbose = 1,
+    epochs = 20)
+base_model.summary()
