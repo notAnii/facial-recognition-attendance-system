@@ -1,174 +1,142 @@
-# Imports for preprocessing the images used for training / Extracting faces from images (1)
-import cv2 # 1
-import os # 1
-import pickle # 1
-import numpy as np # 1
-from PIL import Image # 1
+# Imports
+from keras.applications import VGG16
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten, GlobalAveragePooling2D
+from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
+from keras.layers.normalization import batch_normalization
+from keras.models import Model
+from keras_preprocessing.image import ImageDataGenerator
+from keras.optimizers import RMSprop
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.models import load_model
+import cv2
+import numpy as np
+import os
+from os import listdir
+from os.path import isfile, join
 
-import matplotlib.pyplot as plt # 1
+# CODE ------------------------
 
-# Imports for training model using faces extracted in previous section (2)
-from tensorflow.python.framework.ops import disable_eager_execution
-disable_eager_execution()
+# Freezing layers
+rows = 224
+cols = 224
 
-import pandas as pd # 2
-import tensorflow.python.keras as keras # 2
-from tensorflow.python.keras.layers import Dense, GlobalAveragePooling2D # 2
+model = VGG16(weights = 'imagenet', include_top = False, input_shape = (rows, cols, 3))
 
-from keras.preprocessing import image # 2
-from keras.applications.mobilenet import preprocess_input # 2
-from keras.preprocessing.image import ImageDataGenerator # 2
-from keras.models import Model # 2
-from keras.optimizers import Adam # 2
-
-# Imports for building the model (3)
-from keras_vggface.vggface import VGGFace # 3
-
-# Code -------------
-
-# Preprocessing the images used for training / Extracting faces from images (1)
-headshots_folder_name = 'Headshots'
-
-# dimension of images
-image_width = 224
-image_height = 224
-
-# for detecting faces
-facecascade = cv2.CascadeClassifier(r"haarcascade_frontalface_default.xml")
-
-# set the directory containing the images
-images_dir = os.path.join("..", headshots_folder_name)
-
-current_id = 0
-label_ids = {}
-
-# iterates through all the files in each subdirectories
-for root, _, files in os.walk(images_dir):
-    for file in files:
-        if file.endswith("png") or file.endswith("jpg") or file.endswith("jpeg"):
-            # path of the image
-            path = os.path.join(root, file)
-
-            # get the label name (name of the person)
-            label = os.path.basename(root).replace(" ", ".").lower()
-
-            # add the label (key) and its number (value)
-            if not label in label_ids:
-                label_ids[label] = current_id
-                current_id += 1
-
-            # load the image
-            imgtest = cv2.imread(path, cv2.IMREAD_COLOR)
-            image_array = np.array(imgtest, "uint8")
-
-            # get the faces detected in the image
-            faces = facecascade.detectMultiScale(imgtest,
-                scaleFactor=1.1, minNeighbors=5)
-
-            # if not exactly 1 face is detected, skip this photo
-            if len(faces) != 1:
-                print(f'---Photo skipped---\n')
-            # remove the original image
-            os.remove(path)
-            continue
-
-        # save the detected face(s) and associate
-        # them with the label
-        for (x_, y_, w, h) in faces:
-
-            # draw the face detected
-            face_detect = cv2.rectangle(imgtest,
-                    (x_, y_),
-                    (x_+w, y_+h),
-                    (255, 0, 255), 2)
-            plt.imshow(face_detect)
-            plt.show()
-
-            # resize the detected face to 224x224
-            size = (image_width, image_height)
-
-            # detected face region
-            roi = image_array[y_: y_ + h, x_: x_ + w]
-
-            # resize the detected head to target size
-            resized_image = cv2.resize(roi, size)
-            image_array = np.array(resized_image, "uint8")
-
-            # remove the original image
-            os.remove(path)
-
-            # replace the image with only the face
-            im = Image.fromarray(image_array)
-            im.save(path)
-
-
-# Augmenting the training images (uses imported libraries (2))
-train_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
-
-train_generator = train_datagen.flow_from_directory(r"Headshots",
-target_size=(224,224),
-color_mode='rgb',
-batch_size=32,
-class_mode='categorical',
-shuffle=True)
-
-train_generator.class_indices.values()
-# dict_values([0, 1, 2])
-NO_CLASSES = len(train_generator.class_indices.values())
-
-
-# Building the model (3)
-base_model = VGGFace(include_top=False,      # When 'True', these seven layers represent the three fully connected output layers used to recognize faces.
-    # weights=None,
-    model='vgg16',
-    input_shape=(224, 224, 3))
-base_model.summary()
-
-print(len(base_model.layers))   # prints '19' due to removing the bottom seven layers
-
-x = base_model.output
-print("this is x before gap2d: ")
-print(x)
-x = GlobalAveragePooling2D()(x)
-print(x)
-x = Dense(1024, activation='relu')(x)
-print(x)
-x = Dense(1024, activation='relu')(x)
-print(x)
-x = Dense(512, activation='relu')(x)
-print(x)
-
-# final layer with softmax activation
-x = Dense(NO_CLASSES, activation='softmax')(x)      # variable name was originally "preds"
-print(x)
-
-nmodel = Model(inputs=base_model.input, outputs=x)
-
-print("NETWORK AFTER ADDING CUSTOM LAYERS:")
-nmodel.summary()
-
-# print("Below are the Model.layers:")
-# print(Model.layers)
-
-# don't train the first 19 layers - 0..18
-for layer in base_model.layers[:19]:
+for layer in model.layers:
     layer.trainable = False
 
-# train the rest of the layers - 19 onwards
-for layer in base_model.layers[19:]:
-    layer.trainable = True
+for (i, layer) in enumerate(model.layers):
+    print(str(i) + " " + layer.__class__.__name__, layer.trainable)
 
-# --------------------------------------------New Stuff---------------------------------------------------
-# Compiling and training the model
+# Adding new fully connected layers
+def addLayer(bottom_model, num_classes):
+    # creates the head of the model that will be placed on top of the bottom layers
+    top_model = bottom_model.output
+    top_model = GlobalAveragePooling2D()(top_model)
+    top_model = Dense(1024, activation = 'relu')(top_model)
+    top_model = Dense(1024, activation = 'relu')(top_model)
+    top_model = Dense(512, activation = 'relu')(top_model)
+    top_model = Dense(num_classes, activation = 'softmax')(top_model)
 
-# Compiling
-base_model.compile(optimizer='Adam',
-    loss='categorical_crossentropy',
-    metrics=['accuracy'])
+    return top_model
 
-# Training
-base_model.fit(train_generator,
-    # batch_size = 1,
-    verbose = 1,
-    epochs = 20)
-base_model.summary()
+
+print(model.input)
+
+num_classes = 4
+fc_head = addLayer(model, num_classes)
+new_model = Model(inputs = model.input, outputs = fc_head)
+print(new_model.summary())
+
+# Loading data and training the model
+train_data_dir = (r"Headshots")
+validation_data_dir = (r"Validation_Headshots")
+
+train_datagen = ImageDataGenerator(rescale=1./255,
+                                   rotation_range=20,
+                                   width_shift_range=0.2,
+                                   height_shift_range=0.2,
+                                   horizontal_flip=True,
+                                   fill_mode='nearest')
+
+validation_datagen = ImageDataGenerator(rescale=1./255)
+
+train_batchsize = 12
+validation_batchsize = 10
+
+train_generator = train_datagen.flow_from_directory(train_data_dir,
+                                                    target_size=(rows, cols),
+                                                    batch_size=train_batchsize,
+                                                    class_mode='categorical')
+
+validation_generator = validation_datagen.flow_from_directory(validation_data_dir,
+                                                    target_size=(rows, cols),
+                                                    batch_size=validation_batchsize,
+                                                    class_mode='categorical',
+                                                    shuffle=False)
+
+checkpoint = ModelCheckpoint("face_recog_vgg.h5", monitor="val_loss", mode="min", save_best_only=True, verbose=1)
+earlystop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=1, restore_best_weights=True)
+callbacks = [earlystop, checkpoint]
+
+new_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(learning_rate=0.001), metrics=['accuracy'])
+
+nb_train_samples = 1190
+nb_validation_samples = 170
+epochs = 4
+batch_size = 32  # what value should be put here?
+
+history = new_model.fit(train_generator,
+                        # steps_per_epoch=nb_train_samples // batch_size,
+                        epochs=epochs,
+                        callbacks=callbacks,
+                        validation_data=validation_generator,
+                        # validation_steps=nb_validation_samples // batch_size)
+)
+
+new_model.save("face_recog_vgg.h5")
+
+# Testing the model
+classifier = load_model('face_recog_vgg.h5')
+
+actors_dataset_dict = {"[0]": "Ismail",
+                       "[1]": "Layton",
+                       "[2]": "Ronaldo",
+                       "[3]": "Tashlin"}
+
+def draw_test(name, pred, im):
+    actors = actors_dataset_dict[str(pred)]
+    BLACK = [0, 0, 0]
+    expanded_image = cv2.copyMakeBorder(im, 80, 0, 0, 100, cv2.BORDER_CONSTANT, value=BLACK)
+    cv2.putText(expanded_image, actors, (0, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    cv2.imshow(name, expanded_image)
+
+def getRandomImage(path):
+    # function loads random images from a random folder in our test path
+    folders = list(filter(lambda x: os.path.isdir(os.path.join(path, x)), os.listdir(path)))
+    random_directory = np.random.randint(0, len(folders))
+    path_class = folders[random_directory]
+    print("Class - " + str(path_class))
+    file_path = path + path_class
+    file_names = [f for f in listdir(file_path) if isfile(join(file_path, f))]
+    random_file_index = np.random.randint(0, len(file_names))
+    image_name = file_names[random_file_index]
+
+    return cv2.imread(file_path + "/" + image_name)
+
+input_im = getRandomImage(r"Validation_Headshots" + "//")
+input_original = input_im.copy()
+input_original = cv2.resize(input_original, None, fx = 0.5, fy = 0.5, interpolation = cv2.INTER_LINEAR)
+
+input_im = cv2.resize(input_im, (224, 224), interpolation = cv2.INTER_LINEAR)
+input_im = input_im / 255.
+input_im = input_im.reshape(1, 224, 224, 3)
+
+# Get prediction
+res = np.argmax(classifier.predict(input_im, 1, verbose = 0), axis = 1)
+
+# Show image with predicted class
+draw_test("Prediction", res, input_original)
+cv2.waitKey(5000)
+cv2.destroyAllWindows()
