@@ -52,10 +52,6 @@ const SecondLink: Array<LinkItemProps> = [
   { name: 'Notifications', icon: FiBell},
 ];
 
-const ThirdLink: Array<LinkItemProps> = [
-  { name: 'Calendar', icon: BiCalendar},
-];
-
 const FourthLink: Array<LinkItemProps> = [
   { name: 'Mail', icon: FiMail},
 ];
@@ -144,17 +140,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Link //LINK FOR SECOND BUTTON
       href="/afterLogin/notifications" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {SecondLink.map((link) => (
-        <NavItem 
-        textColor={"white"}
-        key={link.name} icon={link.icon}
-        >
-          {link.name}
-        </NavItem>
-      ))}
-      </Link>
-      <Link //LINK FOR THIRD BUTTON
-      href="/afterLogin/calender" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-      {ThirdLink.map((link) => (
         <NavItem 
         textColor={"white"}
         key={link.name} icon={link.icon}
