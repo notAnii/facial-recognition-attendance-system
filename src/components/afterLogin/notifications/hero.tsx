@@ -8,7 +8,7 @@ const Hero = (props: Props) => {
     <Box h="100vh">
       <Text
       marginLeft={233}
-      >Notifications page</Text>
+      >ADAWA A7a</Text>
       
     </Box>
   )
