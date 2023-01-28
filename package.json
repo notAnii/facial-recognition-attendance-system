@@ -25,6 +25,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-icons": "^4.7.1",
+    "react-step-progress-bar": "^1.0.3",
     "swr": "^2.0.0"
   },
   "devDependencies": {

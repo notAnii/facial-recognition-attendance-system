@@ -1,4 +1,4 @@
-import { Box, Container, Text } from '@chakra-ui/react'
+import { Box, Container, Text, Stack } from '@chakra-ui/react'
 import React from 'react'
 import "@fontsource/open-sans"
 
@@ -15,7 +15,7 @@ const Hero = (props: Props) => {
       
       <Box 
       backgroundColor={"white"} 
-      h="80vh" //w="130vh" 
+      h="80vh"
       w={{ base: "100vh", md: "130vh" }}
       marginTop={10}
       borderRadius={40}
@@ -23,12 +23,24 @@ const Hero = (props: Props) => {
       borderColor='black'
       >
         
-        <Box //Right Box
-      backgroundColor={"white"} 
-      h="73vh"
+      <Stack 
+      direction={'row'} 
+      spacing='4px' 
       mt={{ base: 15, md: 5 }} 
-      ml={["5%", "63%", "62%", "62%"]}
-      mr={{ base: 3, md: 4 }}
+      mr={{ base: 3, md: 3 }} >
+      
+      <Box //Left Box
+      backgroundColor={"white"} 
+      h="73vh" w="90vh"
+      ml={{ base: "2vh", md: "2vh", }}
+      borderRadius={40}
+      border='1px' 
+      borderColor='black'
+      />
+
+      <Box //Right Box
+      backgroundColor={"white"} 
+      h="73vh" w="45vh"
       borderRadius={40}
       border='1px' 
       borderColor='black'
@@ -42,23 +54,9 @@ const Hero = (props: Props) => {
         >UPCOMING CLASSES</Text>
 
       </Box>
-      
-      <Box //Left Box
-      backgroundColor={"white"} 
-      h="73vh"
-      mt={{ base: -430.5, md: -439 }} 
-      ml={{ base: "2vh", md: "2vh", }}
-      mr={["5%", "38%", "39%", "39%"]}
-      borderRadius={40}
-      border='1px' 
-      borderColor='black'
-      >
-        
-      </Box>
-          
-      </Box>
-      
+      </Stack>
 
+      </Box>
       </Container>
       
       
