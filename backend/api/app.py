@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from test import sayhi
 from student.read import *
-from teacher.read import all_teachers, single_teacher
+from teacher.read import *
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from datetime import timedelta
 app = Flask(__name__)
@@ -29,11 +29,19 @@ jwt = JWTManager(app)
 def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
-    if username != "abshir" or password != "123456":
+    if username != "123" or password != "abshir":
         return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token)
+
+#get all classes for a teacher
+@app.route("/api/classes", methods=["GET"])
+@jwt_required()
+def get_classes():
+    result = all_classes(get_jwt_identity())
+    return jsonify(result), 200
+
 
 #starting the attendance 
 @app.route('/api/startRecognition', methods = ['GET'])

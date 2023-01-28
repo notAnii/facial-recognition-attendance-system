@@ -40,14 +40,14 @@ def students_subject(subject_code, session_day = None, session_time = None):
 
 #getting attendance for a specific class
 def session_attendance(subject_code):
-        db = DBHelper()
-        sql = '''
+    db = DBHelper()
+    sql = '''
         Select Student.student_id, Student.student_name, Attendance.status, Session.day, Subject.subject_code
         FROM Student, Enrolment, Attendance, Session, Subject
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
         Subject.subject_code = '%s';
-        ''' % subject_code
-        result = db.fetch(sql)
-        return result
+    ''' % subject_code
+    result = db.fetch(sql)
+    return result
 
