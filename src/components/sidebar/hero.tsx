@@ -149,8 +149,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ))}
       </Link>
 
-      <Link //LINK FOR FOURTH BUTTON
-      href="/afterLogin/mail" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      <Link href='https://outlook.office.com/mail/' isExternal
+      style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {FourthLink.map((link) => (
         <NavItem 
         textColor={"white"}
