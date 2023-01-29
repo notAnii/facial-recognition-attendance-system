@@ -48,7 +48,8 @@ def get_classes():
 @jwt_required()
 def get_session_attendance(subject_code, session_number):
     status = request.args.get('status')
-    result = session_attendance(subject_code, session_number, status)
+    week = request.args.get('week')
+    result = session_attendance(subject_code, session_number, status, week)
     return jsonify(result), 200
 
 #starting the attendance 

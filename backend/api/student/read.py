@@ -39,7 +39,7 @@ def students_subject(subject_code, session_day = None, session_time = None):
     return result
 
 #getting attendance for a specific class
-def session_attendance(subject_code, session_number, status = None):
+def session_attendance(subject_code, session_number, status = None, week = None):
     db = DBHelper()
     sql = '''
         Select Student.student_id, Student.student_name, Attendance.week, Attendance.date, Attendance.status
