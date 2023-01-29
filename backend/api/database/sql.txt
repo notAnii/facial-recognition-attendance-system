@@ -31,6 +31,7 @@ CREATE TABLE `Teacher` (
 CREATE TABLE `Session` (
 	`session_id` INT,
 	`subject_code` VARCHAR(50),
+	`session_number` INT,
 	`day` VARCHAR(20),
 	`start_time` TIME,
 	`end_time` TIME,
@@ -56,6 +57,7 @@ CREATE TABLE `Enrolment` (
 CREATE TABLE `Attendance` (
 	`attendance_id` INT,
 	`enrolment_id` INT,
+	`week` VARCHAR(20),
 	`date` DATE,
 	`status` VARCHAR(20),
 	PRIMARY KEY (`attendance_id`),
@@ -85,11 +87,11 @@ INSERT INTO Teacher VALUES (456, 'Mai');
 INSERT INTO Teacher VALUES (789, 'Farhad');
 
 #inserting sessions
-INSERT INTO Session VALUES (1, 'CSCI369', 'Monday', '13:30', '16:30', '5.11', "Lecture", 456);
-INSERT INTO Session VALUES (2, 'CSIT321', 'Thursday', '13:30', '15:30', '4.42', "Tutorial", 789);
-INSERT INTO Session VALUES (3, 'CSIT111', 'Tuesday', '13:30', '15:30', '5.11', "Tutorial", 123);
-INSERT INTO Session VALUES (4, 'MATH221', 'Tuesday', '09:30', '10:30', '3.43', "Lab", 123);
-INSERT INTO Session VALUES (5, 'CSCI369', 'Sunday', '09:30', '11:30', '4.21', "Lab", 456);
+INSERT INTO Session VALUES (1, 'CSCI369', 1, 'Monday', '13:30', '16:30', '5.11', "Lecture", 456);
+INSERT INTO Session VALUES (2, 'CSIT321', 1, 'Thursday', '13:30', '15:30', '4.42', "Tutorial", 789);
+INSERT INTO Session VALUES (3, 'CSIT111', 1, 'Tuesday', '13:30', '15:30', '5.11', "Tutorial", 123);
+INSERT INTO Session VALUES (4, 'MATH221', 1, 'Tuesday', '09:30', '10:30', '3.43', "Lab", 123);
+INSERT INTO Session VALUES (5, 'CSCI369', 2, 'Sunday', '09:30', '11:30', '4.21', "Lab", 456);
 
 #inserting enrolments
 INSERT INTO Enrolment VALUES (1, 6633249, 1);
@@ -105,18 +107,18 @@ INSERT INTO Enrolment VALUES (10, 6683113, 3);
 INSERT INTO Enrolment VALUES (11, 1234567, 5);
 
 #inserting attendance
-INSERT INTO Attendance VALUES (1, 1, "2023-01-02", "Present");
-INSERT INTO Attendance VALUES (2, 2, "2023-01-05", "Absent");
-INSERT INTO Attendance VALUES (3, 3, "2023-01-05", "Absent");
-INSERT INTO Attendance VALUES (4, 4, "2023-01-03", "Present");
-INSERT INTO Attendance VALUES (5, 5, "2023-01-03", "Excused");
-INSERT INTO Attendance VALUES (6, 6, "2023-01-02", "Present");
-INSERT INTO Attendance VALUES (7, 7, "2023-01-05", "Present");
-INSERT INTO Attendance VALUES (8, 8, "2023-01-03", "Excused");
-INSERT INTO Attendance VALUES (9, 9, "2023-01-02", "Excused");
-INSERT INTO Attendance VALUES (10, 10, "2023-01-03", "Present");
-INSERT INTO Attendance VALUES (11, 1, "2023-01-09", "Present");
-INSERT INTO Attendance VALUES (12, 1, "2023-01-16", "Excused");
+INSERT INTO Attendance VALUES (1, 1, "Week 1", "2023-01-02", "Present");
+INSERT INTO Attendance VALUES (2, 2, "Week 1", "2023-01-05", "Absent");
+INSERT INTO Attendance VALUES (3, 3, "Week 1", "2023-01-05", "Absent");
+INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-03", "Present");
+INSERT INTO Attendance VALUES (5, 5, "Week 1", "2023-01-03", "Excused");
+INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", "Present");
+INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-05", "Present");
+INSERT INTO Attendance VALUES (8, 8, "Week 1", "2023-01-03", "Excused");
+INSERT INTO Attendance VALUES (9, 9, "Week 1", "2023-01-02", "Excused");
+INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-03", "Present");
+INSERT INTO Attendance VALUES (11, 1, "Week 2", "2023-01-09", "Present");
+INSERT INTO Attendance VALUES (12, 1, "Week 3", "2023-01-16", "Excused");
 
 SELECT Student.student_id, Student.student_name, Attendance.status, Subject.subject_code, Session.day, Session.start_time
 FROM Enrolment, Student, Subject, Session, Attendance
@@ -152,3 +154,9 @@ Subject.subject_code = 'CSCI369';
 SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(Session.start_time AS char) AS start_time , CAST(Session.end_time AS char) AS end_time, Session.room, Session.class_type
 FROM Subject, Session
 WHERE Subject.subject_code = Session.subject_code AND teacher_id = '123' 
+
+Select Student.student_id, Student.student_name, Attedance.week, Attendance.date, Attendance.status
+FROM Student, Enrolment, Attendance, Session, Subject
+WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
+Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
+Subject.subject_code = 'CSCI369' AND Session.session_number = 2;

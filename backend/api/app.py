@@ -25,7 +25,8 @@ jwt = JWTManager(app)
 #     except Exception as e:
 #         return e, 404
 
-@app.route("/api/login", methods=["POST"])
+#login route to create a jwt token for user
+@app.route("/api/v1/login", methods=["POST"])
 def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
@@ -36,56 +37,57 @@ def login():
     return jsonify(access_token=access_token)
 
 #get all classes for a teacher
-@app.route("/api/classes", methods=["GET"])
+@app.route("/api/v1/classes", methods=["GET"])
 @jwt_required()
 def get_classes():
     result = all_classes(get_jwt_identity())
     return jsonify(result), 200
 
+#get attendance list for a specific session
+@app.route("/api/v1/attendance/<subject_code>/<session_number>", methods=["GET"])
+@jwt_required()
+def get_session_attendance(subject_code, session_number):
+    status = request.args.get('status')
+    result = session_attendance(subject_code, session_number, status)
+    return jsonify(result), 200
 
 #starting the attendance 
-@app.route('/api/startRecognition', methods = ['GET'])
+@app.route('/api/v1/startRecognition', methods = ['GET'])
 @jwt_required()
 def start_recognition():
     sayhi()
     return "Success", 200
 
 #get all students
-@app.route('/api/students', methods = ['GET'])
+@app.route('/api/v1/students', methods = ['GET'])
 def get_all_students():
     result = all_students()
     return jsonify(result), 200
 
 #get single student
-@app.route('/api/students/<student_id>', methods = ['GET'])
+@app.route('/api/v1/students/<student_id>', methods = ['GET'])
 def get_single_student(student_id):
     result = single_student(student_id)
     return jsonify(result), 200
 
 #get all teachers
-@app.route('/api/teachers', methods = ['GET'])
+@app.route('/api/v1/teachers', methods = ['GET'])
 def get_all_teachers():
     result = all_teachers()
     return jsonify(result), 200
 
 #get single teacher
-@app.route('/api/teachers/<teacher_id>', methods = ['GET'])
+@app.route('/api/v1/teachers/<teacher_id>', methods = ['GET'])
 def get_single_teacher(teacher_id):
     result = single_teacher(teacher_id)
     return jsonify(result), 200
 
 #getting all students for a specific subject or specific session
-@app.route('/api/subjects/<subject_code>/students', methods = ['GET'])
+@app.route('/api/v1/subjects/<subject_code>/students', methods = ['GET'])
 def get_students_subject(subject_code):
     day = request.args.get('day')
     time = request.args.get('time')
     result = students_subject(subject_code, day, time)
-    return jsonify(result), 200
-
-#getting attendance for a specific class
-@app.route('/api/subjects/<subject_code>', methods = ['GET'])
-def get_session_attendance(subject_code):
-    result = session_attendance(subject_code)
     return jsonify(result), 200
 
 
