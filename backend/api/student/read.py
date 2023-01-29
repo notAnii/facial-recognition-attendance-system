@@ -11,7 +11,7 @@ def all_students():
 #get single student
 def single_student(student_id):
     db = DBHelper()
-    sql = 'SELECT * FROM Student WHERE student_id =  %s ;' % student_id
+    sql = 'SELECT * FROM Student WHERE student_id =  %s' % student_id
     result = db.fetch(sql)
     return result
 
@@ -31,7 +31,7 @@ def students_subject(subject_code, session_day = None, session_time = None):
 
     if session_day != None and session_time != None:
         session_time = getTime(session_time)
-        sql += ' AND day = "%s" AND start_time = "%s"' % (session_day, session_time)
+        sql += ''' AND day = "%s" AND start_time = '%s' ''' % (session_day, session_time)
         result = db.fetch(sql)
     else:
         result = db.fetch(sql)
@@ -41,13 +41,14 @@ def students_subject(subject_code, session_day = None, session_time = None):
 #getting attendance for a specific class
 def session_attendance(subject_code, session_number, status = None, week = None):
     db = DBHelper()
+    date_format = str("%d-%m-%y")
     sql = '''
-        Select Student.student_id, Student.student_name, Attendance.week, Attendance.date, Attendance.status
+        Select Student.student_id, Student.student_name, Attendance.week, DATE_FORMAT(Attendance.date, '%s') as date, Attendance.status
         FROM Student, Enrolment, Attendance, Session, Subject
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
         Subject.subject_code = '%s' AND Session.session_number = %s
-    ''' % (subject_code, session_number)
+        ''' % (date_format, subject_code, session_number)
 
     if status != None:
         sql += ''' AND Attendance.status = '%s' ''' % status

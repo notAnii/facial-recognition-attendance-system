@@ -155,8 +155,8 @@ SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(Session.sta
 FROM Subject, Session
 WHERE Subject.subject_code = Session.subject_code AND teacher_id = '123' 
 
-Select Student.student_id, Student.student_name, Attedance.week, Attendance.date, Attendance.status
+Select Student.student_id, Student.student_name, Attendance.week, DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status
 FROM Student, Enrolment, Attendance, Session, Subject
 WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
 Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
-Subject.subject_code = 'CSCI369' AND Session.session_number = 2;
+Subject.subject_code = 'CSCI369';
