@@ -46,9 +46,9 @@ def get_classes():
 #get attendance list for a specific session
 @app.route("/api/v1/attendance/<subject_code>/<session_id>", methods=["GET"])
 @jwt_required()
-def get_attendance():
+def get_attendance(subject_code, session_id):
     status = request.args.get('status')
-    result = "holder"
+    result = None
     return jsonify(result), 200
 
 #starting the attendance 
