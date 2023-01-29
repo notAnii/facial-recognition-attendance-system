@@ -46,11 +46,11 @@ def session_attendance(subject_code, session_number, status = None):
         FROM Student, Enrolment, Attendance, Session, Subject
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
-        Subject.subject_code = '%s' AND Session.session_number = %s;
+        Subject.subject_code = '%s' AND Session.session_number = %s
     ''' % (subject_code, session_number)
 
     if status != None:
-        sql += 'AND status = "%s"' % status
+        sql += ''' AND Attendance.status = '%s' ''' % status
         result = db.fetch(sql)
     else:
         result = db.fetch(sql)
