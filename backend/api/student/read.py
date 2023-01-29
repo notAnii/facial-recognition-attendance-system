@@ -51,9 +51,9 @@ def session_attendance(subject_code, session_number, status = None, week = None)
 
     if status != None:
         sql += ''' AND Attendance.status = '%s' ''' % status
-        result = db.fetch(sql)
-    else:
-        result = db.fetch(sql)
+    if week != None:
+        sql += ''' AND Attendance.week = 'Week %s' ''' % week
         
+    result = db.fetch(sql)
     return result
 
