@@ -10,8 +10,10 @@ import {
   Td,
   Button,
   Spacer,
-  IconButton,} from '@chakra-ui/react'
+  IconButton,
+  Link,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+//import Hero from "../startAttend/hero"
 
 type Props = {}
 
@@ -38,8 +40,16 @@ const Hero = (props: Props) => {
             aria-label='Go To Previous Week' 
             backgroundColor="#818589" 
             color="white" 
-            borderColor="solid black" 
-            icon={<ArrowBackIcon />} />
+            icon={<ArrowBackIcon />} px={4} 
+            fontSize={'sm'} 
+            variant={"ghost"}
+            bgColor={"#818589"}
+            borderRadius={13}
+            _hover={{
+              bgColor: "#ECECEC",
+              color: "#818589",
+            }}
+          />
           <Text 
             textAlign={"center"} 
             paddingLeft={1} 
@@ -51,7 +61,16 @@ const Hero = (props: Props) => {
             backgroundColor="#818589" 
             color="white" 
             borderColor="solid black" 
-            icon={<ArrowForwardIcon />} />
+            icon={<ArrowForwardIcon />}
+            fontSize={'sm'} 
+            variant={"ghost"}
+            bgColor={"#818589"}
+            borderRadius={13}
+            _hover={{
+              bgColor: "#ECECEC",
+              color: "#818589",
+            }}
+          />
         </Box>
       </Box>
       <Box 
@@ -130,24 +149,37 @@ const Hero = (props: Props) => {
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                       View Attendance
                   </Button>
                 </Td>
                 <Td>
-                  <Button 
+                <Link href='/afterLogin/attend' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+                <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                       Start Attendance
                   </Button>
+                  </Link>
                 </Td>
               </Tr>
+
               <Tr>
                 <Td>CSCI323</Td>
                 <Td>Modern Artificial Intelligence</Td>
@@ -157,26 +189,38 @@ const Hero = (props: Props) => {
                 <Td>4.42</Td>
                 <Td>Tutorial</Td>
                 <Td>
-                  <Button 
+                <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                     View Attendance
                   </Button>
                 </Td>
                 <Td>
-                  <Button 
+                <Link href='../startAttend/hero' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+                <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                       Start Attendance
                   </Button>
+                  </Link>
                 </Td>
               </Tr>
               <Tr>
@@ -188,26 +232,38 @@ const Hero = (props: Props) => {
                 <Td>3.42</Td>
                 <Td>Lecture</Td>
                 <Td>
-                  <Button 
+                <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                       View Attendance
                   </Button>
                 </Td>
                 <Td>
-                  <Button 
+                <Link href='../startAttend/hero' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+                <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
-                    bg={'#818589'} 
-                    color={'white'}
-                    borderColor="solid black">
+                    variant={"ghost"}
+                    bgColor={"#818589"}
+                    color="white"
+                    _hover={{
+                      bgColor: "white",
+                      color: "#818589",
+                    }}
+                  >
                       Start Attendance
                   </Button>
+                  </Link>
                 </Td>
               </Tr>
             </Tbody>
