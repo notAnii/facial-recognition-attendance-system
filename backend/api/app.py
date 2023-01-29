@@ -44,11 +44,11 @@ def get_classes():
     return jsonify(result), 200
 
 #get attendance list for a specific session
-@app.route("/api/v1/attendance/<subject_code>/<session_id>", methods=["GET"])
+@app.route("/api/v1/attendance/<subject_code>/<session_number>", methods=["GET"])
 @jwt_required()
-def get_attendance(subject_code, session_id):
+def get_session_attendance(subject_code, session_number):
     status = request.args.get('status')
-    result = None
+    result = session_attendance(subject_code, session_number, status)
     return jsonify(result), 200
 
 #starting the attendance 
@@ -71,7 +71,7 @@ def get_single_student(student_id):
     return jsonify(result), 200
 
 #get all teachers
-@app.route('/api/teachers', methods = ['GET'])
+@app.route('/api/v1/teachers', methods = ['GET'])
 def get_all_teachers():
     result = all_teachers()
     return jsonify(result), 200
@@ -88,12 +88,6 @@ def get_students_subject(subject_code):
     day = request.args.get('day')
     time = request.args.get('time')
     result = students_subject(subject_code, day, time)
-    return jsonify(result), 200
-
-#getting attendance for a specific class
-@app.route('/api/v1/subjects/<subject_code>', methods = ['GET'])
-def get_session_attendance(subject_code):
-    result = session_attendance(subject_code)
     return jsonify(result), 200
 
 
