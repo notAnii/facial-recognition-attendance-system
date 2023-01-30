@@ -4,3 +4,4 @@ opencv-python==4.7.0.68
 Pillow==9.4.0
 tensorflow==2.11.0
 keras-applications==1.0.8
+keras-preprocessing==1.1.2
