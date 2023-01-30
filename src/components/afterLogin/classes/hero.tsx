@@ -12,7 +12,8 @@ import {
   Spacer,
   IconButton,
   Link,} from '@chakra-ui/react'
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { ArrowBackIcon, ArrowForwardIcon,} from '@chakra-ui/icons'
+import { BsFilterLeft } from 'react-icons/bs';
 //import Hero from "../startAttend/hero"
 
 type Props = {}
@@ -32,14 +33,15 @@ const Hero = (props: Props) => {
         alignItems="right">
         <Spacer/>
         <Box 
-          w="20%" 
-          h="100%" 
+          w="15%" 
+          h="130%" 
           display="flex" 
           alignItems="center">
           <IconButton 
             aria-label='Go To Previous Week' 
             backgroundColor="#818589" 
             color="white" 
+            size="sm"
             icon={<ArrowBackIcon />} px={4} 
             fontSize={'sm'} 
             variant={"ghost"}
@@ -60,7 +62,7 @@ const Hero = (props: Props) => {
             aria-label='Go To Next Week' 
             backgroundColor="#818589" 
             color="white" 
-            borderColor="solid black" 
+            size="sm"
             icon={<ArrowForwardIcon />}
             fontSize={'sm'} 
             variant={"ghost"}
@@ -86,20 +88,33 @@ const Hero = (props: Props) => {
           alignItems="center" 
           borderRadius={10}>
           <Box 
-            w="20%" 
+            w="50%" 
             h="100%" 
             display="flex" 
             alignItems="center" 
             borderRadius={10} 
             paddingLeft="2%">
-            <Text>Hammood Teacher</Text>
+            <Text fontSize="2xl">Hammood Teacher</Text>
             <Box 
-              w="40%" 
+              w="30%" 
               h="100%" 
               display="flex" 
-              alignItems="center" 
+              alignItems="center"
+              marginLeft={'1%'} 
               borderRadius={10}>
-              <Text padding='3'>Filter Icon</Text>
+              <IconButton 
+                aria-label='Filter' 
+                color="black" 
+                size="sm"
+                icon={<BsFilterLeft />} px={4} 
+                fontSize='25px'
+                variant={"ghost"}
+                borderRadius={13}
+                _hover={{
+                  bgColor: "#ECECEC",
+                  color: "#818589",
+                }}
+              />
             </Box>
           </Box>
         </Box>
@@ -121,7 +136,10 @@ const Hero = (props: Props) => {
               backgroundColor: `rgba(0, 0, 0, 0.10)`,
           },
         }}>
-          <Table maxWidth="100%">
+          <Table 
+            maxWidth="100%" 
+            variant='striped' 
+            colorScheme="blackAlpha">
             <Thead>
               <Tr>
                 <Th>Subject Code</Th>
@@ -145,6 +163,10 @@ const Hero = (props: Props) => {
                 <Td>5.11</Td>
                 <Td>Computer Lab</Td>
                 <Td>
+                <Link 
+                  href='/afterLogin/viewAttendance' 
+                  style={{ textDecoration: 'none' }} 
+                  _focus={{ boxShadow: 'none' }}>
                   <Button 
                     px={4} 
                     fontSize={'sm'} 
@@ -155,31 +177,32 @@ const Hero = (props: Props) => {
                     _hover={{
                       bgColor: "white",
                       color: "#818589",
-                    }}
-                  >
+                    }}>
                       View Attendance
-                  </Button>
-                </Td>
-                <Td>
-                <Link href='/afterLogin/attend' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-                <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}
-                  >
-                      Start Attendance
                   </Button>
                   </Link>
                 </Td>
+                <Td>
+                <Link 
+                  href='/afterLogin/attend' 
+                  style={{ textDecoration: 'none' }} 
+                  _focus={{ boxShadow: 'none' }}>
+                  <Button 
+                      px={4} 
+                      fontSize={'sm'} 
+                      rounded={'full'} 
+                      variant={"ghost"}
+                      bgColor={"#818589"}
+                      color="white"
+                      _hover={{
+                        bgColor: "white",
+                        color: "#818589",
+                      }}>
+                        Start Attendance
+                  </Button>
+                </Link>
+                </Td>
               </Tr>
-
               <Tr>
                 <Td>CSCI323</Td>
                 <Td>Modern Artificial Intelligence</Td>
@@ -205,8 +228,11 @@ const Hero = (props: Props) => {
                   </Button>
                 </Td>
                 <Td>
-                <Link href='../startAttend/hero' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-                <Button 
+                <Link 
+                  href='../startAttend/hero' 
+                  style={{ textDecoration: 'none' }} 
+                  _focus={{ boxShadow: 'none' }}>
+                  <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
@@ -216,11 +242,10 @@ const Hero = (props: Props) => {
                     _hover={{
                       bgColor: "white",
                       color: "#818589",
-                    }}
-                  >
+                    }}>
                       Start Attendance
                   </Button>
-                  </Link>
+                </Link>
                 </Td>
               </Tr>
               <Tr>
@@ -232,7 +257,7 @@ const Hero = (props: Props) => {
                 <Td>3.42</Td>
                 <Td>Lecture</Td>
                 <Td>
-                <Button 
+                  <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
@@ -242,14 +267,16 @@ const Hero = (props: Props) => {
                     _hover={{
                       bgColor: "white",
                       color: "#818589",
-                    }}
-                  >
+                    }}>
                       View Attendance
                   </Button>
                 </Td>
                 <Td>
-                <Link href='../startAttend/hero' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-                <Button 
+                <Link 
+                  href='../startAttend/hero' 
+                  style={{ textDecoration: 'none' }} 
+                  _focus={{ boxShadow: 'none' }}>
+                  <Button 
                     px={4} 
                     fontSize={'sm'} 
                     rounded={'full'} 
@@ -259,11 +286,10 @@ const Hero = (props: Props) => {
                     _hover={{
                       bgColor: "white",
                       color: "#818589",
-                    }}
-                  >
+                    }}>
                       Start Attendance
                   </Button>
-                  </Link>
+                </Link>
                 </Td>
               </Tr>
             </Tbody>
