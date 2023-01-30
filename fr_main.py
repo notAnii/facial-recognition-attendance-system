@@ -44,7 +44,7 @@ def addLayer(bottom_model, num_classes):
 
 print(model.input)
 
-num_classes = 4
+num_classes = 4    # was 4
 fc_head = addLayer(model, num_classes)
 new_model = Model(inputs = model.input, outputs = fc_head)
 print(new_model.summary())
@@ -62,7 +62,7 @@ train_datagen = ImageDataGenerator(rescale=1./255,
 
 validation_datagen = ImageDataGenerator(rescale=1./255)
 
-train_batchsize = 12
+train_batchsize = 5000
 validation_batchsize = 10
 
 train_generator = train_datagen.flow_from_directory(train_data_dir,
@@ -84,16 +84,16 @@ new_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(learning_ra
 
 nb_train_samples = 1190
 nb_validation_samples = 170
-epochs = 4
+epochs = 5
 batch_size = 32  # what value should be put here?
 
 history = new_model.fit(train_generator,
-                        # steps_per_epoch=nb_train_samples // batch_size,
+                        # steps_per_epoch=nb_train_samples // batch_size,  # num train images - 1 (11)
                         epochs=epochs,
                         callbacks=callbacks,
-                        validation_data=validation_generator,
-                        # validation_steps=nb_validation_samples // batch_size)
-)
+                        validation_data=validation_generator
+                        # validation_steps=nb_validation_samples // batch_size  # num validation images - 1 (9)
+                        )
 
 new_model.save("face_recog_vgg.h5")
 
@@ -130,11 +130,12 @@ input_original = input_im.copy()
 input_original = cv2.resize(input_original, None, fx = 0.5, fy = 0.5, interpolation = cv2.INTER_LINEAR)
 
 input_im = cv2.resize(input_im, (224, 224), interpolation = cv2.INTER_LINEAR)
-input_im = input_im / 255.
+input_im = input_im / 255
 input_im = input_im.reshape(1, 224, 224, 3)
 
 # Get prediction
 res = np.argmax(classifier.predict(input_im, 1, verbose = 0), axis = 1)
+print(res)
 
 # Show image with predicted class
 draw_test("Prediction", res, input_original)
