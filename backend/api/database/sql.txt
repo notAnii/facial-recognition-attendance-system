@@ -10,6 +10,7 @@ DROP TABLE Student;
 CREATE TABLE `Student` (
 	`student_id` INT,
 	`student_name` VARCHAR(50),
+	`program` VARCHAR(50),
 	PRIMARY KEY (`student_id`)
 );
 
@@ -66,13 +67,13 @@ CREATE TABLE `Attendance` (
 
 
 #inserting students
-INSERT INTO Student VALUES (6633249, 'Abshir');
-INSERT INTO Student VALUES (6536177, 'Ismail');
-INSERT INTO Student VALUES (6616781, 'Aeron');
-INSERT INTO Student VALUES (6698360, 'Layton');
-INSERT INTO Student VALUES (6683113, 'Yassin');
-INSERT INTO Student VALUES (1234567, 'Odowa');
-INSERT INTO Student VALUES (7654321, 'Cat');
+INSERT INTO Student VALUES (6633249, 'Abshir', 'BCS');
+INSERT INTO Student VALUES (6536177, 'Ismail', 'BCS');
+INSERT INTO Student VALUES (6616781, 'Aeron', 'BCS');
+INSERT INTO Student VALUES (6698360, 'Layton', 'BCS');
+INSERT INTO Student VALUES (6683113, 'Yassin', 'BCS');
+INSERT INTO Student VALUES (1234567, 'Odowa', 'BBIS');
+INSERT INTO Student VALUES (7654321, 'Cat', 'BBIS');
 
 #inserting subjects
 INSERT INTO Subject VALUES ('CSIT321', 'Project', 'Graduation project subject.');
