@@ -15,6 +15,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/afterLogin/home/chart.js",
+    "src/components/afterLogin/home/chart.js",
+    "src/components/afterLogin/home/chart.js"
+  ],
   "exclude": ["node_modules"]
 }
