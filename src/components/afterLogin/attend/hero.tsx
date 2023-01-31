@@ -144,7 +144,7 @@ const Hero = (props: Props) => {
       >
 
 <TableContainer>
-  <Table size='sm'>
+  <Table size='sm' variant='striped' colorScheme="blackAlpha">
     <Thead>
       <Tr //COLUMN NAMES
       >
