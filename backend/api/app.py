@@ -52,6 +52,13 @@ def get_session_attendance(subject_code, session_number):
     result = session_attendance(subject_code, session_number, status, week)
     return jsonify(result), 200
 
+#get live attendance list for a specific session (list displayed while attendance recording is active)
+@app.route("/api/v1/live-attendance/<subject_code>/<session_number>", methods=["GET"])
+@jwt_required()
+def get_live_session_attendance(subject_code, session_number):
+    result = live_session_attendance(subject_code, session_number)
+    return jsonify(result), 200
+
 #starting the attendance 
 @app.route('/api/v1/startRecognition', methods = ['GET'])
 @jwt_required()

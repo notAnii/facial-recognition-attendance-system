@@ -60,6 +60,7 @@ CREATE TABLE `Attendance` (
 	`enrolment_id` INT,
 	`week` VARCHAR(20),
 	`date` DATE,
+	`time` TIME,
 	`status` VARCHAR(20),
 	PRIMARY KEY (`attendance_id`),
 	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id)
@@ -108,17 +109,17 @@ INSERT INTO Enrolment VALUES (10, 6683113, 3);
 INSERT INTO Enrolment VALUES (11, 1234567, 5);
 
 #inserting attendance
-INSERT INTO Attendance VALUES (1, 1, "Week 1", "2023-01-02", "Present");
+INSERT INTO Attendance VALUES (1, 1, "Week 1", "2023-01-02", '13:30', "Present");
 INSERT INTO Attendance VALUES (2, 2, "Week 1", "2023-01-05", "Absent");
 INSERT INTO Attendance VALUES (3, 3, "Week 1", "2023-01-05", "Absent");
-INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-03", "Present");
+INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-03", '13:30', "Present");
 INSERT INTO Attendance VALUES (5, 5, "Week 1", "2023-01-03", "Excused");
-INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", "Present");
-INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-05", "Present");
+INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", '13:30', "Present");
+INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-05", '13:30', "Present");
 INSERT INTO Attendance VALUES (8, 8, "Week 1", "2023-01-03", "Excused");
 INSERT INTO Attendance VALUES (9, 9, "Week 1", "2023-01-02", "Excused");
-INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-03", "Present");
-INSERT INTO Attendance VALUES (11, 1, "Week 2", "2023-01-09", "Present");
+INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-03", '13:30', "Present");
+INSERT INTO Attendance VALUES (11, 1, "Week 2", "2023-01-09", '13:30', "Present");
 INSERT INTO Attendance VALUES (12, 1, "Week 3", "2023-01-16", "Excused");
 
 SELECT Student.student_id, Student.student_name, Attendance.status, Subject.subject_code, Session.day, Session.start_time
