@@ -51,7 +51,7 @@ const Hero = (props: Props) => {
                 alignItems="center"
                 justifyContent="center" 
                 borderRadius={10}>
-                <Text fontSize="2xl">CSCI203 Tuturial Attendance List</Text>
+                <Text fontSize="2xl" paddingLeft={3}>CSCI203 Tuturial Attendance List</Text>
             </Box>
             <Spacer/>
             <Box 
