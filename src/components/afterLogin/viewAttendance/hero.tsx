@@ -13,6 +13,7 @@ import {
   IconButton,
   Link,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { BsFilter, BsFilterLeft } from 'react-icons/bs';
 //import Hero from "../startAttend/hero"
 
 type Props = {}
@@ -96,7 +97,22 @@ const Hero = (props: Props) => {
                     <Th>Date</Th>
                     <Th>Attendance Percentage</Th>
                     <Th>Attendance Status</Th>
-                    <Th>Number of Unexcused Absences</Th>
+                    <Th>Unexcused Absences
+                    <IconButton 
+                        aria-label='Filter' 
+                        color="black" 
+                        size="sm"
+                        icon={<BsFilter />} 
+                        px={4} 
+                        fontSize='25px'
+                        variant={"ghost"}
+                        borderRadius={13}
+                        _hover={{
+                        bgColor: "#ECECEC",
+                        color: "#818589",
+                        }}
+                    />
+                    </Th>
                 </Tr>
             </Thead>
             <Tbody>
