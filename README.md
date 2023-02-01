@@ -3,7 +3,10 @@
  ## Changelog
  
 * [30/01/2023]
-  * Updated requirements.txt file to include all libraries needed up to date
+  * Removed unnecessary libraries in requirements.txt file
+
+* [01/02/2023]
+  * Added scipy to requirements.txt file
   
 ## Backlog
 
