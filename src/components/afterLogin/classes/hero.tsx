@@ -24,70 +24,27 @@ const Hero = (props: Props) => {
   }
 
   return (
-    <Box 
+    <Box //Whole page box excluding the tast bar
       h="100vh" 
       bg="white">
-      <Box 
-        h="8%" 
+      <Box //Top of page space
+        h="5%" 
         display="flex" 
         alignItems="right">
-        <Spacer/>
-        <Box 
-          w="15%" 
-          h="130%" 
-          display="flex" 
-          alignItems="center">
-          <IconButton 
-            aria-label='Go To Previous Week' 
-            backgroundColor="#818589" 
-            color="white" 
-            size="sm"
-            icon={<ArrowBackIcon />} px={4} 
-            fontSize={'sm'} 
-            variant={"ghost"}
-            bgColor={"#818589"}
-            borderRadius={13}
-            _hover={{
-              bgColor: "#ECECEC",
-              color: "#818589",
-            }}
-          />
-          <Text 
-            textAlign={"center"} 
-            paddingLeft={1} 
-            paddingRight={1}>
-              Week 10
-          </Text>
-          <IconButton 
-            aria-label='Go To Next Week' 
-            backgroundColor="#818589" 
-            color="white" 
-            size="sm"
-            icon={<ArrowForwardIcon />}
-            fontSize={'sm'} 
-            variant={"ghost"}
-            bgColor={"#818589"}
-            borderRadius={13}
-            _hover={{
-              bgColor: "#ECECEC",
-              color: "#818589",
-            }}
-          />
-        </Box>
       </Box>
-      <Box 
+      <Box //box that holds teachers name, filter button, classes list, and weeks
         h="85%" 
         m={5} 
         bg="#ECECEC" 
         borderRadius={30} 
         border={"1px"} 
         borderColor={"Black"}>
-        <Box 
+        <Box //top bar of the box with the teachers name and filter button
           h="15%" 
           display="flex" 
           alignItems="center" 
           borderRadius={10}>
-          <Box 
+          <Box //Box thhat has the teachers name
             w="50%" 
             h="100%" 
             display="flex" 
@@ -95,7 +52,7 @@ const Hero = (props: Props) => {
             borderRadius={10} 
             paddingLeft="2%">
             <Text fontSize="2xl">Hammood Teacher</Text>
-            <Box 
+            <Box //Box that has the filter button
               w="30%" 
               h="100%" 
               display="flex" 
@@ -118,8 +75,8 @@ const Hero = (props: Props) => {
             </Box>
           </Box>
         </Box>
-        <Box 
-          h="85%" 
+        <Box //Box that holds the table
+          h="77%" 
           w="100%" 
           maxHeight="100%" 
           borderRadius={10} 
@@ -294,6 +251,49 @@ const Hero = (props: Props) => {
               </Tr>
             </Tbody>
           </Table>
+        </Box>
+        <Box //Box under the table that has the weeks
+            h="8%" 
+            w="15%" 
+            display="flex" 
+            alignItems="center"
+            justifyContent="center">
+            <IconButton 
+                aria-label='Go To Previous Week' 
+                backgroundColor="#818589" 
+                color="white" 
+                size='sm'
+                icon={<ArrowBackIcon />}
+                fontSize={'sm'} 
+                variant={"ghost"}
+                bgColor={"#818589"}
+                borderRadius={13}
+                _hover={{
+                    bgColor: "#ECECEC",
+                    color: "#818589",
+                }}
+            />
+            <Text 
+                textAlign={"center"} 
+                paddingLeft={1} 
+                paddingRight={1}>
+                Week 10
+            </Text>
+            <IconButton 
+                aria-label='Go To Next Week' 
+                backgroundColor="#818589" 
+                color="white" 
+                size='sm'
+                icon={<ArrowForwardIcon />}
+                fontSize={'sm'} 
+                variant={"ghost"}
+                bgColor={"#818589"}
+                borderRadius={13}
+                _hover={{
+                    bgColor: "#ECECEC",
+                    color: "#818589",
+                }}
+            />
         </Box>
       </Box>
     </Box>
