@@ -31,6 +31,7 @@ const Hero = (props: Props) => {
     maxW={"7xl"}
     //justifyContent={"center"}
     backgroundColor="#E5E5E5"
+    overflow={"hidden"}
     >
       <VStack 
       spacing={2}
@@ -60,54 +61,53 @@ const Hero = (props: Props) => {
         
       </Box>
 
-      <Box //Cards Here
-      h="39vh"
-      overflowX={"auto"}
-      marginTop={13.3}
-      sx={{
-        '&::-webkit-scrollbar': {
-          width: '16px',
-          borderRadius: '8px',
-          backgroundColor: `rgba(0, 0, 0, 0.05)`,
-        },
-        '&::-webkit-scrollbar-thumb': {
-          borderRadius: '8px',
-          backgroundColor: `rgba(0, 0, 0, 0.05)`,
-        },
-      }}
-      >
-        <Grid 
+        <HStack 
         paddingLeft={5}
         borderRadius={40}
-        paddingRight={5}
-        templateColumns='repeat(5, 1fr)' 
+        paddingRight={5} 
         gap={6} 
-        >
+        overflowX={"scroll"}
+        w={"100%"}
+        maxW={"6xl"}
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '16px',
+            borderRadius: '6px',
+            backgroundColor: `rgba(0, 0, 0, 0.10)`,
+        },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: '6px',
+            backgroundColor: `rgba(0, 0, 0, 0.10)`,
+        },
+      }}>
 
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
-        <GridItem w='100%'>
-        <Card/>
-        </GridItem>
         
-        </Grid>
-      </Box>
+        <Card/>
+        
+        
+        <Card/>
+       
+       
+        <Card/>
+        
+        
+        <Card/>
+        
+        
+        <Card/>
+        
+      
+        <Card/>
+        
+        
+        <Card/>
+
+        <Card/>
+        <Card/>
+        
+        
+        </HStack>
+      
 
       <HStack>
 
@@ -163,10 +163,6 @@ const Hero = (props: Props) => {
         <Th 
         fontFamily={"Open sans"} 
         color="#4F4747"
-        >Date</Th>
-        <Th 
-        fontFamily={"Open sans"} 
-        color="#4F4747"
         isNumeric
         >Time</Th>
       </Tr>
@@ -178,21 +174,18 @@ const Hero = (props: Props) => {
         <Td>5570</Td>
         <Td>Ismail Hussein</Td>
         <Td>BCS</Td>
-        <Td>07/12/22</Td>
         <Td isNumeric>13:31</Td>
       </Tr>
       <Tr>
         <Td>5590</Td>
         <Td>Yassin Akkad</Td>
         <Td>BCS</Td>
-        <Td>07/12/22</Td>
         <Td isNumeric>13:33</Td>
       </Tr>
       <Tr>
         <Td>5510</Td>
         <Td>Layton Chetty</Td>
         <Td>BCS</Td>
-        <Td>07/12/22</Td>
         <Td isNumeric>13:39</Td>
       </Tr>
     </Tbody>

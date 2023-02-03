@@ -23,6 +23,15 @@ import {
   MenuList,
   Breadcrumb,
   Image,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from '@chakra-ui/react';
 import {
   FiHome,
@@ -37,11 +46,15 @@ import {BiCalendar,} from "react-icons/bi";
 import {SiGoogleclassroom,} from "react-icons/si";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
-import Hero from "../../components/afterLogin/home/hero"
+import "@fontsource/open-sans"
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+}
+
+interface LinkItemProp {
+  name: string;
 }
 
 const FirstLink: Array<LinkItemProps> = [
@@ -60,6 +73,10 @@ const FifthLink: Array<LinkItemProps> = [
   { name: 'Classes', icon: SiGoogleclassroom},
 ];
 
+const SixthLink: Array<LinkItemProp> = [
+  { name: 'Name'},
+];
+
 export default function SidebarWithHeader({
   children,
 }: {
@@ -74,6 +91,7 @@ export default function SidebarWithHeader({
         display={{ base: 'none', md: 'block' }}
         backgroundColor={"#333333"}
       />
+      
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -173,7 +191,57 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ))}
       </Link>
       </Box>
-    </Box>
+      
+      <Popover>
+      <PopoverTrigger>
+      <Box
+      position="absolute" bottom="0"
+      > 
+        <Flex 
+        h="auto"
+        alignItems="center" 
+        justifyContent="space-between" 
+        padding={3}
+        paddingBottom={5}
+        >
+          <HStack>
+        <Image //Logout
+          src={"/user.png"}
+          alt={""}
+          width={50}
+          height={50}
+          marginLeft={1}
+          />
+          <Text
+          textAlign="left"
+          fontSize="15px"
+          color={"white"}
+          >Mr. Ismail
+          </Text>
+          <CloseButton mr={1.5} color={"white"} display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+          </HStack>
+        </Flex>
+     
+      </Box>
+      </PopoverTrigger>
+      <PopoverContent w="100%">
+      <PopoverHeader> 
+      <Link //LINK FOR SIXTH BUTTON
+      href="/" 
+      style={{ textDecoration: 'none' }} 
+      _focus={{ boxShadow: 'none' }}
+      >
+      {SixthLink.map((link) => (
+        <Text
+        >
+          Log out
+        </Text>
+        ))}
+        </Link>
+        </PopoverHeader>
+      </PopoverContent>
+      </Popover>
+      </Box>
   );
 };
 

@@ -15,15 +15,15 @@ import {
     return (
       <Center py={3}>
         <Box
-          maxW={'160px'}
-          w={'full'}
+          
+          w={"150px"}
           bg={useColorModeValue('white', 'gray.800')}
           boxShadow={'2xl'}
           rounded={'md'}
           overflow={'hidden'}>
           <Image
             h={'50px'}
-            w={'full'}
+            w={'100%'}
             src={
               "/cardBack.png"
             }

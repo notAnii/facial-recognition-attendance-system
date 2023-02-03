@@ -102,8 +102,8 @@ const Hero = (props: Props) => {
                 <Th>Subject Code</Th>
                 <Th>Subject Name</Th>
                 <Th>Name</Th>
-                <Th>Class Start Time</Th>
-                <Th>Class End Time</Th>
+                <Th>Start Time</Th>
+                <Th>End Time</Th>
                 <Th>Room</Th>
                 <Th>Class Type</Th>
                 <Th></Th>
