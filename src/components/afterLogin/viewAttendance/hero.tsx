@@ -24,27 +24,27 @@ const Hero = (props: Props) => {
   }
 
   return (
-    <Box 
+    <Box //Whole page box excluding the tast bar
       h="100vh" 
       bg="white">
-      <Box 
+      <Box //Top of page space
         h="5%" 
         display="flex" 
         alignItems="right">
       </Box>
-      <Box 
+      <Box //Whole box that has subject name, time, table, and weeeks at the bottom
         h="85%" 
         m={5} 
         bg="#ECECEC" 
         borderRadius={30} 
         border={"1px"} 
         borderColor={"Black"}>
-        <Box 
+        <Box //Top part that has subject name and time
             h="15%" 
             display="flex" 
             alignItems="center" 
             borderRadius={10}>
-            <Box 
+            <Box //Box that has the Subject code and name
                 w="30%" 
                 h="100%" 
                 display="flex" 
@@ -54,7 +54,7 @@ const Hero = (props: Props) => {
                 <Text fontSize="2xl" paddingLeft={3}>CSCI203 Tuturial Attendance List</Text>
             </Box>
             <Spacer/>
-            <Box 
+            <Box //Box that has day and time
                 w="30%" 
                 h="100%" 
                 display="flex" 
@@ -64,7 +64,7 @@ const Hero = (props: Props) => {
                 <Text fontSize="2xl">Thursday 13:30-15:30</Text>
             </Box>
         </Box>
-        <Box 
+        <Box //Box that holds the table
           h="77%" 
           w="100%" 
           maxHeight="100%" 
@@ -326,7 +326,7 @@ const Hero = (props: Props) => {
             </Tbody>
         </Table>
         </Box>
-        <Box 
+        <Box //Box under the table that has the weeks
             h="8%" 
             w="15%" 
             display="flex" 
