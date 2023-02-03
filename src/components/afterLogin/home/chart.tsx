@@ -13,18 +13,16 @@ import {
 
 const Chart = () => {
   const data = [
-    { month: "JAN", Days: 100 },
-    { month: "FEB", Days: 75 },
-    { month: "MAR", Days: 50 },
-    { month: "APR", Days: 25 },
-    { month: "MAY", Days: 100 },
-    { month: "JUN", Days: 78 },
-    { month: "JUL", Days: 50 },
-    { month: "AUG", Days: 25 },
-    { month: "SEP", Days: 100 },
-    { month: "OCT", Days: 75 },
-    { month: "NOV", Days: 50 },
-    { month: "DEC", Days: 25 },
+    { month: "Week1", Days: 100 },
+    { month: "Week2", Days: 75 },
+    { month: "Week3", Days: 50 },
+    { month: "Week4", Days: 25 },
+    { month: "Week5", Days: 100 },
+    { month: "Week6", Days: 78 },
+    { month: "Week7", Days: 50 },
+    { month: "Week8", Days: 25 },
+    { month: "Week9", Days: 100 },
+    { month: "Week10", Days: 75 },
   ];
 
   return (

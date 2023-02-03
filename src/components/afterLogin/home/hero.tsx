@@ -8,13 +8,16 @@ import { Box, Container, Text, Stack, VStack, Avatar, HStack,
   Td,
   TableCaption,
   TableContainer,} from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import "@fontsource/open-sans"
 import Chart from './chart'
 
 type Props = {}
 
 const Hero = (props: Props) => {
+  const [classes,setClasses] = useState([
+    {}
+  ]);
   return (
     <Container 
     h="100vh" 
@@ -25,15 +28,16 @@ const Hero = (props: Props) => {
       
       <Box 
       backgroundColor={"white"} 
-      h="85vh"
-      w={"135vh"}
+      h="85%" 
+      w="100%"
+      maxW="8xl"
+      m={1}
       marginTop={10}
       borderRadius={40}
       border='1px' 
       borderColor='black'
       overflowY="auto" 
       overflowX="auto" 
-      
       >
         
       <Stack 
@@ -81,62 +85,75 @@ const Hero = (props: Props) => {
         <Box //Name and stuff
          w="100%"
          display={"flex"}
-         justifyContent="center"
          paddingTop={4}
          overflowY="auto" 
          overflowX="auto" 
-         paddingRight={23}
          >
 
           <Table 
+          width={"100%"}
+          maxWidth={"50vh"}
           variant="unstyled" 
-          size={"sm"}    
+          size={"sm"}  
           >
             <Thead>
               <Tr>
                 <Th 
-                fontSize={"10px"}
-                textAlign="center"
+                textAlign="left"
                 fontFamily={"Open Sans"}
+                fontWeight={"bold"}
+                fontSize={"13px"}
                 >
                   Mr. Ismail Hussein
                 </Th>
-                <Th 
-                fontSize={"10px"} 
-                textAlign="center"
+                <Th        
+                textAlign="left"
                 fontFamily={"Open Sans"}
+                fontWeight={"light"}
                 >
-                  Department
+                  Professor
                   </Th>
-                <Th 
-                isNumeric 
-                fontSize={"10px"} 
-                textAlign="center"
-                fontFamily={"Open Sans"}
-                >
-                  Class times
-                  </Th>
+              
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
+              <Thead>
                 <Td 
-                textAlign="center"
+                textAlign="left"
                 fontFamily={"Open Sans"}
+                fontWeight={"bold"}
                 >
-                  Professor
+                  Department
                   </Td>
+                  </Thead>
                 <Td 
-                textAlign="center"
+                textAlign="left"
                 fontFamily={"Open Sans"}
+                fontWeight={"light"}
                 >
                   FEIS</Td>
+                
+              </Tr>
+              <Tr>
                 <Td 
                 isNumeric 
-                textAlign="center"
+                textAlign="left"
                 fontFamily={"Open Sans"}
-                >8:30-17:30
-                </Td>
+                fontWeight={"bold"}
+                >
+                  Class times
+                  </Td>
+                <Td 
+                textAlign="left"
+                fontFamily={"Open Sans"}
+                fontWeight={"light"}
+                >
+                  08:30 - 17:00
+                  </Td>
+                
+               
+                
               </Tr>
             </Tbody>
           </Table>
@@ -183,7 +200,9 @@ const Hero = (props: Props) => {
         fontWeight="bold"
         fontSize={{ base: '10px', md: '10px', lg: '14px' }}
         >UPCOMING CLASSES</Text>
+      <VStack>
 
+      </VStack>
       </Box>
       </Stack>
 

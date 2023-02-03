@@ -331,7 +331,9 @@ const Hero = (props: Props) => {
             w="15%" 
             display="flex" 
             alignItems="center"
-            justifyContent="center">
+            justifyContent="center"
+            paddingBottom={1}
+            >
             <IconButton 
                 aria-label='Go To Previous Week' 
                 backgroundColor="#818589" 
@@ -350,7 +352,8 @@ const Hero = (props: Props) => {
             <Text 
                 textAlign={"center"} 
                 paddingLeft={1} 
-                paddingRight={1}>
+                paddingRight={1}
+                >
                 Week 10
             </Text>
             <IconButton 
