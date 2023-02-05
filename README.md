@@ -2,6 +2,18 @@
 
  ## Changelog
  
+* [05/02/2023]
+  * Attendance list for specific session:
+    * Added attendance percentage for students
+    * Added number of unexcused absensces for students
+  * Live attendance list
+    * Added attendance percentage
+  * Added recent attendance route to API
+  * Adjusted time formats from hh:mm:ss to hh:mm for:
+    * /classes
+    * /live-attendance
+  * Cleaned up SQL backup 
+ 
 * [31/01/2023]
   * Added program attribute e.g. BCs, BBIS, etc. in 'student' table
   * Added route to return live attendance list
@@ -26,20 +38,20 @@
 
 * Backend/API
   * Attendance list for specific session
-    * Calculate and add attendance percentage for a student
-    * Count and add number of unexcused absensces for a student
+    * ~~Calculate and add attendance percentage for a student~~
+    * ~~Count and add number of unexcused absensces for a student~~
   
   * Starting attendance
     * ~~Add route to return live attendance list~~
     * ~~Add option to pick the week for attendance~~
-    * Calculate and add attendance percentage for a student
+    * ~~Calculate and add attendance percentage for a student~~
     
   * Student table
     * ~~Add program attribute e.g. BCs, BBIS, etc.~~
   
   * JWT Authentication
     * Fix issues with token expiration and token refreshes
-    * Find where to stash access tokens in frontend\
+    * Find where to stash access tokens in frontend
     
   * Notifications Feature
     * Decide if notifications needs a table 
