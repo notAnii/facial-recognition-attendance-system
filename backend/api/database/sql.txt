@@ -122,6 +122,8 @@ INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-03", '13:30', "Present
 INSERT INTO Attendance VALUES (11, 1, "Week 2", "2023-01-09", '13:30', "Present");
 INSERT INTO Attendance VALUES (12, 1, "Week 3", "2023-01-16", NULL, "Excused");
 
+############################################################################################################################
+
 SELECT Student.student_id, Student.student_name, Attendance.status, Subject.subject_code, Session.day, Session.start_time
 FROM Enrolment, Student, Subject, Session, Attendance
 WHERE Student.student_id = Enrolment.student_id AND 
@@ -157,12 +159,6 @@ SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(Session.sta
 FROM Subject, Session
 WHERE Subject.subject_code = Session.subject_code AND teacher_id = '123' 
 
-Select Student.student_id, Student.student_name, Attendance.week, DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status
-FROM Student, Enrolment, Attendance, Session, Subject
-WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
-Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
-Subject.subject_code = 'CSCI369';
-
 SELECT Student.student_id, Student.student_name, Attendance.week, 
        DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status, ROUND(att_per.present_percentage,2) as attedance_percentage, att_per.unexcused_absences
 FROM Student
@@ -184,3 +180,23 @@ INNER JOIN
 ) AS att_per
 ON Student.student_id = att_per.student_id
 WHERE Subject.subject_code = 'CSCI369' AND Session.session_number = 2;
+
+SELECT Student.student_name, ROUND(att_per.present_percentage,2) as attedance_percentage, CAST(time_format(Attendance.clock_in,'%H:%i') AS Char) AS clock_in
+FROM Student
+INNER JOIN Enrolment ON Student.student_id = Enrolment.student_id
+INNER JOIN Attendance ON Enrolment.enrolment_id = Attendance.enrolment_id
+INNER JOIN Session ON Session.session_id = Enrolment.session_id
+INNER JOIN Subject ON Subject.subject_code = Session.subject_code
+INNER JOIN
+(
+	SELECT Student.student_id, (SUM(IF(Attendance.status = 'Present', 1, 0)) / COUNT(*)) * 100 AS present_percentage
+	FROM Student
+	INNER JOIN Enrolment ON Student.student_id = Enrolment.student_id
+	INNER JOIN Attendance ON Enrolment.enrolment_id = Attendance.enrolment_id
+	INNER JOIN Session ON Session.session_id = Enrolment.session_id
+	INNER JOIN Subject ON Subject.subject_code = Session.subject_code
+	WHERE Subject.subject_code = 'CSCI369' 
+	GROUP BY Student.student_id
+) AS att_per
+ON Student.student_id = att_per.student_id
+WHERE Attendance.status = 'Present' AND Subject.subject_code = 'CSCI369' AND Session.session_number = 1 AND Attendance.week = 'Week 2'

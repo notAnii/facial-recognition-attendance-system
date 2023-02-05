@@ -88,3 +88,31 @@ def live_session_attendance(subject_code, session_number, week):
     result = db.fetch(sql)
     return result
 
+#getting recent attendance for a specific class
+def recent_session_attendance(subject_code, session_number, week):
+    db = DBHelper()
+    time_format = str("%H:%i")
+    sql = '''
+        SELECT Student.student_name, ROUND(att_per.present_percentage,2) as attedance_percentage, CAST(time_format(Attendance.clock_in,'%s') AS Char) AS clock_in
+        FROM Student
+        INNER JOIN Enrolment ON Student.student_id = Enrolment.student_id
+        INNER JOIN Attendance ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session ON Session.session_id = Enrolment.session_id
+        INNER JOIN Subject ON Subject.subject_code = Session.subject_code
+        INNER JOIN
+        (
+	        SELECT Student.student_id, (SUM(IF(Attendance.status = 'Present', 1, 0)) / COUNT(*)) * 100 AS present_percentage
+	        FROM Student
+	        INNER JOIN Enrolment ON Student.student_id = Enrolment.student_id
+	        INNER JOIN Attendance ON Enrolment.enrolment_id = Attendance.enrolment_id
+	        INNER JOIN Session ON Session.session_id = Enrolment.session_id
+	        INNER JOIN Subject ON Subject.subject_code = Session.subject_code
+	        WHERE Subject.subject_code = '%s' 
+	        GROUP BY Student.student_id
+        ) AS att_per
+        ON Student.student_id = att_per.student_id
+        WHERE Attendance.status = 'Present' AND Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+        ''' % (time_format, subject_code, subject_code, session_number, week)
+    
+    result = db.fetch(sql)
+    return result
