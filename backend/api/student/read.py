@@ -77,13 +77,14 @@ def session_attendance(subject_code, session_number, status = None, week = None)
 #getting live attendance for a specific class
 def live_session_attendance(subject_code, session_number, week):
     db = DBHelper()
+    time_format = str("%H:%i")
     sql = '''
-        Select Student.student_id, Student.student_name, Student.program, CAST(Attendance.clock_in AS Char) AS clock_in 
+        Select Student.student_id, Student.student_name, Student.program, CAST(time_format(Attendance.clock_in,'%s') AS Char) AS clock_in 
         FROM Student, Enrolment, Attendance, Session, Subject
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
         Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s' AND Attendance.status = 'Present'
-        ''' % (subject_code, session_number, week)
+        ''' % (time_format, subject_code, session_number, week)
         
     result = db.fetch(sql)
     return result
