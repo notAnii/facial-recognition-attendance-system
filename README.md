@@ -60,7 +60,22 @@
   * Admin Portal
     * Add sessions to the database
     * Edit classes information
-    * Modify student attendance 
+    * Modify student attendance
+    
+  * Hashing and store passwords
+    * find out what hashing algorithm to use
+    * decide what type of salting if any
+  
+  * Add session number to the json reply in /classes
+  
+  * Teacher table
+    * Add Department
+    * Add passwords
+  
+  * Make a route for upcoming classes
+    * also uses /start-attendance route but we currently have no way of specifying the week on the dashboard
+  
+  * Make route for the teacher information on the dashboard
   
 * Backend/Facial-Recognition
   * Find reasonable size for dataset or decide who's system to running the tranining file in
