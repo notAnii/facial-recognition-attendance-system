@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import { Box, 
   Text, 
   Container, 
@@ -22,7 +23,32 @@ import Webcam from "react-webcam";
 
 type Props = {}
 
-const Hero = (props: Props) => {
+const Hero: React.FC = () => {
+
+  //here you list down the json titles you want to list for example: 
+  //Id, title, and userId (should be written exactly like the json file)
+
+  const [data, setData] = useState<Array<{ 
+    id: number; 
+    title: string; 
+    userId: number 
+  }>>([]);
+
+  //make a GET request to the https://jsonplaceholder.typicode.com/posts API endpoint 
+  //to retrieve a list of posts. (this will allow table to automatically increment rows)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        'https://jsonplaceholder.typicode.com/posts',
+      );
+
+      setData(result.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     
     <Container 
@@ -168,26 +194,16 @@ const Hero = (props: Props) => {
       </Tr>
     </Thead>
 
-    <Tbody //DATA INSIDE THE TABLE
+    <Tbody //DATA INSIDE THE TABLE (it will auto increment)
     >
-      <Tr>
-        <Td>5570</Td>
-        <Td>Ismail Hussein</Td>
-        <Td>BCS</Td>
+       {data.map((item) => (
+      <Tr key={item.id}>
+        <Td>{item.id}</Td>
+        <Td>{item.userId}</Td>
+        <Td>{item.title}</Td>
         <Td isNumeric>13:31</Td>
       </Tr>
-      <Tr>
-        <Td>5590</Td>
-        <Td>Yassin Akkad</Td>
-        <Td>BCS</Td>
-        <Td isNumeric>13:33</Td>
-      </Tr>
-      <Tr>
-        <Td>5510</Td>
-        <Td>Layton Chetty</Td>
-        <Td>BCS</Td>
-        <Td isNumeric>13:39</Td>
-      </Tr>
+      ))}
     </Tbody>
   </Table>
 </TableContainer>

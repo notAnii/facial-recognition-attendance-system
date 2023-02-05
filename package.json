@@ -19,6 +19,7 @@
     "@types/chart.js": "^2.9.37",
     "@types/nprogress": "^0.2.0",
     "apexcharts": "^3.36.3",
+    "axios": "^1.3.2",
     "chart.js": "^4.2.0",
     "framer-motion": "6.5.1",
     "hamburger-react": "^2.5.0",
