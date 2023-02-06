@@ -14,7 +14,6 @@ import {
   Link,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilter, BsFilterLeft } from 'react-icons/bs';
-//import Hero from "../startAttend/hero"
 
 type Props = {}
 

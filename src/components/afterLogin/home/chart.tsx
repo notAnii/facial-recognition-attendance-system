@@ -32,13 +32,13 @@ const Chart = () => {
 
         <BarChart
           
-          width={650}
-          height={200}
+          width={750}
+          height={270}
           data={data}
           margin={{
             top: 5,
-            right: 30,
-            left: 80,
+            right: 90,
+            left: 30,
             bottom: 5,
           }}
           barSize={13}
