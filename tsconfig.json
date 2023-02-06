@@ -21,7 +21,8 @@
     "**/*.tsx",
     "src/components/afterLogin/home/chart.js",
     "src/components/afterLogin/home/chart.js",
-    "src/components/afterLogin/home/chart.js"
+    "src/components/afterLogin/home/chart.js",
+    "src/components/afterLogin/attend/hero.js"
   ],
   "exclude": ["node_modules"]
 }
