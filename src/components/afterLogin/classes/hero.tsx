@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Box, 
   Text, 
@@ -23,8 +23,32 @@ import Card from './card'
 type Props = {}
 
 const Hero = (props: Props) => {
+    const [week, setWeek] = useState(1);
+  
   function rgba(arg0: number, arg1: number, arg2: number, arg3: number) {
     throw new Error('Function not implemented.')
+  }
+
+  function createBoxes(numberOfBoxes: number) {
+    const boxes = [];
+    for (let i = 0; i < numberOfBoxes; i++) {
+      boxes.push(<Card/>);
+    }
+    return boxes;
+  }
+
+  function displayWeek() {
+    var weekMessage;
+    if (week <= 10 && week > 0){
+        weekMessage = <Text textAlign={"center"} paddingLeft={1} paddingRight={1}>Week {week}</Text>;
+    }
+    else if (week <= 0){
+        setWeek(1);
+    }
+    else{
+        setWeek(10);
+    }
+    return weekMessage;
   }
 
   return (
@@ -123,24 +147,9 @@ const Hero = (props: Props) => {
           </Box>
 
           
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
-          <Card/>
+          <>
+            {createBoxes(25)}
+          </>
           
                       
         </Box>
@@ -160,17 +169,15 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
+                onClick={() => setWeek(week - 1)}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
                 }}
             />
-            <Text 
-                textAlign={"center"} 
-                paddingLeft={1} 
-                paddingRight={1}>
-                Week 10
-            </Text>
+            <>
+              {displayWeek()}
+            </>
             <IconButton 
                 aria-label='Go To Next Week' 
                 backgroundColor="#818589" 
@@ -181,6 +188,7 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
+                onClick={() => setWeek(week + 1)}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
