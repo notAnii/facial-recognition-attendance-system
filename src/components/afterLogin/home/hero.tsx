@@ -65,7 +65,7 @@ const Hero = (props: Props) => {
   
           <VStack p={10}>
             
-          <Box //AVATAR
+          <Box //AVATAR 
            display={"flex"}
            justifyContent="center"
            paddingTop={4}
@@ -159,7 +159,6 @@ const Hero = (props: Props) => {
             </VStack>            
           </Box>
 
-                
             <VStack 
             >
             <Text 

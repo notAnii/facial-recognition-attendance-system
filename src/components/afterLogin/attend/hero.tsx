@@ -94,7 +94,7 @@ const Hero: React.FC = () => {
         gap={6} 
         overflowX={"scroll"}
         w={"100%"}
-        maxW={"6xl"}
+        maxW={"77rem"}
         sx={{
           '&::-webkit-scrollbar': {
             width: '16px',

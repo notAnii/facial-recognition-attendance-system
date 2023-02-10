@@ -31,7 +31,6 @@ const Chart = () => {
       <div className="Chart" >
 
         <BarChart
-          
           width={750}
           height={270}
           data={data}
