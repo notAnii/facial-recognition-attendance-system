@@ -11,9 +11,11 @@ import {
   Button,
   Spacer,
   IconButton,
-  Link,} from '@chakra-ui/react'
+  Link,
+  Input,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilter, BsFilterLeft } from 'react-icons/bs';
+import Card from './card'
 //import Hero from "../startAttend/hero"
 
 type Props = {}
@@ -42,17 +44,44 @@ const Hero = (props: Props) => {
         <Box //Top part that has subject name and time
             h="15%" 
             display="flex" 
-            alignItems="center" 
+            alignItems="center"
+            paddingLeft="2%" 
             borderRadius={10}>
             <Box //Box that has the Subject code and name
                 w="30%" 
-                h="100%" 
+                h="100%"
                 display="flex" 
                 alignItems="center"
-                justifyContent="center" 
                 borderRadius={10}>
-                <Text fontSize="2xl" paddingLeft={3}>CSCI203 Tuturial Attendance List</Text>
+                <Text fontSize="2xl">CSCI203 Tuturial Attendance List</Text>
             </Box>
+            <Box display="flex" alignItems="center" width='40%'>
+                <Input 
+                placeholder='Search' 
+                size='sm' 
+                variant='filled' 
+                bg='#F0F0F0' 
+                borderRadius={30} 
+                border={"1px"} 
+                borderColor={"Black"}/>        
+            </Box>
+            <Box //Box that has filter button
+                w="4%" h="100%" display="flex" alignItems="center" justifyContent="center">
+                <IconButton 
+                    aria-label='Filter' 
+                    color="black" 
+                    size="sm"
+                    icon={<BsFilterLeft />} px={4} 
+                    fontSize='25px'
+                    variant={"ghost"}
+                    borderRadius={13}
+                    _hover={{
+                    bgColor: "#ECECEC",
+                    color: "#818589",
+                    }}
+                />
+            </Box>
+            
             <Spacer/>
             <Box //Box that has day and time
                 w="30%" 
@@ -82,249 +111,40 @@ const Hero = (props: Props) => {
               backgroundColor: `rgba(0, 0, 0, 0.10)`,
           },
         }}>
-        <Table 
-            maxWidth="100%" 
-            variant='striped' 
-            colorScheme="blackAlpha">
-            <Thead 
-                position="sticky" 
-                top={0} 
-                bg="#ECECEC">
-                <Tr>
-                    <Th>Student ID</Th>
-                    <Th>Student Name</Th>
-                    <Th>Week</Th>
-                    <Th>Date</Th>
-                    <Th>Attendance Percentage</Th>
-                    <Th>Attendance Status</Th>
-                    <Th>Unexcused Absences
-                    <IconButton 
-                        aria-label='Filter' 
-                        color="black" 
-                        size="sm"
-                        icon={<BsFilter />} 
-                        px={4} 
-                        fontSize='25px'
-                        variant={"ghost"}
-                        borderRadius={13}
-                        _hover={{
-                        bgColor: "#ECECEC",
-                        color: "#818589",
-                        }}
-                    />
-                    </Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-                <Tr>
-                    <Td>6616781</Td>
-                    <Td>Oscar Chu</Td>
-                    <Td>Week 10</Td>
-                    <Td>12/23/22</Td>
-                    <Td>66.67%</Td>
-                    <Td>Present</Td>
-                    <Td>1/3</Td>
-                </Tr>
-            </Tbody>
-        </Table>
+            <Box paddingLeft="2%" h="10%" display="flex" position='sticky' top={0} bg="#ECECEC" zIndex={1}>            
+                <Box w='10%' display="flex" alignItems="center">
+                    <Text>Student ID</Text>
+                </Box>
+                <Box w='13%' display="flex" alignItems="center">
+                    <Text>Student Name</Text>
+                </Box>
+                <Box w='7%' display="flex" alignItems="center">
+                    <Text>Week</Text>
+                </Box>
+                <Box w='8%' display="flex" alignItems="center">
+                    <Text>Date</Text>
+                </Box>
+                <Box w='15%' display="flex" alignItems="center">
+                    <Text>Attendance Percentage</Text>
+                </Box>
+                <Box w='15%' display="flex" alignItems="center">
+                    <Text>Attendance Status</Text>
+                </Box>
+                <Box w='15%' display="flex" alignItems="center">
+                    <Text>Unexcused Absences</Text>
+                </Box>
+            </Box>
+
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+            <Card/>
+
+
         </Box>
         <Box //Box under the table that has the weeks
             h="8%" 
