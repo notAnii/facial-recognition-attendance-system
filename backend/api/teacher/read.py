@@ -27,3 +27,14 @@ def all_classes(teacher_id):
         ''' % (time_format, time_format, teacher_id)
     result = db.fetch(sql)
     return result
+
+#get teacher information for dashboard
+def teacher_info(teacher_id):
+    db = DBHelper()
+    sql = '''
+        SELECT teacher_name, department, position
+        FROM Teacher
+        WHERE teacher_id = %s
+        ''' % teacher_id
+    result = db.fetch(sql)
+    return result

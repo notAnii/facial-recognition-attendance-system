@@ -66,6 +66,18 @@ def get_recent_session_attendance(subject_code, session_number, week):
     result = recent_session_attendance(subject_code, session_number, week)
     return jsonify(result), 200
 
+#get teacher information for dashboard
+@app.route("/api/v1/teacher-info", methods=["GET"])
+@jwt_required()
+def get_teacher_info():
+    result = teacher_info(get_jwt_identity())
+    return jsonify(result), 200
+
+@app.route("/api/test/teacher-info", methods=["GET"])
+#@jwt_required()
+def test_get_teacher_info():
+    result = teacher_info(123)
+    return jsonify(result), 200
 
 #starting the attendance 
 @app.route('/api/v1/startRecognition', methods = ['GET'])
@@ -74,6 +86,9 @@ def start_recognition():
     sayhi()
     return "Success", 200
 
+
+
+#non-necessities
 #get all students
 @app.route('/api/v1/students', methods = ['GET'])
 def get_all_students():
