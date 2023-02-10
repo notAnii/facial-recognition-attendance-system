@@ -11,6 +11,7 @@ import { Box, Container, Text, Stack, VStack, Avatar, HStack,
 import React, { useState } from 'react'
 import "@fontsource/open-sans"
 import Chart from './chart'
+import Card from './card'
 
 type Props = {}
 
@@ -25,10 +26,12 @@ const Hero = (props: Props) => {
     maxW={"7xl"}
     justifyContent={"center"}
     >
+      <VStack 
+      w = "100%"
+      >
       
-      <Box 
+      <Box //Box Top
       backgroundColor={"white"} 
-      h="85%" 
       w="100%"
       maxW="8xl"
       m={1}
@@ -38,175 +41,223 @@ const Hero = (props: Props) => {
       borderColor='black'
       overflowY="auto" 
       overflowX="auto" 
+      paddingBottom={5}
+      sx={{
+        '&::-webkit-scrollbar': {
+          backgroundColor: `rgba(0, 0, 0, 0)`,
+      },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: `rgba(0, 0, 0, 0)`,
+      },
+    }}
       >
-        
-      <Stack 
-      direction={'row'} 
-      spacing='4px' 
-      mt={5} 
-      mr={3}   
-      >
-      
-      <Box //Left Box
-      w="90vh"
-      ml={"2vh"}
-      >
-        <VStack 
-        paddingTop={35} 
-        spacing={73}
+        <Stack 
+        justifyContent="center" 
+        alignItems="center"
+        marginTop={2}
         >
-
-        <Box //inside left box
-         w="100%"
-         
-         >
-
         <HStack>
-          
-        <Box //AVATAR
-         marginLeft={23}
-         w="15%"
-         display={"flex"}
-         justifyContent="center"
-         paddingTop={4}
-         >
-
-        <Avatar
-              
-              size={'md'}
-              src={
-                "/avatar.jpg"}
-              css={{
-                border: '2px solid white',
-              }}
-            />
-        </Box>
-
-        <Box //Name and stuff
-         w="100%"
-         display={"flex"}
-         paddingTop={4}
-         overflowY="auto" 
-         overflowX="auto" 
-         >
-
-          <Table 
-          width={"100%"}
-          maxWidth={"50vh"}
-          variant="unstyled" 
-          size={"sm"}  
-          >
-            <Thead>
-              <Tr>
-                <Th 
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"bold"}
-                fontSize={"13px"}
-                >
-                  Mr. Ismail Hussein
-                </Th>
-                <Th        
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"light"}
-                >
-                  Professor
-                  </Th>
-              
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-              <Thead>
-                <Td 
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"bold"}
-                >
-                  Department
-                  </Td>
-                  </Thead>
-                <Td 
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"light"}
-                >
-                  FEIS</Td>
-                
-              </Tr>
-              <Tr>
-                <Td 
-                isNumeric 
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"bold"}
-                >
-                  Class times
-                  </Td>
-                <Td 
-                textAlign="left"
-                fontFamily={"Open Sans"}
-                fontWeight={"light"}
-                >
-                  08:30 - 17:00
-                  </Td>
-                
-               
-                
-              </Tr>
-            </Tbody>
-          </Table>
        
-          </Box>  
-          </HStack>            
-        </Box>
+        <Box //inside left box
+           w="100%"
+           maxW="xl"
+           >
+  
+          <VStack p={10}>
+            
+          <Box //AVATAR
+           display={"flex"}
+           justifyContent="center"
+           paddingTop={4}
+           >
+  
+          <Avatar
+                size={'2xl'}
+                src={
+                  "/avatar.jpg"}
+                css={{
+                  border: '2px solid white',
+                }}
+              />
+          </Box>
+  
+          <Box //Name and stuff
+           w="100%"
+           display={"flex"}
+           paddingTop={4}
+           overflowY="auto" 
+           overflowX="auto" 
+           paddingLeft={10}
+           >
+  
+            <Table 
+            width={"100%"}
+            maxWidth={"100vh"}
+            variant="unstyled" 
+            size={"sm"}  
+            >
+              <Thead>
+                <Tr>
+                  <Th 
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"bold"}
+                  fontSize={"13px"}
+                  >
+                    Mr. Ismail Hussein
+                  </Th>
+                  <Th        
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"light"}
+                  >
+                    Professor
+                    </Th>
+                
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                <Thead>
+                  <Td 
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"bold"}
+                  >
+                    Department
+                    </Td>
+                    </Thead>
+                  <Td 
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"light"}
+                  >
+                    FEIS</Td>
+                  
+                </Tr>
+                <Tr>
+                  <Td 
+                  isNumeric 
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"bold"}
+                  >
+                    Consultation hours
+                    </Td>
+                  <Td 
+                  textAlign="left"
+                  fontFamily={"Open Sans"}
+                  fontWeight={"light"}
+                  >
+                    08:30 - 17:00
+                    </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+         
+            </Box>  
+            </VStack>            
+          </Box>
 
-        <Box //Graph
-         w="100%"
-         >
-          <VStack 
-          paddingRight={90}
-         // paddingLeft={10}
-          >
-          <Text 
-          fontFamily={"Open Sans"}
-          paddingRight={56}
-          paddingBottom={25}
-          fontWeight="bold"
-          
-          >
-            2022 Class attendance
-            </Text>
+                
+            <VStack 
+            >
+            <Text 
+            fontFamily={"Open Sans"}
+            fontSize="23px"
+            paddingBottom={25}
+            fontWeight="bold"
+            textAlign={"center"}
+            
+            >
+              2022 Class attendance
+              </Text>
+  
+          <Chart/>
+          </VStack>
 
-        <Chart/>
-        </VStack>
-        </Box>
-        </VStack>
-        </Box>
+          </HStack>
+          </Stack>
+      </Box>
 
-      <Box //Right Box
+      <Box //Box Bottom
       backgroundColor={"white"} 
-      h="78vh" 
-      w="45vh"
+      w="100%"
+      maxW="8xl"
+      m={1}
       borderRadius={40}
       border='1px' 
       borderColor='black'
+      overflowY="auto" 
+      overflowX="auto" 
+      paddingTop={3}
+      sx={{
+        '&::-webkit-scrollbar': {
+          backgroundColor: `rgba(0, 0, 0, 0)`,
+      },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: `rgba(0, 0, 0, 0)`,
+      },
+    }}
       >
-        <Text
+        <Text 
+        paddingLeft={6}
         fontFamily={"Open Sans"}
-        paddingTop={17}
-        paddingLeft={{ base: 6, md: 7, lg: 8 }}
+        fontSize="20px"
         fontWeight="bold"
-        fontSize={{ base: '10px', md: '10px', lg: '14px' }}
-        >UPCOMING CLASSES</Text>
-      <VStack>
+        >Upcoming Classes
+        </Text>
+        
+        <HStack 
+        paddingLeft={5}
+        gap={5} 
+        overflowX={"scroll"}
+        w={"100%"}
+        maxW={"9xl"}
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '16px',
+            borderRadius: '6px',
+            backgroundColor: `rgba(0, 0, 0, 0.10)`,
+        },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: '6px',
+            backgroundColor: `rgba(0, 0, 0, 0.10)`,
+        },
+      }}>
+        
+
+        
+        <Card/>
+        
+        
+        <Card/>
+       
+       
+        <Card/>
+        
+        
+        <Card/>
+        
+        
+        <Card/>
+        
+      
+        <Card/>
+        
+        
+        <Card/>
+
+        <Card/>
+        <Card/>
+        
+        
+        </HStack>
+      
+      
+      </Box>
 
       </VStack>
-      </Box>
-      </Stack>
-
-      </Box>
       </Container>
       
       
