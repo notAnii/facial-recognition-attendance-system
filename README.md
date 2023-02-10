@@ -4,18 +4,18 @@
  
 * [10/02/2023] 
   * Teacher table
-    * Added 'department' attribute in 'teacher' table
-    * Added 'position' attribute in 'teacher' table
-   * Added /teacher-info route
-   * Added /upcoming-classes route
-   * Add orderby statements to:
-	     * /upcoming-classes by ASC order of start_time
-	     * /attendance by ASC order of student_name
-	     * /recent-attendance by DESC order of clock_in
-	     * /live-attendance by ASC order of student_name
-   * Added session number to the json reply in /classes
-   * Fixed on issue with /classes where start_time was returning end_time
-   * Added test routes for routes that required get_jwt_identity()
+    * Added `department` attribute in `teacher` table
+    * Added `position` attribute in `teacher` table
+  * Added `/teacher-info` route
+  * Added `/upcoming-classes` route
+  * Add orderby statements to:
+    * `/upcoming-classes` by ASC order of `start_time`
+    * `/attendance` by ASC order of `student_name`
+    * `/recent-attendance` by DESC order of `clock_in`
+    * `/live-attendance` by ASC order of `student_name`
+  * Added session number to the json reply in `/classes`
+  * Fixed on issue with `/classes` where `start_time` was returning `end_time`
+  * Added test routes for routes that required `get_jwt_identity()`
   
  
 * [05/02/2023]
