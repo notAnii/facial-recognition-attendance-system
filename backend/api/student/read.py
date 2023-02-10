@@ -70,7 +70,8 @@ def session_attendance(subject_code, session_number, status = None, week = None)
         sql += ''' AND Attendance.status = '%s' ''' % status
     if week != None:
         sql += ''' AND Attendance.week = 'Week %s' ''' % week
-        
+
+    sql += ''' ORDER BY Student.student_name ASC '''    
     result = db.fetch(sql)
     return result
 
@@ -84,6 +85,7 @@ def live_session_attendance(subject_code, session_number, week):
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
         Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s' AND Attendance.status = 'Present'
+        ORDER BY Student.student_name
         ''' % (time_format, subject_code, session_number, week)
         
     result = db.fetch(sql)
@@ -113,6 +115,7 @@ def recent_session_attendance(subject_code, session_number, week):
         ) AS att_per
         ON Student.student_id = att_per.student_id
         WHERE Attendance.status = 'Present' AND Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+        ORDER BY Attendance.clock_in DESC
         ''' % (time_format, subject_code, subject_code, session_number, week)
     
     result = db.fetch(sql)

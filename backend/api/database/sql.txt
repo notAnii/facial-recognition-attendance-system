@@ -118,7 +118,7 @@ INSERT INTO Attendance VALUES (2, 2, "Week 1", "2023-01-05", NULL, "Absent");
 INSERT INTO Attendance VALUES (3, 3, "Week 1", "2023-01-05", NULL, "Absent");
 INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-03", '13:30', "Present");
 INSERT INTO Attendance VALUES (5, 5, "Week 1", "2023-01-03", NULL, "Excused");
-INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", '13:30', "Present");
+INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", '13:31', "Present");
 INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-05", '13:30', "Present");
 INSERT INTO Attendance VALUES (8, 8, "Week 1", "2023-01-03", NULL, "Excused");
 INSERT INTO Attendance VALUES (9, 9, "Week 1", "2023-01-02", NULL, "Excused");
@@ -163,6 +163,7 @@ SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(time_format
 FROM Subject, Session
 WHERE Subject.subject_code = Session.subject_code AND teacher_id = 123
 
+#live-attendance
 SELECT Student.student_id, Student.student_name, Attendance.week, 
        DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status, ROUND(att_per.present_percentage,2) as attedance_percentage, att_per.unexcused_absences
 FROM Student
@@ -185,6 +186,7 @@ INNER JOIN
 ON Student.student_id = att_per.student_id
 WHERE Subject.subject_code = 'CSCI369' AND Session.session_number = 2;
 
+#recent-attendance
 SELECT Student.student_name, ROUND(att_per.present_percentage,2) as attedance_percentage, CAST(time_format(Attendance.clock_in,'%H:%i') AS Char) AS clock_in
 FROM Student
 INNER JOIN Enrolment ON Student.student_id = Enrolment.student_id
@@ -204,7 +206,9 @@ INNER JOIN
 ) AS att_per
 ON Student.student_id = att_per.student_id
 WHERE Attendance.status = 'Present' AND Subject.subject_code = 'CSCI369' AND Session.session_number = 1 AND Attendance.week = 'Week 2'
+ORDER BY Attendance.clock_in DESC
 
+#upcoming-classes
 SELECT Subject.subject_code, Subject.subject_name, Session.room, CONCAT(CAST(time_format(Session.start_time,'%H:%i') AS Char) , ' - ',CAST(time_format(Session.end_time,'%H:%i') AS Char)) AS timing, Session.session_number
 FROM Subject
 INNER JOIN Session ON Subject.subject_code = Session.subject_code
