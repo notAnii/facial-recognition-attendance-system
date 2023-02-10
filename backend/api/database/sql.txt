@@ -157,9 +157,9 @@ WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Att
 Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
 Subject.subject_code = 'CSCI369';
 
-SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(Session.start_time AS char) AS start_time , CAST(Session.end_time AS char) AS end_time, Session.room, Session.class_type
+SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(time_format(Session.end_time,'%H:%i') AS Char) AS start_time , CAST(time_format(Session.end_time,'%H:%i') AS Char) AS end_time, Session.room, Session.class_type
 FROM Subject, Session
-WHERE Subject.subject_code = Session.subject_code AND teacher_id = '123' 
+WHERE Subject.subject_code = Session.subject_code AND teacher_id = 123
 
 SELECT Student.student_id, Student.student_name, Attendance.week, 
        DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status, ROUND(att_per.present_percentage,2) as attedance_percentage, att_per.unexcused_absences

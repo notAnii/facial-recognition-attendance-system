@@ -23,7 +23,7 @@ def all_classes(teacher_id):
         CAST(time_format(Session.end_time,'%s') AS Char) AS start_time , CAST(time_format(Session.end_time,'%s') AS Char) AS end_time,
         Session.room, Session.class_type
         FROM Subject, Session
-        WHERE Subject.subject_code = Session.subject_code AND teacher_id = '%s' 
+        WHERE Subject.subject_code = Session.subject_code AND teacher_id = %s 
         ''' % (time_format, time_format, teacher_id)
     result = db.fetch(sql)
     return result
