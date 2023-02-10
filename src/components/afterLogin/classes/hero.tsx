@@ -11,9 +11,13 @@ import {
   Button,
   Spacer,
   IconButton,
-  Link,} from '@chakra-ui/react'
+  Link,
+  HStack,
+  Center,
+  VStack,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon,} from '@chakra-ui/icons'
 import { BsFilterLeft } from 'react-icons/bs';
+import Card from './card'
 //import Hero from "../startAttend/hero"
 
 type Props = {}
@@ -40,7 +44,7 @@ const Hero = (props: Props) => {
         border={"1px"} 
         borderColor={"Black"}>
         <Box //top bar of the box with the teachers name and filter button
-          h="15%" 
+          h="12%" 
           display="flex" 
           alignItems="center" 
           borderRadius={10}>
@@ -76,9 +80,7 @@ const Hero = (props: Props) => {
           </Box>
         </Box>
         <Box //Box that holds the table
-          h="77%" 
-          w="100%" 
-          maxHeight="100%" 
+          h="76%" 
           borderRadius={10} 
           overflowY="auto" 
           overflowX="auto" 
@@ -93,168 +95,58 @@ const Hero = (props: Props) => {
               backgroundColor: `rgba(0, 0, 0, 0.10)`,
           },
         }}>
-          <Table 
-            maxWidth="100%" 
-            variant='striped' 
-            colorScheme="blackAlpha">
-            <Thead>
-              <Tr>
-                <Th>Subject Code</Th>
-                <Th>Subject Name</Th>
-                <Th>Name</Th>
-                <Th>Start Time</Th>
-                <Th>End Time</Th>
-                <Th>Room</Th>
-                <Th>Class Type</Th>
-                <Th></Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>CSCI203</Td>
-                <Td >Data Structures and Algorithms</Td>
-                <Td>Thursday</Td>
-                <Td>13:30</Td>
-                <Td>15:30</Td>
-                <Td>5.11</Td>
-                <Td>Computer Lab</Td>
-                <Td>
-                <Link 
-                  href='/afterLogin/viewAttendance' 
-                  style={{ textDecoration: 'none' }} 
-                  _focus={{ boxShadow: 'none' }}>
-                  <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}>
-                      View Attendance
-                  </Button>
-                  </Link>
-                </Td>
-                <Td>
-                <Link 
-                  href='/afterLogin/attend' 
-                  style={{ textDecoration: 'none' }} 
-                  _focus={{ boxShadow: 'none' }}>
-                  <Button 
-                      px={4} 
-                      fontSize={'sm'} 
-                      rounded={'full'} 
-                      variant={"ghost"}
-                      bgColor={"#818589"}
-                      color="white"
-                      _hover={{
-                        bgColor: "white",
-                        color: "#818589",
-                      }}>
-                        Start Attendance
-                  </Button>
-                </Link>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>CSCI323</Td>
-                <Td>Modern Artificial Intelligence</Td>
-                <Td>Monday</Td>
-                <Td>15:30</Td>
-                <Td>17:30</Td>
-                <Td>4.42</Td>
-                <Td>Tutorial</Td>
-                <Td>
-                <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}
-                  >
-                    View Attendance
-                  </Button>
-                </Td>
-                <Td>
-                <Link 
-                  href='../startAttend/hero' 
-                  style={{ textDecoration: 'none' }} 
-                  _focus={{ boxShadow: 'none' }}>
-                  <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}>
-                      Start Attendance
-                  </Button>
-                </Link>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>CSCI325</Td>
-                <Td>Database Systems</Td>
-                <Td>Wednesday</Td>
-                <Td>10:30</Td>
-                <Td>14:30</Td>
-                <Td>3.42</Td>
-                <Td>Lecture</Td>
-                <Td>
-                  <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}>
-                      View Attendance
-                  </Button>
-                </Td>
-                <Td>
-                <Link 
-                  href='../startAttend/hero' 
-                  style={{ textDecoration: 'none' }} 
-                  _focus={{ boxShadow: 'none' }}>
-                  <Button 
-                    px={4} 
-                    fontSize={'sm'} 
-                    rounded={'full'} 
-                    variant={"ghost"}
-                    bgColor={"#818589"}
-                    color="white"
-                    _hover={{
-                      bgColor: "white",
-                      color: "#818589",
-                    }}>
-                      Start Attendance
-                  </Button>
-                </Link>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
+
+          <Box paddingLeft="2%" h="10%" display="flex" position='sticky' top={0} bg="#ECECEC" zIndex={1}>            
+            <Box w='10%' display="flex" alignItems="center">
+              <Text>Subject Code</Text>
+            </Box>
+            <Box w='15%' display="flex" alignItems="center">
+              <Text>Subject Name</Text>
+            </Box>
+            <Box w='7%' display="flex" alignItems="center">
+              <Text>Day</Text>
+            </Box>
+            <Box w='8%' display="flex" alignItems="center">
+              <Text>Start Time</Text>
+            </Box>
+            <Box w='8%' display="flex" alignItems="center">
+              <Text>End Time</Text>
+            </Box>
+            <Box w='5%' display="flex" alignItems="center">
+              <Text>Room</Text>
+            </Box>
+            <Box w='10%' display="flex" alignItems="center">
+              <Text>Class Type</Text>
+            </Box>
+            <Box w='13%' display="flex" alignItems="center"/>  
+            <Box w='13%' display="flex" alignItems="center"/>
+          </Box>
+
+          
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          
+                      
         </Box>
         <Box //Box under the table that has the weeks
-            h="8%" 
-            w="15%" 
+            h="12%" 
+            w="14%" 
             display="flex" 
             alignItems="center"
             justifyContent="center">
