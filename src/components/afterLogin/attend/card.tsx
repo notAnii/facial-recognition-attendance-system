@@ -13,9 +13,9 @@ import {
   
   export default function SocialProfileWithImage() {
     return (
+
       <Center py={3}>
-        <Box
-          
+        <Box 
           w={"150px"}
           bg={useColorModeValue('white', 'gray.800')}
           boxShadow={'2xl'}
