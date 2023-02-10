@@ -25,6 +25,8 @@ CREATE TABLE `Subject` (
 CREATE TABLE `Teacher` (
 	`teacher_id` INT,
 	`teacher_name` VARCHAR(100),
+	`department` VARCHAR(20),
+	`position` VARCHAR(50),
 	PRIMARY KEY (`teacher_id`)
 );
 
@@ -84,9 +86,9 @@ INSERT INTO Subject VALUES ('CSCI369', 'Ethical Hacking', 'Teaches how to hack.'
 INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
 
 #inserting teachers
-INSERT INTO Teacher VALUES (123, 'Not Sloy');
-INSERT INTO Teacher VALUES (456, 'Mai');
-INSERT INTO Teacher VALUES (789, 'Farhad');
+INSERT INTO Teacher VALUES (123, 'Not Sloy', 'FEIS', 'Tutor');
+INSERT INTO Teacher VALUES (456, 'Mai', 'FEIS', 'Tutor');
+INSERT INTO Teacher VALUES (789, 'Farhad', 'FEIS', 'Lecturer');
 
 #inserting sessions
 INSERT INTO Session VALUES (1, 'CSCI369', 1, 'Monday', '13:30', '16:30', '5.11', "Lecture", 456);
@@ -155,9 +157,9 @@ WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Att
 Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
 Subject.subject_code = 'CSCI369';
 
-SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(Session.start_time AS char) AS start_time , CAST(Session.end_time AS char) AS end_time, Session.room, Session.class_type
+SELECT Subject.subject_code, Subject.subject_name, Session.day, CAST(time_format(Session.end_time,'%H:%i') AS Char) AS start_time , CAST(time_format(Session.end_time,'%H:%i') AS Char) AS end_time, Session.room, Session.class_type
 FROM Subject, Session
-WHERE Subject.subject_code = Session.subject_code AND teacher_id = '123' 
+WHERE Subject.subject_code = Session.subject_code AND teacher_id = 123
 
 SELECT Student.student_id, Student.student_name, Attendance.week, 
        DATE_FORMAT(Attendance.date, "%d-%m-%y") as date, Attendance.status, ROUND(att_per.present_percentage,2) as attedance_percentage, att_per.unexcused_absences
