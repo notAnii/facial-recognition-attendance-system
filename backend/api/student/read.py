@@ -113,6 +113,7 @@ def recent_session_attendance(subject_code, session_number, week):
         ) AS att_per
         ON Student.student_id = att_per.student_id
         WHERE Attendance.status = 'Present' AND Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+        ORDER BY Attendance.clock_in DESC
         ''' % (time_format, subject_code, subject_code, session_number, week)
     
     result = db.fetch(sql)
