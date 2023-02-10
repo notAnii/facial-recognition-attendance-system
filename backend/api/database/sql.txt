@@ -96,6 +96,8 @@ INSERT INTO Session VALUES (2, 'CSIT321', 1, 'Thursday', '13:30', '15:30', '4.42
 INSERT INTO Session VALUES (3, 'CSIT111', 1, 'Tuesday', '13:30', '15:30', '5.11', "Tutorial", 123);
 INSERT INTO Session VALUES (4, 'MATH221', 1, 'Tuesday', '09:30', '10:30', '3.43', "Lab", 123);
 INSERT INTO Session VALUES (5, 'CSCI369', 2, 'Sunday', '09:30', '11:30', '4.21', "Lab", 456);
+INSERT INTO Session VALUES (6, 'MATH221', 2, 'Friday', '09:30', '10:30', '3.43', "Lab", 123);
+INSERT INTO Session VALUES (7, 'MATH221', 3, 'Friday', '14:30', '16:30', '3.43', "Lab", 123);
 
 #inserting enrolments
 INSERT INTO Enrolment VALUES (1, 6633249, 1);
@@ -202,3 +204,10 @@ INNER JOIN
 ) AS att_per
 ON Student.student_id = att_per.student_id
 WHERE Attendance.status = 'Present' AND Subject.subject_code = 'CSCI369' AND Session.session_number = 1 AND Attendance.week = 'Week 2'
+
+SELECT Subject.subject_code, Subject.subject_name, Session.room, CONCAT(CAST(time_format(Session.start_time,'%H:%i') AS Char) , ' - ',CAST(time_format(Session.end_time,'%H:%i') AS Char)) AS timing, Session.session_number
+FROM Subject
+INNER JOIN Session ON Subject.subject_code = Session.subject_code
+INNER JOIN Teacher ON Teacher.teacher_id = Session.teacher_id
+WHERE Session.day = DAYNAME(CURDATE()) AND Teacher.teacher_id = 123
+ORDER BY Session.start_time ASC;

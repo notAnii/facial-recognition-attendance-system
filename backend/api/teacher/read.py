@@ -38,3 +38,18 @@ def teacher_info(teacher_id):
         ''' % teacher_id
     result = db.fetch(sql)
     return result
+
+#get upcoming classes for a teacher in dashboard
+def upcoming_classes(teacher_id):
+    db = DBHelper()
+    time_format = str("%H:%i")
+    sql = '''
+        SELECT Subject.subject_code, Subject.subject_name, Session.room, CONCAT(CAST(time_format(Session.start_time,'%s') AS Char) , ' - ',CAST(time_format(Session.end_time,'%s') AS Char)) AS timing, Session.session_number
+        FROM Subject
+        INNER JOIN Session ON Subject.subject_code = Session.subject_code
+        INNER JOIN Teacher ON Teacher.teacher_id = Session.teacher_id
+        WHERE Session.day = DAYNAME(CURDATE()) AND Teacher.teacher_id = %s
+        ORDER BY Session.start_time ASC
+        ''' % (time_format, time_format, teacher_id)
+    result = db.fetch(sql)
+    return result

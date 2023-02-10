@@ -73,10 +73,25 @@ def get_teacher_info():
     result = teacher_info(get_jwt_identity())
     return jsonify(result), 200
 
+#tester
 @app.route("/api/test/teacher-info", methods=["GET"])
 #@jwt_required()
 def test_get_teacher_info():
     result = teacher_info(123)
+    return jsonify(result), 200
+
+#get upcoming classes for a teacher in dashboard
+@app.route("/api/v1/upcoming-classes", methods=["GET"])
+@jwt_required()
+def get_upcoming_classes():
+    result = upcoming_classes(get_jwt_identity())
+    return jsonify(result), 200
+
+#tester
+@app.route("/api/test/upcoming-classes", methods=["GET"])
+#@jwt_required()
+def test_get_upcoming_classes():
+    result = upcoming_classes(123)
     return jsonify(result), 200
 
 #starting the attendance 
