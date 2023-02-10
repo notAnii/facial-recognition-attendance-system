@@ -43,6 +43,13 @@ def get_classes():
     result = all_classes(get_jwt_identity())
     return jsonify(result), 200
 
+#test
+@app.route("/api/test/classes", methods=["GET"])
+#@jwt_required()
+def test_get_classes():
+    result = all_classes(123)
+    return jsonify(result), 200
+
 #get attendance list for a specific session with additional query
 @app.route("/api/v1/attendance/<subject_code>/<session_number>", methods=["GET"])
 @jwt_required()
