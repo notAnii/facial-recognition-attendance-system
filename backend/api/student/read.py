@@ -85,6 +85,7 @@ def live_session_attendance(subject_code, session_number, week):
         WHERE Student.student_id = Enrolment.student_id AND Enrolment.enrolment_id = Attendance.enrolment_id AND 
         Session.session_id = Enrolment.session_id AND Subject.subject_code = Session.subject_code AND
         Subject.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s' AND Attendance.status = 'Present'
+        ORDER BY Student.student_name ASC
         ''' % (time_format, subject_code, session_number, week)
         
     result = db.fetch(sql)
