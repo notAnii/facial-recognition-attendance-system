@@ -3,9 +3,10 @@ from test import sayhi
 from student.read import *
 from teacher.read import *
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_cors import CORS
 from datetime import timedelta
 app = Flask(__name__)
-
+CORS(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!

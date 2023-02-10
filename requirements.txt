@@ -1,3 +1,4 @@
 flask==2.2.2
 pymysql==1.0.2
 flask-jwt-extended== 4.4.4
+flask-cors==3.0.10
