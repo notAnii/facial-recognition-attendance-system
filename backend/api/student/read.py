@@ -70,7 +70,8 @@ def session_attendance(subject_code, session_number, status = None, week = None)
         sql += ''' AND Attendance.status = '%s' ''' % status
     if week != None:
         sql += ''' AND Attendance.week = 'Week %s' ''' % week
-        
+
+    sql += ''' ORDER BY Student.student_name ASC '''    
     result = db.fetch(sql)
     return result
 
