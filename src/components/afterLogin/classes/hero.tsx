@@ -148,7 +148,7 @@ const Hero = (props: Props) => {
 
           
           <>
-            {createBoxes(25)}
+            {createBoxes(1)}
           </>
           
                       
