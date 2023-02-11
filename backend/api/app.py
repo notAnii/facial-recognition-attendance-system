@@ -44,7 +44,7 @@ def get_classes():
     result = all_classes(get_jwt_identity())
     return jsonify(result), 200
 
-#test
+#tester
 @app.route("/api/test/classes", methods=["GET"])
 #@jwt_required()
 def test_get_classes():
@@ -60,6 +60,14 @@ def get_session_attendance(subject_code, session_number):
     result = session_attendance(subject_code, session_number, status, week)
     return jsonify(result), 200
 
+#tester
+@app.route("/api/test/attendance/<subject_code>/<session_number>", methods=["GET"])
+def test_get_session_attendance(subject_code, session_number):
+    status = request.args.get('status')
+    week = request.args.get('week')
+    result = session_attendance(subject_code, session_number, status, week)
+    return jsonify(result), 200
+
 #get live attendance list for a specific session (list displayed while attendance recording is active)
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
@@ -67,9 +75,21 @@ def get_live_session_attendance(subject_code, session_number, week):
     result = live_session_attendance(subject_code, session_number, week)
     return jsonify(result), 200
 
+#tester
+@app.route("/api/test/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
+def test_get_live_session_attendance(subject_code, session_number, week):
+    result = live_session_attendance(subject_code, session_number, week)
+    return jsonify(result), 200
+
 #get recent attendance list for a specific session (sorted by time)
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
+def get_recent_session_attendance(subject_code, session_number, week):
+    result = recent_session_attendance(subject_code, session_number, week)
+    return jsonify(result), 200
+
+#tester
+@app.route("/api/test/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 def get_recent_session_attendance(subject_code, session_number, week):
     result = recent_session_attendance(subject_code, session_number, week)
     return jsonify(result), 200
@@ -103,7 +123,7 @@ def test_get_upcoming_classes():
     return jsonify(result), 200
 
 #starting the attendance 
-@app.route('/api/v1/startRecognition', methods = ['GET'])
+@app.route('/api/v1/start-recognition', methods = ['GET'])
 @jwt_required()
 def start_recognition():
     sayhi()
