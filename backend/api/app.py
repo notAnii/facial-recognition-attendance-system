@@ -90,7 +90,7 @@ def get_recent_session_attendance(subject_code, session_number, week):
 
 #tester
 @app.route("/api/test/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
-def get_recent_session_attendance(subject_code, session_number, week):
+def test_get_recent_session_attendance(subject_code, session_number, week):
     result = recent_session_attendance(subject_code, session_number, week)
     return jsonify(result), 200
 
