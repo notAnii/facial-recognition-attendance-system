@@ -48,6 +48,7 @@ def get_classes():
         result = all_classes(get_jwt_identity())
     except Exception as e:
         return error_response("An error occurred while retrieving classes", 500)
+
     if not result:
         return error_response("No classes found for the teacher", 204)
         
@@ -120,7 +121,6 @@ def test_get_session_attendance(subject_code, session_number):
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_live_session_attendance(subject_code, session_number, week):
-
     if int(week) not in ALLOWED_WEEK:
         return error_response(f"Invalid week: {week}", 400)
 
@@ -144,7 +144,6 @@ def test_get_live_session_attendance(subject_code, session_number, week):
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_recent_session_attendance(subject_code, session_number, week):
-
     if int(week) not in ALLOWED_WEEK:
         return error_response(f"Invalid week: {week}", 400)
 
@@ -168,7 +167,14 @@ def test_get_recent_session_attendance(subject_code, session_number, week):
 @app.route("/api/v1/teacher-info", methods=["GET"])
 @jwt_required()
 def get_teacher_info():
-    result = teacher_info(get_jwt_identity())
+    try:
+        result = teacher_info(get_jwt_identity())
+    except Exception as e:
+        return error_response("An error occurred while retrieving teacher information ", 500)
+    
+    if not result:
+        return error_response("No teacher information data found", 204)
+    
     return jsonify(result), 200
 
 #tester
