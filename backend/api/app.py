@@ -122,15 +122,15 @@ def test_get_session_attendance(subject_code, session_number):
 def get_live_session_attendance(subject_code, session_number, week):
 
     if int(week) not in ALLOWED_WEEK:
-        return error_response(f"Invalid week: {week}",400)
+        return error_response(f"Invalid week: {week}", 400)
 
     try:
         result = live_session_attendance(subject_code, session_number, week)
     except Exception as e:
-        return error_response("An error occurred while retrieving live attendance ",500)
+        return error_response("An error occurred while retrieving live attendance ", 500)
     
     if not result:
-        return error_response("No live attendance data found",204)
+        return error_response("No live attendance data found", 204)
 
     return jsonify(result), 200
 
@@ -144,7 +144,18 @@ def test_get_live_session_attendance(subject_code, session_number, week):
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_recent_session_attendance(subject_code, session_number, week):
-    result = recent_session_attendance(subject_code, session_number, week)
+
+    if int(week) not in ALLOWED_WEEK:
+        return error_response(f"Invalid week: {week}", 400)
+
+    try:
+        result = recent_session_attendance(subject_code, session_number, week)
+    except Exception as e:
+        return error_response("An error occurred while retrieving recent attendance ", 500)
+    
+    if not result:
+        return error_response("No recent attendance data found", 204)
+
     return jsonify(result), 200
 
 #tester
