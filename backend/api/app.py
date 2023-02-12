@@ -60,6 +60,29 @@ def test_get_classes():
     result = all_classes(123)
     return jsonify(result), 200
 
+#get attendance list for a specific session with additional query v2
+@app.route("/api/v2/attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
+@jwt_required()
+def get_session_attendance_v2(subject_code, session_number, week):
+    status = request.args.get('status')
+    
+    if status is not None:
+        if status not in ALLOWED_STATUS:
+            return error_response(f"Invalid status: {status}", 400)
+ 
+    if int(week) not in ALLOWED_WEEK:
+        return error_response(f"Invalid week: {week}", 400)
+    
+    try:
+        result = session_attendance(subject_code, session_number, status, week)
+    except Exception as e:
+        return error_response("An error occurred while retrieving attendance", 500)
+    
+    if not result:
+        return error_response("No attendance data found", 204)
+
+    return jsonify(result), 200
+
 #get attendance list for a specific session with additional query
 @app.route("/api/v1/attendance/<subject_code>/<session_number>", methods=["GET"])
 @jwt_required()
