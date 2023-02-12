@@ -188,7 +188,14 @@ def test_get_teacher_info():
 @app.route("/api/v1/upcoming-classes", methods=["GET"])
 @jwt_required()
 def get_upcoming_classes():
-    result = upcoming_classes(get_jwt_identity())
+    try:
+        result = upcoming_classes(get_jwt_identity())
+    except Exception as e:
+        return error_response("An error occurred while retrieving upcoming classes", 500)
+    
+    if not result:
+        return error_response("No upcoming classes data found", 204)
+
     return jsonify(result), 200
 
 #tester
