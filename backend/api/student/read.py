@@ -1,5 +1,5 @@
 from database.dbhelper import DBHelper
-from util.util import getTime
+from utility.utils import getTime
 
 #get all students
 def all_students():
