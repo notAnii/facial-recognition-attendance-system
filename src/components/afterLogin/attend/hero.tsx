@@ -18,7 +18,7 @@ import { Box,
   TableContainer, } from '@chakra-ui/react'
  
 import "@fontsource/open-sans"
-import Card from './card'
+import Card from '../attend/card'
 import Webcam from "react-webcam";
 
 type Props = {}
@@ -29,9 +29,9 @@ const Hero: React.FC = () => {
   //Id, title, and userId (should be written exactly like the json file)
 
   const [data, setData] = useState<Array<{ 
-    id: number; 
-    title: string; 
-    userId: number 
+    session_number: number; 
+    subject_name: string; 
+    room: string 
   }>>([]);
 
   //make a GET request to the https://jsonplaceholder.typicode.com/posts API endpoint 
@@ -39,9 +39,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(
-        'https://jsonplaceholder.typicode.com/posts',
-      );
+      const result = await axios.get('http://127.0.0.1:5000/api/test/classes');
 
       setData(result.data);
     };
@@ -111,25 +109,7 @@ const Hero: React.FC = () => {
         <Card/>
         
         
-        <Card/>
-       
-       
-        <Card/>
         
-        
-        <Card/>
-        
-        
-        <Card/>
-        
-      
-        <Card/>
-        
-        
-        <Card/>
-
-        <Card/>
-        <Card/>
         
         
         </HStack>
@@ -197,10 +177,10 @@ const Hero: React.FC = () => {
     <Tbody //DATA INSIDE THE TABLE (it will auto increment)
     >
        {data.map((item) => (
-      <Tr key={item.id}>
-        <Td>{item.id}</Td>
-        <Td>{item.userId}</Td>
-        <Td>{item.title}</Td>
+      <Tr key={item.session_number}>
+        <Td>{item.session_number}</Td>
+        <Td>{item.subject_name}</Td>
+        <Td>{item.room}</Td>
         <Td isNumeric>13:31</Td>
       </Tr>
       ))}
