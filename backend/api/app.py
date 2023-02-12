@@ -66,14 +66,21 @@ def test_get_classes():
 @jwt_required()
 def get_session_attendance_v2(subject_code, session_number, week):
     status = request.args.get('status')
+    try:
+        session_number = int(session_number)
+    except ValueError:
+        return error_response("Invalid session number format", 400)
     
     if status is not None:
         if status not in ALLOWED_STATUS:
             return error_response(f"Invalid status: {status}", 400)
  
-    if int(week) not in ALLOWED_WEEK:
-        return error_response(f"Invalid week: {week}", 400)
-    
+    try:
+        if int(week) not in ALLOWED_WEEK:
+            return error_response(f"Invalid week: {week}", 400)
+    except ValueError:
+        return error_response("Invalid week format", 400)
+        
     try:
         result = session_attendance(subject_code, session_number, status, week)
     except Exception as e:
@@ -90,15 +97,23 @@ def get_session_attendance_v2(subject_code, session_number, week):
 def get_session_attendance(subject_code, session_number):
     status = request.args.get('status')
     week = request.args.get('week')
+
+    try:
+        session_number = int(session_number)
+    except ValueError:
+        return error_response("Invalid session number format", 400)
     
     if status is not None:
         if status not in ALLOWED_STATUS:
             return error_response(f"Invalid status: {status}", 400)
 
-    if week is not None:    
-        if int(week) not in ALLOWED_WEEK:
-            return error_response(f"Invalid week: {week}", 400)
-    
+    try:
+        if week is not None:    
+            if int(week) not in ALLOWED_WEEK:
+                return error_response(f"Invalid week: {week}", 400)
+    except Exception as e:
+        return error_response("Invalid week format", 400)
+
     try:
         result = session_attendance(subject_code, session_number, status, week)
     except Exception as e:
@@ -121,8 +136,16 @@ def test_get_session_attendance(subject_code, session_number):
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_live_session_attendance(subject_code, session_number, week):
-    if int(week) not in ALLOWED_WEEK:
-        return error_response(f"Invalid week: {week}", 400)
+    try:
+        session_number = int(session_number)
+    except ValueError:
+        return error_response("Invalid session number format", 400)
+ 
+    try:
+        if int(week) not in ALLOWED_WEEK:
+            return error_response(f"Invalid week: {week}", 400)
+    except ValueError:
+        return error_response("Invalid week format", 400)
 
     try:
         result = live_session_attendance(subject_code, session_number, week)
@@ -144,8 +167,16 @@ def test_get_live_session_attendance(subject_code, session_number, week):
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_recent_session_attendance(subject_code, session_number, week):
-    if int(week) not in ALLOWED_WEEK:
-        return error_response(f"Invalid week: {week}", 400)
+    try:
+        session_number = int(session_number)
+    except ValueError:
+        return error_response("Invalid session number format", 400)
+ 
+    try:
+        if int(week) not in ALLOWED_WEEK:
+            return error_response(f"Invalid week: {week}", 400)
+    except ValueError:
+        return error_response("Invalid week format", 400)
 
     try:
         result = recent_session_attendance(subject_code, session_number, week)
