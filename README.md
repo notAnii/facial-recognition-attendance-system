@@ -1,6 +1,20 @@
 # Facial Recognition Attendance System
 
  ## Changelog
+* [13/02/2023]
+  * Removed `#non-necessities` from application for better readability
+  * Removed `test.py` from repository to eliminate confusion 
+  * Made a function to log and return errors
+  * Added error loggers to endpoints
+ 
+* [12/02/2023]
+  * Added v2 for `/attendance` where `week` is specified in the route instead of a parameter
+  * Handled errors for all routes
+  * Added new file to handle errors and response codes
+  * Refactor `util` to `utility` and `util.py` to `utils.py`
+ 
+* [11/02/2023]
+  * Added test routes for `/attendance`, `/live-attendance`, `/recent-attendance`
  
 * [10/02/2023] 
   * Teacher table
@@ -88,12 +102,15 @@
     * ~~Add Department~~
     * Add passwords
   
-  * ~~Make a route for upcoming classes~~
+  * Make a route for upcoming classes
+    * ~~Make endpoint that queries to the current day~~
     * also uses /start-attendance route but we currently have no way of specifying the week on the dashboard
   
   * ~~Make route for the teacher information on the dashboard~~
   
   * Make the combination of session number and subject code unique
+  
+  * ~~Error handling~~ 
   
 * Backend/Facial-Recognition
   * Find reasonable size for dataset or decide who's system to running the tranining file in
