@@ -6,6 +6,9 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
+import logging
+from logging.handlers import RotatingFileHandler
+
 app = Flask(__name__)
 CORS(app)
 
@@ -14,6 +17,14 @@ app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
 jwt = JWTManager(app)
+
+# Setup error loggers
+handler = RotatingFileHandler('error.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
+
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -47,6 +58,7 @@ def get_classes():
     try:
         result = all_classes(get_jwt_identity())
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving classes", 500)
 
     if not result:
@@ -70,20 +82,21 @@ def get_session_attendance_v2(subject_code, session_number, week):
         session_number = int(session_number)
     except ValueError:
         return error_response("Invalid session number format", 400)
-    
-    if status is not None:
-        if status not in ALLOWED_STATUS:
-            return error_response(f"Invalid status: {status}", 400)
- 
+
     try:
         if int(week) not in ALLOWED_WEEK:
             return error_response(f"Invalid week: {week}", 400)
     except ValueError:
         return error_response("Invalid week format", 400)
+    
+    if status is not None:
+        if status not in ALLOWED_STATUS:
+            return error_response(f"Invalid status: {status}", 400)
         
     try:
         result = session_attendance(subject_code, session_number, status, week)
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving attendance", 500)
     
     if not result:
@@ -103,20 +116,21 @@ def get_session_attendance(subject_code, session_number):
     except ValueError:
         return error_response("Invalid session number format", 400)
     
+    try:
+        if week is not None:    
+            if int(week) not in ALLOWED_WEEK:
+                return error_response(f"Invalid week: {week}", 400)
+    except ValueError:
+        return error_response("Invalid week format", 400)
+
     if status is not None:
         if status not in ALLOWED_STATUS:
             return error_response(f"Invalid status: {status}", 400)
 
     try:
-        if week is not None:    
-            if int(week) not in ALLOWED_WEEK:
-                return error_response(f"Invalid week: {week}", 400)
-    except Exception as e:
-        return error_response("Invalid week format", 400)
-
-    try:
         result = session_attendance(subject_code, session_number, status, week)
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving attendance", 500)
     
     if not result:
@@ -150,6 +164,7 @@ def get_live_session_attendance(subject_code, session_number, week):
     try:
         result = live_session_attendance(subject_code, session_number, week)
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving live attendance ", 500)
     
     if not result:
@@ -181,6 +196,7 @@ def get_recent_session_attendance(subject_code, session_number, week):
     try:
         result = recent_session_attendance(subject_code, session_number, week)
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving recent attendance ", 500)
     
     if not result:
@@ -201,6 +217,7 @@ def get_teacher_info():
     try:
         result = teacher_info(get_jwt_identity())
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving teacher information ", 500)
     
     if not result:
@@ -222,6 +239,7 @@ def get_upcoming_classes():
     try:
         result = upcoming_classes(get_jwt_identity())
     except Exception as e:
+        app.logger.error(e)
         return error_response("An error occurred while retrieving upcoming classes", 500)
     
     if not result:
