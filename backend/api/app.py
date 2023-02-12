@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
-from test import sayhi
-from student.read import *
-from teacher.read import *
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
+from student.read import *
+from teacher.read import *
+
 app = Flask(__name__)
 CORS(app)
 
@@ -14,20 +14,9 @@ app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
 jwt = JWTManager(app)
+
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-#login
-# @app.route('/api/login', methods = ['POST'])
-# def login():
-#     try:
-#     # placeholder
-#         teacher_id = request.json['teacher_id']
-#         email = request.json['email']
-#         password = request.json['password']
-#         return teacher_id, 200
-#     except Exception as e:
-#         return e, 404
 
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
@@ -47,10 +36,10 @@ def get_classes():
     try:
         result = all_classes(get_jwt_identity())
     except Exception as e:
-        return error_response("An error occurred while retrieving classes", 500)
-
+        return log_and_return_error("An unexpected error occurred while retrieving classes", 500, f"Error occurred while retrieving classes. Exception: {e}")
+    
     if not result:
-        return error_response("No classes found for the teacher", 204)
+        return log_and_return_error("No classes found for the teacher", 204, f"No classes found for the teacher: {get_jwt_identity()}")
         
     return jsonify(result), 200
 
@@ -66,28 +55,35 @@ def test_get_classes():
 @jwt_required()
 def get_session_attendance_v2(subject_code, session_number, week):
     status = request.args.get('status')
+    #validation checks on session number
     try:
         session_number = int(session_number)
     except ValueError:
-        return error_response("Invalid session number format", 400)
-    
-    if status is not None:
-        if status not in ALLOWED_STATUS:
-            return error_response(f"Invalid status: {status}", 400)
+        return log_and_return_error("Invalid session number format", 400, f"Invalid session number format: {session_number}")
  
+    #validation checks on week
     try:
         if int(week) not in ALLOWED_WEEK:
-            return error_response(f"Invalid week: {week}", 400)
+            return log_and_return_error("Invalid week", 400, f"Invalid week: {week}")
     except ValueError:
-        return error_response("Invalid week format", 400)
-        
+        return log_and_return_error("Invalid week format", 400, f"Invalid week format: {week}")
+    
+    # validation checks on status
+    if status is not None:
+        if status not in ALLOWED_STATUS:
+            return log_and_return_error("Invalid status", 400, f"Invalid status: {status}")
+
     try:
         result = session_attendance(subject_code, session_number, status, week)
+    except ValueError as e:
+        return log_and_return_error("Invalid data received while retrieving attendance", 400, f"Error while retrieving attendance. Exception: {e}")
+    except KeyError as e:
+        return log_and_return_error("Data not found while retrieving attendance", 404, f"Error while retrieving attendance. Exception: {e}")
     except Exception as e:
-        return error_response("An error occurred while retrieving attendance", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving attendance", 500, f"Error while retrieving attendance. Exception: {e}")
     
     if not result:
-        return error_response("No attendance data found", 204)
+        return log_and_return_error("No attendance data found", 204, f"No attendance data found for subject_code: {subject_code}, session_number: {session_number}, week: {week}, status: {status}")
 
     return jsonify(result), 200
 
@@ -98,29 +94,37 @@ def get_session_attendance(subject_code, session_number):
     status = request.args.get('status')
     week = request.args.get('week')
 
+    #validation checks on session number
     try:
         session_number = int(session_number)
     except ValueError:
-        return error_response("Invalid session number format", 400)
+        return log_and_return_error("Invalid session number format", 400, f"Invalid session number format: {session_number}")
     
+    #validation checks on week
+    try:
+        if week is not None:  
+            if int(week) not in ALLOWED_WEEK:
+                return log_and_return_error("Invalid week", 400, f"Invalid week: {week}")
+    except ValueError:
+        return log_and_return_error("Invalid week format", 400, f"Invalid week format: {week}")
+
+    # validation checks on status
     if status is not None:
         if status not in ALLOWED_STATUS:
-            return error_response(f"Invalid status: {status}", 400)
-
-    try:
-        if week is not None:    
-            if int(week) not in ALLOWED_WEEK:
-                return error_response(f"Invalid week: {week}", 400)
-    except Exception as e:
-        return error_response("Invalid week format", 400)
+            return log_and_return_error("Invalid status", 400, f"Invalid status: {status}")
 
     try:
         result = session_attendance(subject_code, session_number, status, week)
+    except ValueError as e:
+        return log_and_return_error("Invalid data received while retrieving attendance", 400, f"Error while retrieving attendance. Exception: {e}")
+    except KeyError as e:
+        return log_and_return_error("Data not found while retrieving attendance", 404, f"Error while retrieving attendance. Exception: {e}")
     except Exception as e:
-        return error_response("An error occurred while retrieving attendance", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving attendance", 500, f"Error while retrieving attendance. Exception: {e}")
+        
     
     if not result:
-        return error_response("No attendance data found", 204)
+        return log_and_return_error("No attendance data found", 204, f"No attendance data found for subject_code: {subject_code}, session_number: {session_number}, week: {week}, status: {status}")
 
     return jsonify(result), 200
 
@@ -136,24 +140,30 @@ def test_get_session_attendance(subject_code, session_number):
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_live_session_attendance(subject_code, session_number, week):
+    #validation checks on session number
     try:
         session_number = int(session_number)
     except ValueError:
-        return error_response("Invalid session number format", 400)
+        return log_and_return_error("Invalid session number format", 400, f"Invalid session number format: {session_number}")
  
+    #validation checks on week
     try:
         if int(week) not in ALLOWED_WEEK:
-            return error_response(f"Invalid week: {week}", 400)
+            return log_and_return_error("Invalid week", 400, f"Invalid week: {week}")
     except ValueError:
-        return error_response("Invalid week format", 400)
+        return log_and_return_error("Invalid week format", 400, f"Invalid week format: {week}")
 
     try:
         result = live_session_attendance(subject_code, session_number, week)
+    except ValueError as e:
+        return log_and_return_error("Invalid data received while retrieving live attendance", 400, f"Error while retrieving live attendance. Exception: {e}")
+    except KeyError as e:
+        return log_and_return_error("Data not found while retrieving live attendance", 404, f"Error while retrieving live attendance. Exception: {e}")
     except Exception as e:
-        return error_response("An error occurred while retrieving live attendance ", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving live attendance", 500, f"Error while retrieving live attendance. Exception: {e}")
     
     if not result:
-        return error_response("No live attendance data found", 204)
+        return log_and_return_error("No live attendance data found", 204, f"No live attendance data found for subject_code: {subject_code}, session_number: {session_number}, week: {week}")
 
     return jsonify(result), 200
 
@@ -167,24 +177,30 @@ def test_get_live_session_attendance(subject_code, session_number, week):
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_recent_session_attendance(subject_code, session_number, week):
+    #validation checks on session number
     try:
         session_number = int(session_number)
     except ValueError:
-        return error_response("Invalid session number format", 400)
+        return log_and_return_error("Invalid session number format", 400, f"Invalid session number format: {session_number}")
  
+    #validation checks on week
     try:
         if int(week) not in ALLOWED_WEEK:
-            return error_response(f"Invalid week: {week}", 400)
+            return log_and_return_error("Invalid week", 400, f"Invalid week: {week}")
     except ValueError:
-        return error_response("Invalid week format", 400)
+        return log_and_return_error("Invalid week format", 400, f"Invalid week format: {week}")
 
     try:
         result = recent_session_attendance(subject_code, session_number, week)
+    except ValueError as e:
+        return log_and_return_error("Invalid data received while retrieving recent attendance", 400, f"Error while retrieving recent attendance. Exception: {e}")
+    except KeyError as e:
+        return log_and_return_error("Data not found while retrieving recent attendance", 404, f"Error while retrieving recent attendance. Exception: {e}")
     except Exception as e:
-        return error_response("An error occurred while retrieving recent attendance ", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving recent attendance", 500, f"Error while retrieving recent attendance. Exception: {e}")
     
     if not result:
-        return error_response("No recent attendance data found", 204)
+        return log_and_return_error("No recent attendance data found", 204, f"No recent attendance data found for subject_code: {subject_code}, session_number: {session_number}, week: {week}")
 
     return jsonify(result), 200
 
@@ -201,10 +217,10 @@ def get_teacher_info():
     try:
         result = teacher_info(get_jwt_identity())
     except Exception as e:
-        return error_response("An error occurred while retrieving teacher information ", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving teacher information", 500, f"Error while retrieving teacher information. Exception: {e}")
     
     if not result:
-        return error_response("No teacher information data found", 204)
+        return log_and_return_error("No teacher information data found", 204, f"No teacher information data found for teacher: {get_jwt_identity()}")
     
     return jsonify(result), 200
 
@@ -222,10 +238,11 @@ def get_upcoming_classes():
     try:
         result = upcoming_classes(get_jwt_identity())
     except Exception as e:
-        return error_response("An error occurred while retrieving upcoming classes", 500)
+        return log_and_return_error("An unexpected error occurred while retrieving upcoming classes", 500, f"Error while retrieving upcoming classes for teacher: {get_jwt_identity()}. Exception: {e}")
     
     if not result:
-        return error_response("No upcoming classes data found", 204)
+        return log_and_return_error("No upcoming classes data found", 204, f"No upcoming classes data found for teacher: {get_jwt_identity()}")
+    
 
     return jsonify(result), 200
 
@@ -240,44 +257,9 @@ def test_get_upcoming_classes():
 @app.route('/api/v1/start-recognition', methods = ['GET'])
 @jwt_required()
 def start_recognition():
-    sayhi()
     return "Success", 200
 
 
-
-#non-necessities
-#get all students
-@app.route('/api/v1/students', methods = ['GET'])
-def get_all_students():
-    result = all_students()
-    return jsonify(result), 200
-
-#get single student
-@app.route('/api/v1/students/<student_id>', methods = ['GET'])
-def get_single_student(student_id):
-    result = single_student(student_id)
-    return jsonify(result), 200
-
-#get all teachers
-@app.route('/api/v1/teachers', methods = ['GET'])
-def get_all_teachers():
-    result = all_teachers()
-    return jsonify(result), 200
-
-#get single teacher
-@app.route('/api/v1/teachers/<teacher_id>', methods = ['GET'])
-def get_single_teacher(teacher_id):
-    result = single_teacher(teacher_id)
-    return jsonify(result), 200
-
-#getting all students for a specific subject or specific session
-@app.route('/api/v1/subjects/<subject_code>/students', methods = ['GET'])
-def get_students_subject(subject_code):
-    day = request.args.get('day')
-    time = request.args.get('time')
-    result = students_subject(subject_code, day, time)
-    return jsonify(result), 200
-
-
+# Run flask application
 if __name__ == '__main__':
     app.run(debug=True)
