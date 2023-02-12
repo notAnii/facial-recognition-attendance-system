@@ -1,11 +1,10 @@
 from flask import Flask, jsonify, request
-from test import sayhi
-from student.read import *
-from teacher.read import *
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
+from student.read import *
+from teacher.read import *
 
 app = Flask(__name__)
 CORS(app)
@@ -18,18 +17,6 @@ jwt = JWTManager(app)
 
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-#login
-# @app.route('/api/login', methods = ['POST'])
-# def login():
-#     try:
-#     # placeholder
-#         teacher_id = request.json['teacher_id']
-#         email = request.json['email']
-#         password = request.json['password']
-#         return teacher_id, 200
-#     except Exception as e:
-#         return e, 404
 
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
@@ -270,44 +257,9 @@ def test_get_upcoming_classes():
 @app.route('/api/v1/start-recognition', methods = ['GET'])
 @jwt_required()
 def start_recognition():
-    sayhi()
     return "Success", 200
 
 
-
-#non-necessities
-#get all students
-@app.route('/api/v1/students', methods = ['GET'])
-def get_all_students():
-    result = all_students()
-    return jsonify(result), 200
-
-#get single student
-@app.route('/api/v1/students/<student_id>', methods = ['GET'])
-def get_single_student(student_id):
-    result = single_student(student_id)
-    return jsonify(result), 200
-
-#get all teachers
-@app.route('/api/v1/teachers', methods = ['GET'])
-def get_all_teachers():
-    result = all_teachers()
-    return jsonify(result), 200
-
-#get single teacher
-@app.route('/api/v1/teachers/<teacher_id>', methods = ['GET'])
-def get_single_teacher(teacher_id):
-    result = single_teacher(teacher_id)
-    return jsonify(result), 200
-
-#getting all students for a specific subject or specific session
-@app.route('/api/v1/subjects/<subject_code>/students', methods = ['GET'])
-def get_students_subject(subject_code):
-    day = request.args.get('day')
-    time = request.args.get('time')
-    result = students_subject(subject_code, day, time)
-    return jsonify(result), 200
-
-
+# Run flask application
 if __name__ == '__main__':
     app.run(debug=True)
