@@ -97,7 +97,18 @@ def test_get_session_attendance(subject_code, session_number):
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
 @jwt_required()
 def get_live_session_attendance(subject_code, session_number, week):
-    result = live_session_attendance(subject_code, session_number, week)
+
+    if int(week) not in ALLOWED_WEEK:
+        return error_response(f"Invalid week: {week}",400)
+
+    try:
+        result = live_session_attendance(subject_code, session_number, week)
+    except Exception as e:
+        return error_response("An error occurred while retrieving live attendance ",500)
+    
+    if not result:
+        return error_response("No live attendance data found",204)
+
     return jsonify(result), 200
 
 #tester
