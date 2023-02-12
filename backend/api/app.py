@@ -5,6 +5,7 @@ from teacher.read import *
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_cors import CORS
 from datetime import timedelta
+from utility.error_handlers import *
 app = Flask(__name__)
 CORS(app)
 
@@ -13,6 +14,8 @@ app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
 jwt = JWTManager(app)
+ALLOWED_STATUS = ["present", "absent", "excused"]
+ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 #login
 # @app.route('/api/login', methods = ['POST'])
@@ -41,7 +44,13 @@ def login():
 @app.route("/api/v1/classes", methods=["GET"])
 @jwt_required()
 def get_classes():
-    result = all_classes(get_jwt_identity())
+    try:
+        result = all_classes(get_jwt_identity())
+    except Exception as e:
+        return error_response("An error occurred while retrieving classes", 500)
+    if not result:
+        return error_response("No classes found for the teacher", 204)
+        
     return jsonify(result), 200
 
 #tester
@@ -57,7 +66,23 @@ def test_get_classes():
 def get_session_attendance(subject_code, session_number):
     status = request.args.get('status')
     week = request.args.get('week')
-    result = session_attendance(subject_code, session_number, status, week)
+    
+    if status is not None:
+        if status not in ALLOWED_STATUS:
+            return error_response(f"Invalid status: {status}", 400)
+
+    if week is not None:    
+        if int(week) not in ALLOWED_WEEK:
+            return error_response(f"Invalid week: {week}", 400)
+    
+    try:
+        result = session_attendance(subject_code, session_number, status, week)
+    except Exception as e:
+        return error_response("An error occurred while retrieving attendance", 500)
+    
+    if not result:
+        return error_response("No attendance data found", 204)
+
     return jsonify(result), 200
 
 #tester
