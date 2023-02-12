@@ -225,32 +225,8 @@ const Hero = (props: Props) => {
         },
       }}>
         
-
-        
         <Card/>
-        
-        
-        <Card/>
-       
-       
-        <Card/>
-        
-        
-        <Card/>
-        
-        
-        <Card/>
-        
-      
-        <Card/>
-        
-        
-        <Card/>
-
-        <Card/>
-        <Card/>
-        
-        
+           
         </HStack>
       
       
