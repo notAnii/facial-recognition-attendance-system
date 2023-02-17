@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask import Flask, jsonify, request, make_response
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, JWTManager
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
@@ -11,8 +11,8 @@ CORS(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
-app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
 ALLOWED_STATUS = ["present", "absent", "excused"]
@@ -24,10 +24,15 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
     if username != "123" or password != "abshir":
-        return jsonify({"msg": "Bad username or password"}), 401
+        return make_response(jsonify({"error": "Bad username or password"}), 401)
 
     access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token)
+    refresh_token = create_refresh_token(identity=username)
+    response = make_response(jsonify({"message": "Login Successful"}), 200)
+    response.set_cookie('access_token_cookie', access_token, httponly=True)
+    response.set_cookie('refresh_token_cookie', refresh_token, httponly=True)
+    
+    return response
 
 #get all classes for a teacher
 @app.route("/api/v1/classes", methods=["GET"])
