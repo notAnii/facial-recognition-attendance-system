@@ -1,22 +1,41 @@
-from flask import Flask, jsonify, request
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask import Flask, jsonify, request, make_response
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, JWTManager , get_jwt, set_access_cookies, set_refresh_cookies, unset_jwt_cookies, get_jwt_header
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
 from student.read import *
 from teacher.read import *
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=0)
-app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(seconds=10)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Automatic refreshing is expiry time < 5 mins
+@app.after_request
+def refresh_expiring_jwt(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now()
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=5))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+            refresh_token = create_refresh_token(identity=get_jwt_identity())
+            set_refresh_cookies(response, refresh_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+
 
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
@@ -24,10 +43,38 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
     if username != "123" or password != "abshir":
-        return jsonify({"msg": "Bad username or password"}), 401
+        return make_response(jsonify({"error": "Bad username or password"}), 401)
 
     access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token)
+    refresh_token = create_refresh_token(identity=username)
+    response = make_response(jsonify({"message": "Login Successful"}), 200)
+    response.set_cookie('access_token_cookie', access_token, httponly=True)
+    response.set_cookie('refresh_token_cookie', refresh_token, httponly=True)
+    
+    return response
+
+#logout route to revoke jwt access
+blacklist = set()
+@jwt.token_in_blocklist_loader
+def verify_token_not_blocklisted(jwt_header, jwt_payload):
+    return check_if_token_blacklisted(jwt_payload)
+
+def check_if_token_blacklisted(jwt_payload):
+    jti = jwt_payload['jti']
+    return jti in blacklist
+
+@app.route('/api/v1/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    # Add the user's tokens to the blacklist
+    jti = get_jwt()['jti']
+    blacklist.add(jti)
+
+    # Unset the JWT cookies to remove tokens from the browser
+    response = make_response(jsonify({'message': 'Logout successful'}), 200)
+    unset_jwt_cookies(response)
+
+    return response
 
 #get all classes for a teacher
 @app.route("/api/v1/classes", methods=["GET"])
