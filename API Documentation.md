@@ -3,43 +3,110 @@
 </br>
 <hr>
 
+# Login User
 
-## `POST /api/v1/login`
+### URL: `POST /api/v1/login`
 
 #### **Description:**
-This is the endpoint for user authentication and creation of a JSON Web Token (JWT).
+Logins in user through the creation of a JSON Web Token (JWT).
 
 #### **Body:**
 - `username`: In other words, the `teacher_id`.
 - `password`: password.
 
+  ```json
+      {
+        "username" : "123",
+        "password" : "very bad yassin password"
+      }
+  ```
+      
+
 #### **Responses:**
-- **200 OK:** The access token was successfully generated.
-  Example:
+- **200 OK:** Logs in user successfully.
+  
+  Headers:
+  | Field        | Value           | Description  |
+  | ------------- |-------------| -----|
+  | Set-Cookie     | access_token_cookie=<JWT_ACCESS_TOKEN>; HttpOnly | Sets an HttpOnly cookie containing the access token. |
+  | Set-Cookie      | refresh_token_cookie=<JWT_REFRESH_TOKEN>; HttpOnly | Sets an HttpOnly cookie containing the refresh token. |
+  
+  Body:
+  
    ```json
    {
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3NjMwNjMwNCwianRpIjoiODI5NjA4ZWUtOGY3Ny00NThkLTgwYjgtZmIzYTFiNjU1OWQ5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEyMyIsIm5iZiI6MTY3NjMwNjMwNH0.L0MSIMvHT88hRN5DH2jNdY8GIsLpni_uKF4XXnTgB-c"
-  }
+      "message": "Login Successful"
+   }
+  ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "error": "Bad username or password"
+   }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
+
+
+
+</br>
+
+
+
+# Logout User
+
+### URL: `POST /api/v1/logout`
+
+#### **Description:**
+Logs out user by revoking access token and adding it to a blacklist.
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+### **Request Headers**
+- Content-Type: application/json
+- Cookie: access_token_cookie=ACCESS_TOKEN; refresh_token_cookie=REFRESH_TOKEN
+
+#### **Responses:**
+- **200 OK:** Logs out user successfully
+  Body:
+  
+   ```json
+   {
+      "message": "Logout successful" 
+   }
+  ```
+  
+- **204 No Content:** No classes data was found for this teacher.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
   ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
-<hr>
-
-### STILL WORKING ON THE ABOVE ENDPOINT SO DONT BOTHER FOR NOW, I WILL LET YOU KNOW.
-
-<hr>
-
-
+*  _**Note:**_ 
+    * _This endpoint requires the user to be authenticated via a valid access token cookie. If the access token cookie is not present or is invalid, the user will     receive a 401 Unauthorized response._
+    * _If the user is already logged out or their token has expired, the endpoint will still return a 200 OK response._
 
 </br>
-</br>
-</br>
 
 
 
 
+# Student Attendance Version 2.0
 
-## `GET /api/v2/attendance/<subject_code>/<session_number>/<week>`
+### URL: `GET /api/v2/attendance/<subject_code>/<session_number>/<week>`
 
 #### **Description:**
 Returns the attendance list for a specific session with additional query parameters.
@@ -57,7 +124,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The attendance list was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -73,7 +141,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   
 - **204 No Content:** No attendance data was found.
 - **400 Bad Request:** There was an error with the request.
-  Example:
+  Body:
+  
   ```json
   {
     "error": "Invalid week"
@@ -89,6 +158,20 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
     "error": "Invalid session number format"
   }
   ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
+   
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -97,14 +180,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
 
+# Student Attendance Version 1.0
 
-## `GET /api/v1/attendance/<subject_code>/<session_number>`
+### URL: `GET /api/v1/attendance/<subject_code>/<session_number>`
 
 #### **Description:**
 Returns the attendance list for a specific session with additional query parameters.
@@ -122,7 +204,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The attendance list was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -138,7 +221,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   
 - **204 No Content:** No attendance data was found.
 - **400 Bad Request:** There was an error with the request.
-  Example:
+  Body:
+  
   ```json
   {
     "error": "Invalid week"
@@ -154,6 +238,19 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
     "error": "Invalid session number format"
   }
   ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -162,14 +259,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
 
+# Live Student Attendance
 
-## `GET /api/v1/live-attendance/<subject_code>/<session_number>/<week>`
+### URL: `GET /api/v1/live-attendance/<subject_code>/<session_number>/<week>`
 
 #### **Description:**
 Returns the live attendance list (present) for a specific session 
@@ -184,7 +280,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The live attendance list was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -203,7 +300,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   
 - **204 No Content:** No live attendance data was found.
 - **400 Bad Request:** There was an error with the request.
-  Example:
+  Body:
+  
   ```json
   {
     "error": "Invalid week"
@@ -219,6 +317,19 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
     "error": "Invalid session number format"
   }
   ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -227,14 +338,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
 
+# Recent Student Attendance
 
-## `GET /api/v1/recent-attendance/<subject_code>/<session_number>/<week>`
+### URL: `GET /api/v1/recent-attendance/<subject_code>/<session_number>/<week>`
 
 #### **Description:**
 Returns the recent attendance list (present) for a specific session 
@@ -249,7 +359,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The recent attendance list was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -267,6 +378,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 - **204 No Content:** No recent attendance data was found.
 - **400 Bad Request:** There was an error with the request.
   Example:
+  
   ```json
   {
     "error": "Invalid week"
@@ -282,6 +394,19 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
     "error": "Invalid session number format"
   }
   ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -290,14 +415,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
 
+# Teacher Information
 
-## `GET /api/v1/teacher-info`
+### URL: `GET /api/v1/teacher-info`
 
 #### **Description:**
 Returns the information for a specific teacher
@@ -307,7 +431,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The teacher information data was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -319,6 +444,19 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
   
 - **204 No Content:** No teacher information data was found.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -327,14 +465,12 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
+# Upcoming Classes
 
-
-## `GET /api/v1/upcoming-classes`
+### URL: `GET /api/v1/upcoming-classes`
 
 #### **Description:**
 Returns the upcoming classes for a specific teacher 
@@ -344,12 +480,26 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The upcoming classes for teacher was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    i will fill this :D
   ```
   
 - **204 No Content:** No upcoming classes data was found for this teacher.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -358,14 +508,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 
 </br>
-</br>
-</br>
 
 
 
 
+# Teacher's Classes
 
-## `GET /api/v1/classes`
+### URL: `GET /api/v1/classes`
 
 #### **Description:**
 Returns the classes for a specific teacher 
@@ -375,7 +524,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 #### **Responses:**
 - **200 OK:** The classes for teacher was successfully retrieved.
-  Example:
+  Body:
+  
    ```json
    [
     {
@@ -401,6 +551,19 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
   
 - **204 No Content:** No classes data was found for this teacher.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
 
@@ -412,3 +575,5 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 ![alt text](https://cdn.discordapp.com/attachments/913815506568507444/1074730004899954762/Makima_peek94.PNG "PAIN")
 </br>
 >This thing will be much longer because we still have the admin page to do. So, for now, enjoy when it's still short :>
+
+![alt text](https://i.pinimg.com/originals/76/15/c9/7615c940b0ac4c8ca5f38611a4fafbb9.png "HI")
