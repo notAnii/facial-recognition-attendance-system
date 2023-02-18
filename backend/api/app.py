@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, JWTManager , get_jwt, set_access_cookies, set_refresh_cookies
 from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
 from student.read import *
 from teacher.read import *
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +18,24 @@ jwt = JWTManager(app)
 
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Automatic refreshing is expiry time < 5 mins
+@app.after_request
+def refresh_expiring_jwt(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now()
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=5))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+            refresh_token = create_refresh_token(identity=get_jwt_identity())
+            set_refresh_cookies(response, refresh_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+
 
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
