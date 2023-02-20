@@ -63,4 +63,13 @@ def teacher_password(teacher_id):
         WHERE teacher_id = %s
         ''' % teacher_id
     result = db.fetchone(sql)
-    return result['password']  
+    return result 
+
+def dummy_password(password):
+    db = DBHelper()
+    sql = '''
+        UPDATE Teacher
+        SET password = %s
+        WHERE teacher_id = '123'
+        ''' 
+    db.execute(sql, password)
