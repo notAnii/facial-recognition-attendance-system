@@ -53,3 +53,23 @@ def upcoming_classes(teacher_id):
         ''' % (time_format, time_format, teacher_id)
     result = db.fetch(sql)
     return result
+
+#get teacher password
+def teacher_password(teacher_id):
+    db = DBHelper()
+    sql = '''
+        SELECT password
+        FROM Teacher
+        WHERE teacher_id = %s
+        ''' % teacher_id
+    result = db.fetchone(sql)
+    return result 
+
+def dummy_password(password):
+    db = DBHelper()
+    sql = '''
+        UPDATE Teacher
+        SET password = %s
+        WHERE teacher_id = '123'
+        ''' 
+    db.execute(sql, password)
