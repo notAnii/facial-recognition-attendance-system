@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://127.0.0.1:5000/api/test/classes');
+      const result = await axios.get('http://127.0.0.1:5000/api/test/classes'); 
 
       setData(result.data);
     };
@@ -107,8 +107,6 @@ const Hero: React.FC = () => {
 
         
         <Card/>
-        
-        
         
         
         
