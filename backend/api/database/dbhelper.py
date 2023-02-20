@@ -28,8 +28,17 @@ class DBHelper:
         self.__disconnect__()
         return result
 
-    #executing sql query
-    def execute(self, sql):
+   #fetching one query result
+    def fetchone(self, sql):
         self.__connect__()
         self.cur.execute(sql)
+        result = self.cur.fetchone()
+        self.__disconnect__()
+        return result
+
+    #executing sql query
+    def execute(self, sql, params=None):
+        self.__connect__()
+        self.cur.execute(sql, params)
+        self.con.commit()
         self.__disconnect__()
