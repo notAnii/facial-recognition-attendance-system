@@ -27,6 +27,7 @@ CREATE TABLE `Teacher` (
 	`teacher_name` VARCHAR(100),
 	`department` VARCHAR(20),
 	`position` VARCHAR(50),
+	`password` BINARY(60),
 	PRIMARY KEY (`teacher_id`)
 );
 
@@ -86,9 +87,9 @@ INSERT INTO Subject VALUES ('CSCI369', 'Ethical Hacking', 'Teaches how to hack.'
 INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
 
 #inserting teachers
-INSERT INTO Teacher VALUES (123, 'Not Sloy', 'FEIS', 'Tutor');
-INSERT INTO Teacher VALUES (456, 'Mai', 'FEIS', 'Tutor');
-INSERT INTO Teacher VALUES (789, 'Farhad', 'FEIS', 'Lecturer');
+INSERT INTO Teacher VALUES (123, 'Not Sloy', 'FEIS', 'Tutor', NULL);
+INSERT INTO Teacher VALUES (456, 'Mai', 'FEIS', 'Tutor', NULL);
+INSERT INTO Teacher VALUES (789, 'Farhad', 'FEIS', 'Lecturer', NULL);
 
 #inserting sessions
 INSERT INTO Session VALUES (1, 'CSCI369', 1, 'Monday', '13:30', '16:30', '5.11', "Lecture", 456);
