@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://127.0.0.1:5000/api/test/classes');
+      const result = await axios.get('http://127.0.0.1:5000/api/v1/classes', {withCredentials:true});
 
       setData(result.data);
     };

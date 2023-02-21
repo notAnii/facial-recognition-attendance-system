@@ -58,11 +58,7 @@ interface LinkItemProp {
 }
 
 const FirstLink: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-];
-
-const SecondLink: Array<LinkItemProps> = [
-  { name: 'Notifications', icon: FiBell},
+  { name: 'Dashboard', icon: FiHome },
 ];
 
 const FourthLink: Array<LinkItemProps> = [
@@ -146,18 +142,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Link //LINK FOR FIRST BUTTON
       href="/afterLogin/home" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       {FirstLink.map((link) => (
-        <NavItem 
-        textColor={"white"}
-        key={link.name} icon={link.icon}
-        >
-          {link.name}
-        </NavItem>
-      ))}
-      </Link>
-
-      <Link //LINK FOR SECOND BUTTON
-      href="/afterLogin/notifications" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-      {SecondLink.map((link) => (
         <NavItem 
         textColor={"white"}
         key={link.name} icon={link.icon}
