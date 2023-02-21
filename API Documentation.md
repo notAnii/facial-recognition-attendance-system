@@ -9,6 +9,16 @@
 
 #### **Description:**
 Logins in user through the creation of a JSON Web Token (JWT).
+</br>
+Hashing Algorithm:
+Bcrypt is a password hashing function that uses the Blowfish cipher to securely hash passwords. It was designed specifically for password hashing and is widely used in web applications to store user passwords securely.
+</br>
+
+The bcrypt algorithm works by first generating a random salt value, which is combined with the password and hashed using the Blowfish cipher. The resulting hash is then stored in the database, along with the salt value. When a user logs in, the stored hash and salt are retrieved from the database and the entered password is hashed with the same salt and cipher. If the resulting hash matches the stored hash, the login attempt is considered successful.
+
+One of the key features of bcrypt is that it is designed to be slow and computationally intensive, which makes it difficult for attackers to perform brute-force attacks or use precomputed hash tables to crack passwords. Additionally, because a unique salt value is used for each password, even if two users have the same password, their hashes will be different.
+
+In summary, bcrypt is a widely used password hashing function that uses the Blowfish cipher to securely hash passwords. It generates a random salt value for each password and is designed to be slow and computationally intensive to prevent brute-force attacks.
 
 #### **Body:**
 - `username`: In other words, the `teacher_id`.
@@ -38,12 +48,25 @@ Logins in user through the creation of a JSON Web Token (JWT).
       "message": "Login Successful"
    }
   ```
+- **400 Bad Request:** There was an error with the request.
+  Body:
+  ```json
+   {
+      "error": "Invalid username format"
+   }
+  ```
+
 - **401 Unauthorized:** Bad username or password/ Invalid token.
 
   Body:
   ```json
    {
-      "error": "Bad username or password"
+      "error": "Username does not exist"
+   }
+  ```
+  ```json
+   {
+      "error": "Incorrect password"
    }
   ```
 - **404 Not Found:** The requested data was not found.
@@ -483,7 +506,21 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   Body:
   
    ```json
-   i will fill this :D
+   [
+    {
+      "room": "3.43",
+      "session_number": 1,
+      "subject_code": "MATH221",
+      "subject_name": "Mathematics",
+      "timing": "09:30 - 10:30"
+    },
+    {
+      "room": "5.11",
+      "session_number": 1,
+      "subject_code": "CSIT111",
+      "subject_name": "Programming",
+      "timing": "13:30 - 15:30"
+    },
   ```
   
 - **204 No Content:** No upcoming classes data was found for this teacher.
