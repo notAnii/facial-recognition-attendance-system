@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import Image from "next/image";
 import React from "react";
 
@@ -52,7 +53,7 @@ const Hero = (props: Props) => {
           </Box>
         </VStack>
         <Link href='/afterLogin/home' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-    <Button
+        <Button
           marginBottom={2}
           variant={"ghost"}
           bgColor={"black"}
@@ -61,6 +62,16 @@ const Hero = (props: Props) => {
             bgColor: "unset",
             color: "black",
             border: "2px solid black",
+          }}
+          onClick={async () => {
+            const data = {
+              username: '123',
+              password: 'abshir'
+            };
+            const response = await axios.post('http://127.0.0.1:5000/api/v1/login', data, {withCredentials: true});
+            if (response.status === 200) {
+              console.log(response.data);
+            }
           }}
         >
           Log In
