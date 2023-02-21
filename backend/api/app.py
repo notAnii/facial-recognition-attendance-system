@@ -9,18 +9,19 @@ from teacher.read import *
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 jwt = JWTManager(app)
 
 ALLOWED_STATUS = ["present", "absent", "excused"]
 ALLOWED_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# Automatic refreshing is expiry time < 5 mins
+#Automatic refreshing is expiry time < 5 mins
 @app.after_request
 def refresh_expiring_jwt(response):
     try:
@@ -29,9 +30,9 @@ def refresh_expiring_jwt(response):
         target_timestamp = datetime.timestamp(now + timedelta(minutes=5))
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
-            set_access_cookies(response, access_token)
             refresh_token = create_refresh_token(identity=get_jwt_identity())
-            set_refresh_cookies(response, refresh_token)
+            response.set_cookie('access_token_cookie', value=access_token, httponly=True, secure=True, samesite='None')
+            response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True, secure=True, samesite='None')
         return response
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone
@@ -62,9 +63,8 @@ def login():
     access_token = create_access_token(identity=username)
     refresh_token = create_refresh_token(identity=username)
     response = make_response(jsonify({"message": "Login Successful"}), 200)
-    response.set_cookie('access_token_cookie', access_token, httponly=True)
-    response.set_cookie('refresh_token_cookie', refresh_token, httponly=True)
-    
+    response.set_cookie('access_token_cookie', value=access_token, httponly=True, secure=True, samesite='None')
+    response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True, secure=True, samesite='None')
     return response
 
 #logout route to revoke jwt access
