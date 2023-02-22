@@ -101,8 +101,6 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
       "message": "Logout successful" 
    }
   ```
-  
-- **204 No Content:** No classes data was found for this teacher.
 - **401 Unauthorized:** Bad username or password/ Invalid token.
 
   Body:
