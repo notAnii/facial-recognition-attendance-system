@@ -1,11 +1,45 @@
 # Facial Recognition Attendance System
 
  ## Changelog
+* [22/02/2023]
+  * Fixed issue with CSRF in `/logout` route
+  * Cleaned up `API Documentation.md`
+
+* [21/02/2023]
+  * Fixed cookie issues with browsers by enable security and disabling samesite
+  * Added NextJS frontend to allowed domains
+
+
+* [20/02/2023]
+  * Added `password` attribute to `teacher` table
+  * Added function to fetch only one record instead of dictionary
+  * Changed execute function to be parameterized
+  * Added function to retrieve `password` from `teacher` table and compare to a given string password
+  * Added error handling to `/login` and `/logout` routes
+  * Added credentials support for CORs in the flask app
+
+
+* [19/02/2023]
+  * Udpated `/login` and `/logout` in `API Documentation.md`
+  * Added `bcrypt_utils.py`
+    * Function to hash password
+    * Function to compare and string to a hashed password
+
+
+* [18/02/2023]
+  * Added automatic server side refreshing for access toknes
+  * Added /logout route that blacklists access tokens (currently in-memory)
+
+
+* [17/02/2023]
+  * Made `/login` route that sets access and refresh tokens has an httponly cookie
+ 
 * [13/02/2023]
   * Removed `#non-necessities` from application for better readability
   * Removed `test.py` from repository to eliminate confusion 
   * Made a function to log and return errors
   * Added error loggers to endpoints
+  * Made API documentation on `API Documentation.md`
  
 * [12/02/2023]
   * Added v2 for `/attendance` where `week` is specified in the route instead of a parameter
@@ -40,22 +74,22 @@
     * Added attendance percentage
   * Added recent attendance route to API
   * Adjusted time formats from hh:mm:ss to hh:mm for:
-    * /classes
-    * /live-attendance
+    * `/classes`
+    * `/live-attendance`
   * Cleaned up SQL backup 
  
 * [31/01/2023]
-  * Added program attribute e.g. BCs, BBIS, etc. in 'student' table
+  * Added program attribute e.g. BCs, BBIS, etc. in `student` table
   * Added route to return live attendance list
   * Updated database schema and insertions:
-    * Added 'program' attribute in 'student' table
-    * Added 'clock_in' attribute in 'attedance' table
+    * Added `program` attribute in `student` table
+    * Added `clock_in` attribute in `attedance` table
  
 * [29/01/2023]
   * Added API route to get attendance list for a specific class
   * Updated database schema and insertions:
-    * Added 'session_number' attribute in 'session' table
-    * Added 'week' attribute added in 'attendance' table for api simplicity
+    * Added `session_number` attribute in `session` table
+    * Added `week` attribute added in `attendance` table for api simplicity
   
 * [28/01/2023]
   * Added API route to get class(session) list for a specific teacher
@@ -80,8 +114,8 @@
     * ~~Add program attribute e.g. BCs, BBIS, etc.~~
   
   * JWT Authentication
-    * Fix issues with token expiration and token refreshes
-    * Find where to stash access tokens in frontend
+    * ~~Fix issues with token expiration and token refreshes~~
+    * ~~Find where to stash access tokens in frontend~~
     
   * [ABANDONED]Notifications Feature
     * Decide if notifications needs a table 
@@ -93,14 +127,14 @@
     * Modify student attendance
     
   * Hashing and store passwords
-    * find out what hashing algorithm to use
-    * decide what type of salting if any
+    * ~~find out what hashing algorithm to use~~
+    * ~~decide what type of salting if any~~
   
   * ~~Add session number to the json reply in /classes~~
   
   * Teacher table
     * ~~Add Department~~
-    * Add passwords
+    * ~~Add passwords~~
   
   * Make a route for upcoming classes
     * ~~Make endpoint that queries to the current day~~
@@ -111,6 +145,8 @@
   * Make the combination of session number and subject code unique
   
   * ~~Error handling~~ 
+  
+  * Dashboard graphs
   
 * Backend/Facial-Recognition
   * Find reasonable size for dataset or decide who's system to running the tranining file in
