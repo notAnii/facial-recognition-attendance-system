@@ -22,18 +22,10 @@ import { useState } from 'react';
 type Props = {}
 
 const Hero = (props: Props) => {
-    const [week, setWeek] = useState(1);
+    const [week, setWeek] = useState(2);
   
   function rgba(arg0: number, arg1: number, arg2: number, arg3: number) {
     throw new Error('Function not implemented.')
-  }
-
-  function createBoxes(numberOfBoxes: number) {
-    const boxes = [];
-    for (let i = 0; i < numberOfBoxes; i++) {
-      boxes.push(<Card/>);
-    }
-    return boxes;
   }
 
   function displayWeek() {
@@ -160,9 +152,7 @@ const Hero = (props: Props) => {
                 </Box>
             </Box>
 
-            <>
-                {createBoxes(1)}
-            </>
+            <Card week={week}/>
 
 
         </Box>
