@@ -16,30 +16,16 @@ import {
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilter, BsFilterLeft } from 'react-icons/bs';
 import Card from './card'
+import { displayWeek, incrementWeek, decrementWeek, charToInt } from "../functions/functionStorage";
 import { useState } from 'react';
 //import Hero from "../startAttend/hero"
 
 type Props = {}
 
 const Hero = (props: Props) => {
-    const [week, setWeek] = useState(2);
   
   function rgba(arg0: number, arg1: number, arg2: number, arg3: number) {
     throw new Error('Function not implemented.')
-  }
-
-  function displayWeek() {
-    var weekMessage;
-    if (week <= 10 && week > 0){
-        weekMessage = <Text textAlign={"center"} paddingLeft={1} paddingRight={1}>Week {week}</Text>;
-    }
-    else if (week <= 0){
-        setWeek(1);
-    }
-    else{
-        setWeek(10);
-    }
-    return weekMessage;
   }
 
   return (
@@ -152,7 +138,7 @@ const Hero = (props: Props) => {
                 </Box>
             </Box>
 
-            <Card week={week}/>
+            <Card week={1}/>
 
 
         </Box>
@@ -174,7 +160,7 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
-                onClick={() => setWeek(week - 1)}
+                onClick={decrementWeek}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
@@ -193,7 +179,7 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
-                onClick={() => setWeek(week + 1)}
+                onClick={incrementWeek}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",

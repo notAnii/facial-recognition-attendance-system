@@ -4,6 +4,8 @@ import Image from 'next/image'
 
 type Props = {}
 
+window.sessionStorage.setItem('storedWeek', "1");
+
 const Hero = (props: Props) => {
   return (
     <Box h="100vh">
