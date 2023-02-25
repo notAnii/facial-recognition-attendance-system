@@ -34,6 +34,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "18.1.0",
     "react-icons": "^4.7.1",
+    "react-router-dom": "^6.8.1",
     "react-step-progress-bar": "^1.0.3",
     "react-webcam": "^7.0.1",
     "recharts": "^2.3.2",

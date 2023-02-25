@@ -9,15 +9,58 @@ import {
   Input,
   Link,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {};
 
 const Hero = (props: Props) => {
+
+  // define state hooks for username and password
+const [username, setUsername] = useState("");
+const [password, setPassword] = useState("");
+const toast = useToast();
+
+// update the data object with state values when button is clicked
+const handleLogin = async () => {
+  const data = {
+    username: username,
+    password: password
+  };
+  
+  try {
+
+  const response = await axios.post('http://127.0.0.1:5000/api/v1/login', data, {withCredentials: true});
+  if (response.status === 200) {
+    window.location.href = '/afterLogin/home'
+    console.log(response.data);
+    toast({
+      title: 'Logged in successfully.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true
+    });
+  }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      console.log(error.response.data);
+      toast({
+        title: 'Username or password is incorrect.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true
+      });
+    } else {
+      console.log(error.message);
+      // display error message using alert or toast
+    }
+}
+}
+
   return (
     <Container //Response always put that plz
       display={"flex"}
@@ -41,7 +84,10 @@ const Hero = (props: Props) => {
         <VStack spacing={2} mt={8} mb={10}>
           <Box>
             <Text>Username </Text>
-            <Input border={"2px solid black"} borderRadius={"xl"} />
+            <Input 
+            border={"2px solid black"} 
+            borderRadius={"xl"} 
+            onChange={(e) => setUsername(e.target.value)} />
           </Box>
           <Box>
             <Text>Password </Text>
@@ -49,10 +95,11 @@ const Hero = (props: Props) => {
               border={"2px solid black"}
               borderRadius={"xl"}
               type="password"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Box>
         </VStack>
-        <Link href='/afterLogin/home' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+        
         <Button
           marginBottom={2}
           variant={"ghost"}
@@ -63,20 +110,11 @@ const Hero = (props: Props) => {
             color: "black",
             border: "2px solid black",
           }}
-          onClick={async () => {
-            const data = {
-              username: '123',
-              password: 'abshir'
-            };
-            const response = await axios.post('http://127.0.0.1:5000/api/v1/login', data, {withCredentials: true});
-            if (response.status === 200) {
-              console.log(response.data);
-            }
-          }}
+          onClick={handleLogin}
         >
           Log In
         </Button>
-    </Link>
+    
  
 
   <Link href="/" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
@@ -103,3 +141,4 @@ const Hero = (props: Props) => {
 };
 
 export default Hero;
+
