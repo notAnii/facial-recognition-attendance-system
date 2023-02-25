@@ -1,6 +1,9 @@
 # Facial Recognition Attendance System
 
  ## Changelog
+* [25/02/2023]
+  * Added `script.sh` bash file to activate venv and run the flask application
+ 
 * [22/02/2023]
   * Fixed issue with CSRF in `/logout` route
   * Cleaned up `API Documentation.md`
