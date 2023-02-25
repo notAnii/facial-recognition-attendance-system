@@ -1,144 +1,335 @@
-# Imports
-from keras.applications import VGG16
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten, GlobalAveragePooling2D
-from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
-from keras.layers.normalization import batch_normalization
-from keras.models import Model
+# import tensorflow as tf
+# import keras
+# from keras.layers import Flatten, Dense, Input
 from keras_preprocessing.image import ImageDataGenerator
-from keras.optimizers import RMSprop
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-from keras.models import load_model
-import cv2
+# import keras_vggface
+# from keras_vggface.vggface import VGGFace
+import mtcnn
+# import numpy as np
+import matplotlib as mpl
+# import matplotlib.image
+# import matplotlib.pyplot
+# from keras.utils.data_utils import get_file
+# import keras_vggface.utils
+# import PIL
+# import os
+# import os.path
+# from datetime import datetime
+# import cv2
+# import sys
+
+# # vggface_resnet = VGGFace(model='resnet50')
+# # print(vggface_resnet.summary())
+# # print('Inputs: ', vggface_resnet.inputs)
+# # print('Outputs: ', vggface_resnet.outputs)
+
+
+# train_dataset = keras.utils.image_dataset_from_directory('real_and_fake_face',
+#     shuffle=True,
+#     batch_size = 64,
+#     image_size = (224, 224)
+# )
+
+# # sample_dataset = keras.utils.image_dataset_from_directory('samples',
+# #     shuffle=True,
+# #     batch_size = 8,
+# #     image_size = (224, 224)
+# # )
+
+# data_augmentation = keras.Sequential([
+#     keras.layers.RandomFlip('horizontal'),
+#     keras.layers.RandomRotation(0.2)
+# ])                               
+
+# vggface_resnet_base = VGGFace(model='resnet50', include_top=False, input_shape=(224, 224, 3))
+
+# num_classses = 3
+
+# # freeze base model
+# vggface_resnet_base.trainable = False
+# last_layer = vggface_resnet_base.get_layer('avg_pool').output
+
+# # build new model
+# inputs = tf.keras.Input(shape=(224, 224, 3))
+# x = data_augmentation(inputs)
+# x = vggface_resnet_base(x)
+# x = Flatten(name='flatten')(x)
+# out = Dense(num_classses, name='classifier')(x)
+
+# custom_resnet_model = keras.Model(inputs, out)
+# custom_resnet_model.summary()
+
+# base_lr = 0.0001
+
+# custom_resnet_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_lr),
+#     loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+#     metrics=['accuracy']
+# )
+
+# start = datetime.now()
+
+# history = custom_resnet_model.fit(train_dataset, epochs=80)
+
+# duration = datetime.now() - start
+# print("Training completed in time: ", duration)
+
+# # # load image from file
+# # photo = mpl.image.imread('samples/class_1/httpabsolumentgratuitfreefrimagesbenaffleckjpg.jpg')
+# # photo.shape
+
+# # face_detector = mtcnn.MTCNN()
+# # face_roi = face_detector.detect_faces(photo)
+# # print(face_roi)
+
+# # # extract the bounding box from the first face
+# # x1, y1, width, height = face_roi[0]['box']
+# # x2, y2 = x1 + width, y1 + height
+# # face = photo[y1:y2, x1:x2]
+# # print(face.shape)
+
+# # mpl.pyplot.imshow(photo)
+# # mpl.pyplot.show()
+
+# # prob_model = keras.Sequential([
+# #     custom_resnet_model,
+# #     tf.keras.layers.Softmax()
+# # ])
+
+# # predictions = prob_model.predict(sample_dataset)
+# # print(predictions)
+# # # names = keras_vggface.utils.decode_predictions(predictions)
+# # # print(names)
+
+# # webcam stuff
+# cap = cv2.VideoCapture(0)
+
+# # check if the webcam is opened correctly
+# if not cap.isOpened():
+#     raise IOError("Cannot open webcam.")
+
+# while True:
+#     ret, frame = cap.read()
+#     frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+#     cv2.imshow('Input', frame)
+
+#     cv2.imwrite('samples/class_1/webcam_capture.jpg', frame)
+
+#     c = cv2.waitKey(1)
+#     if c == 27:
+#         break
+
+# cap.release()
+# cv2.destroyAllWindows()
+
+# # load image from file
+# photo = mpl.image.imread('samples/class_1/webcam_capture.jpg')
+# photo.shape
+
+# face_detector = mtcnn.MTCNN()
+# face_roi = face_detector.detect_faces(photo)
+# print(face_roi)
+
+# # extract the bounding box from the first face
+# x1, y1, width, height = face_roi[0]['box']
+# x2, y2 = x1 + width, y1 + height
+# face = photo[y1:y2, x1:x2]
+# print(face.shape)
+
+# mpl.pyplot.imshow(photo)
+# mpl.pyplot.show()
+
+# prob_model = keras.Sequential([
+#     custom_resnet_model,
+#     tf.keras.layers.Softmax()
+# ])
+
+# sample_dataset = keras.utils.image_dataset_from_directory('samples',
+#     shuffle=True,
+#     batch_size = 16,
+#     image_size = (224, 224)
+# )
+
+# predictions = prob_model.predict(sample_dataset)
+# print(predictions)
+# # names = keras_vggface.utils.decode_predictions(predictions)
+# # print(names)
+
+
+####################################################################################################################
+import matplotlib.pyplot as plt
+import matplotlib.image
 import numpy as np
 import os
-from os import listdir
-from os.path import isfile, join
+import PIL
+import pathlib
+import tensorflow as tf
+from tensorflow import keras
+from keras import layers
+from tensorflow.python.keras.layers import Dense, Flatten
+from keras.models import Sequential
+from keras.optimizers import Adam
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.models import load_model
 
-# CODE ------------------------
-
-# Freezing layers
-rows = 224
-cols = 224
-
-model = VGG16(weights = 'imagenet', include_top = False, input_shape = (rows, cols, 3))
-
-for layer in model.layers:
-    layer.trainable = False
-
-for (i, layer) in enumerate(model.layers):
-    print(str(i) + " " + layer.__class__.__name__, layer.trainable)
-
-# Adding new fully connected layers
-def addLayer(bottom_model, num_classes):
-    # creates the head of the model that will be placed on top of the bottom layers
-    top_model = bottom_model.output
-    top_model = GlobalAveragePooling2D()(top_model)
-    top_model = Dense(1024, activation = 'relu')(top_model)
-    top_model = Dense(1024, activation = 'relu')(top_model)
-    top_model = Dense(512, activation = 'relu')(top_model)
-    top_model = Dense(num_classes, activation = 'softmax')(top_model)
-
-    return top_model
+from datetime import datetime
+import cv2
+import sys
 
 
-print(model.input)
+# webcam stuff
+cap = cv2.VideoCapture(0)
 
-num_classes = 4    # was 4
-fc_head = addLayer(model, num_classes)
-new_model = Model(inputs = model.input, outputs = fc_head)
-print(new_model.summary())
+# check if the webcam is opened correctly
+if not cap.isOpened():
+    raise IOError("Cannot open webcam.")
 
-# Loading data and training the model
-train_data_dir = (r"Headshots")
-validation_data_dir = (r"Validation_Headshots")
+while True:
+    ret, frame = cap.read()
+    frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    cv2.imshow('Input', frame)
 
-train_datagen = ImageDataGenerator(rescale=1./255,
-                                   rotation_range=20,
-                                   width_shift_range=0.2,
-                                   height_shift_range=0.2,
-                                   horizontal_flip=True,
-                                   fill_mode='nearest')
+    cv2.imwrite('test_samples/webcam_capture.jpg', frame)
 
-validation_datagen = ImageDataGenerator(rescale=1./255)
+    c = cv2.waitKey(1)
+    if c == 27:
+        break
 
-train_batchsize = 5000
-validation_batchsize = 10
-
-train_generator = train_datagen.flow_from_directory(train_data_dir,
-                                                    target_size=(rows, cols),
-                                                    batch_size=train_batchsize,
-                                                    class_mode='categorical')
-
-validation_generator = validation_datagen.flow_from_directory(validation_data_dir,
-                                                    target_size=(rows, cols),
-                                                    batch_size=validation_batchsize,
-                                                    class_mode='categorical',
-                                                    shuffle=False)
-
-checkpoint = ModelCheckpoint("face_recog_vgg.h5", monitor="val_loss", mode="min", save_best_only=True, verbose=1)
-earlystop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=1, restore_best_weights=True)
-callbacks = [earlystop, checkpoint]
-
-new_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(learning_rate=0.001), metrics=['accuracy'])
-
-nb_train_samples = 1190
-nb_validation_samples = 170
-epochs = 5
-batch_size = 32  # what value should be put here?
-
-history = new_model.fit(train_generator,
-                        # steps_per_epoch=nb_train_samples // batch_size,  # num train images - 1 (11)
-                        epochs=epochs,
-                        callbacks=callbacks,
-                        validation_data=validation_generator
-                        # validation_steps=nb_validation_samples // batch_size  # num validation images - 1 (9)
-                        )
-
-new_model.save("face_recog_vgg.h5")
-
-# Testing the model
-classifier = load_model('face_recog_vgg.h5')
-
-actors_dataset_dict = {"[0]": "Ismail",
-                       "[1]": "Layton",
-                       "[2]": "Ronaldo",
-                       "[3]": "Tashlin"}
-
-def draw_test(name, pred, im):
-    actors = actors_dataset_dict[str(pred)]
-    BLACK = [0, 0, 0]
-    expanded_image = cv2.copyMakeBorder(im, 80, 0, 0, 100, cv2.BORDER_CONSTANT, value=BLACK)
-    cv2.putText(expanded_image, actors, (0, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-    cv2.imshow(name, expanded_image)
-
-def getRandomImage(path):
-    # function loads random images from a random folder in our test path
-    folders = list(filter(lambda x: os.path.isdir(os.path.join(path, x)), os.listdir(path)))
-    random_directory = np.random.randint(0, len(folders))
-    path_class = folders[random_directory]
-    print("Class - " + str(path_class))
-    file_path = path + path_class
-    file_names = [f for f in listdir(file_path) if isfile(join(file_path, f))]
-    random_file_index = np.random.randint(0, len(file_names))
-    image_name = file_names[random_file_index]
-
-    return cv2.imread(file_path + "/" + image_name)
-
-input_im = getRandomImage(r"Validation_Headshots" + "//")
-input_original = input_im.copy()
-input_original = cv2.resize(input_original, None, fx = 0.5, fy = 0.5, interpolation = cv2.INTER_LINEAR)
-
-input_im = cv2.resize(input_im, (224, 224), interpolation = cv2.INTER_LINEAR)
-input_im = input_im / 255
-input_im = input_im.reshape(1, 224, 224, 3)
-
-# Get prediction
-res = np.argmax(classifier.predict(input_im, 1, verbose = 0), axis = 1)
-print(res)
-
-# Show image with predicted class
-draw_test("Prediction", res, input_original)
-cv2.waitKey(5000)
+cap.release()
 cv2.destroyAllWindows()
-# hello testing branch fuck you
+
+# load image from file
+photo = mpl.image.imread('test_samples/webcam_capture.jpg')
+photo.shape
+
+face_detector = mtcnn.MTCNN()
+face_roi = face_detector.detect_faces(photo)
+print(face_roi)
+
+# extract the bounding box from the first face
+x1, y1, width, height = face_roi[0]['box']
+x2, y2 = x1 + width, y1 + height
+face = photo[y1:y2, x1:x2]
+print(face.shape)
+
+mpl.pyplot.imshow(photo)
+mpl.pyplot.show()
+
+# preparing data
+num_classes = 17                # value is the number of folders in dataset folder
+
+img_height,img_width=224,224
+batch_size=64                   # can experiment with
+
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  'celeb_faces_dataset',
+  validation_split=0.2,         # can experiment with
+  subset="training",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  'celeb_faces_dataset',
+  validation_split=0.2,         #can experiment with
+  subset="validation",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+class_names = train_ds.class_names
+print(class_names)
+
+# training model
+resnet_model = Sequential()
+
+pretrained_model= tf.keras.applications.ResNet50(include_top=False,
+                   input_shape=(224,224,3),
+                   pooling='avg',classes=num_classes,
+                   weights='imagenet')
+for layer in pretrained_model.layers:
+        layer.trainable=False
+
+resnet_model.add(pretrained_model)
+resnet_model.add(Flatten())
+resnet_model.add(Dense(512, activation='relu'))                 # can add more layers if adding more data to model
+resnet_model.add(Dense(num_classes, activation='softmax'))
+
+resnet_model.summary()
+
+# can experiment with learning_rate
+resnet_model.compile(optimizer=Adam(learning_rate=0.0001),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+
+# # Augmenting images
+# data_generator_with_aug = ImageDataGenerator(
+#                                 #    rescale=1./255,
+#                                    rotation_range=20,
+#                                    width_shift_range=0.2,
+#                                    height_shift_range=0.2,
+#                                    horizontal_flip=True,
+#                                    fill_mode='nearest')
+
+# # validation_datagen = ImageDataGenerator(rescale=1./255)
+
+# # Fitting augmentation to images
+# train_generator = data_generator_with_aug.flow_from_directory(
+#         'celeb_faces_dataset',
+#         target_size=(img_height, img_width),
+#         batch_size=64,
+#         class_mode='sparse')
+
+
+# validation_generator = data_generator_with_aug.flow_from_directory(
+#         'celeb_faces_dataset',
+#         target_size=(img_height, img_width),
+#         shuffle=False,
+#         class_mode='sparse')
+
+start = datetime.now()
+
+epochs=30                       # can experiment with (number of iterations through dataset)
+history = resnet_model.fit(
+#   train_generator,
+#   validation_data=validation_generator,
+  train_ds,
+  validation_data=val_ds,
+#   validation_split=0.2,
+  # steps_per_epoch=50,
+  # validation_steps=50,
+  epochs=epochs
+)
+
+duration = datetime.now() - start
+print("Training completed in time: ", duration)
+
+# evaluating the model
+fig1 = plt.gcf()
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.axis(ymin=0.4,ymax=1)
+plt.grid()
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epochs')
+plt.legend(['train', 'validation'])
+plt.show()
+
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.grid()
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epochs')
+plt.legend(['train', 'validation'])
+plt.show()
+
+# making predictions
+image=cv2.imread('face_rec/test_samples/001_c04300ef.jpg')
+image_resized= cv2.resize(image, (img_height,img_width))
+image=np.expand_dims(image_resized,axis=0)
+print(image.shape)
+
+pred=resnet_model.predict(image)
+print(pred)
+
+output_class=class_names[np.argmax(pred)]
+print("The predicted class is: ", output_class)
