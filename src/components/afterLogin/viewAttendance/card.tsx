@@ -4,15 +4,18 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
+import { WeekContext } from '../../context';
 
 
 interface WeekProperty {
   week: number;
 }
 
-const Hero: React.FC<WeekProperty> = ({week}) => {
 
-  const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=' + week;
+
+const Hero: React.FC<WeekProperty> = ({week}) => {
+  const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   
   const [data, setData] = useState<Array<{ 
     student_id: number; 
@@ -25,14 +28,14 @@ const Hero: React.FC<WeekProperty> = ({week}) => {
   }>>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(URL);
-
+    
+    const fetchData = async (week: number) => {
+      const result = await axios.get(URL + week);
       setData(result.data);
     };
 
-    fetchData();
-  }, []);
+    fetchData(week);
+  }, [week]);
 
   return (
     <>

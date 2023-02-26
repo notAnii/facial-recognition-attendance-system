@@ -13,16 +13,22 @@ import "@fontsource/poppins/700.css";
 import "@fontsource/poppins/800.css";
 
 import theme from "../../theme";
+import { createContext, useState } from "react";
+import Context from "../components/context";
 
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <>
+
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  
+  return(
+  <Context>
     <DefaultSeo {...SEO} />
     <ChakraProvider theme={theme}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
     </ChakraProvider>
-  </>
-);
+  </Context>
+)};
 
 export default MyApp;

@@ -1,29 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { 
   Box, 
   Text, 
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Button,
   Spacer,
   IconButton,
-  Link,
   Input,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilter, BsFilterLeft } from 'react-icons/bs';
 import Card from './card'
-import { displayWeek, incrementWeek, decrementWeek, charToInt } from "../functions/functionStorage";
 import { useState } from 'react';
+import { WeekContext } from '../../context';
+
 //import Hero from "../startAttend/hero"
 
 type Props = {}
 
 const Hero = (props: Props) => {
-  
+  const {weekNumber, setWeekNumber} = useContext(WeekContext);
+
   function rgba(arg0: number, arg1: number, arg2: number, arg3: number) {
     throw new Error('Function not implemented.')
   }
@@ -138,8 +132,7 @@ const Hero = (props: Props) => {
                 </Box>
             </Box>
 
-            <Card week={1}/>
-
+            <Card week={weekNumber}/>
 
         </Box>
         <Box //Box under the table that has the weeks
@@ -160,14 +153,14 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
-                onClick={decrementWeek}
+                onClick={() => {if (weekNumber > 1) setWeekNumber(weekNumber-1)}}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
                 }}
             />
             <>
-                {displayWeek()}
+                {`Week ${weekNumber}`}
             </>
             <IconButton 
                 aria-label='Go To Next Week' 
@@ -179,7 +172,7 @@ const Hero = (props: Props) => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 borderRadius={13}
-                onClick={incrementWeek}
+                onClick={() => {if (weekNumber < 10) setWeekNumber(weekNumber+1)}}
                 _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
