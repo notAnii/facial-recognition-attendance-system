@@ -1,16 +1,9 @@
 import {
-    Heading,
-    Avatar,
     Box,
-    Center,
-    Image,
-    Flex,
     Text,
-    Stack,
     Button,
-    useColorModeValue,
-    Link,
   } from '@chakra-ui/react';
+import Link from 'next/link';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

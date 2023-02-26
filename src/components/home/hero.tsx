@@ -1,5 +1,5 @@
 import { Box, Container, VStack, Text, Heading} from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 
 type Props = {}
