@@ -257,7 +257,7 @@ resnet_model.add(Dense(num_classes, activation='softmax'))
 resnet_model.summary()
 
 # can experiment with learning_rate
-resnet_model.compile(optimizer=Adam(learning_rate=0.0001),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+resnet_model.compile(optimizer=Adam(learning_rate=0.001),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
 
 # # Augmenting images
 # data_generator_with_aug = ImageDataGenerator(
@@ -286,17 +286,20 @@ resnet_model.compile(optimizer=Adam(learning_rate=0.0001),loss='sparse_categoric
 
 start = datetime.now()
 
-epochs=30                       # can experiment with (number of iterations through dataset)
+epochs=12                       # can experiment with (number of iterations through dataset)
 history = resnet_model.fit(
 #   train_generator,
 #   validation_data=validation_generator,
   train_ds,
   validation_data=val_ds,
 #   validation_split=0.2,
-  # steps_per_epoch=50,
-  # validation_steps=50,
+  steps_per_epoch=23,
+  validation_steps=23,
   epochs=epochs
 )
+
+resnet_model.save("saved_model")
+fr_model = load_model("saved_model")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)
@@ -323,12 +326,13 @@ plt.legend(['train', 'validation'])
 plt.show()
 
 # making predictions
-image=cv2.imread('face_rec/test_samples/001_c04300ef.jpg')
+image=cv2.imread('test_samples/007_6ca7c622.jpg')
 image_resized= cv2.resize(image, (img_height,img_width))
 image=np.expand_dims(image_resized,axis=0)
 print(image.shape)
 
-pred=resnet_model.predict(image)
+pred=fr_model.predict(image)
+# pred = np.argmax(resnet_model.predict(image, 1, verbose = 0), axis = 1)
 print(pred)
 
 output_class=class_names[np.argmax(pred)]
