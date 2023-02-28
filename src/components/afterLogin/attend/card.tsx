@@ -11,17 +11,22 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-  
+import { useEffect, useState, useContext } from 'react';
+import { WeekContext } from '../../context';
+
   const Hero: React.FC = () => {
+
+    const {weekNumber, setWeekNumber} = useContext(WeekContext);
+    const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+    const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
 
     //here you list down the json titles you want to list for example: 
     //Id, title, and userId (should be written exactly like the json file)
   
     const [data, setData] = useState<Array<{ 
-      session_number: number; 
-      subject_name: string; 
-      room: string 
+      attedance_percentage: string; 
+      clock_in: string; 
+      student_name: string 
     }>>([]);
   
     //make a GET request to the https://jsonplaceholder.typicode.com/posts API endpoint 
@@ -29,7 +34,7 @@ import { useEffect, useState } from 'react';
   
     useEffect(() => {
       const fetchData = async () => {
-        const result = await axios.get('http://127.0.0.1:5000/api/v1/classes', {withCredentials:true});
+        const result = await axios.get('http://127.0.0.1:5000/api/v1/recent-attendance/csci369/1/1', {withCredentials:true});
   
         setData(result.data);
       };
@@ -73,7 +78,7 @@ import { useEffect, useState } from 'react';
           
             <Stack spacing={0} align={'center'} mb={1}>
               <Heading fontSize={'16px'} fontWeight={500} fontFamily={'body'}>
-              {item.subject_name}
+              {item.student_name}
               </Heading>
               
             </Stack>
@@ -93,15 +98,9 @@ import { useEffect, useState } from 'react';
                 padding={1}
                 borderRadius={100}
                 >
-                  {item.session_number}
+                  {item.attedance_percentage + "%"}
                 </Text>
 
-                <Text 
-                fontSize={'sm'} 
-                color={'gray.500'}
-                >
-                {item.room}
-                </Text>
 
               </Stack>
             
@@ -118,7 +117,7 @@ import { useEffect, useState } from 'react';
                 <Text
                 paddingLeft={35}
                 >
-                  13:44
+                  {item.clock_in}
                 </Text>
               
             </Box>
