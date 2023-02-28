@@ -453,7 +453,7 @@ INSERT INTO Attendance VALUES (156, 72, "Week 1", "2023-01-04", '08:33', "Presen
 
 INSERT INTO Attendance VALUES (157, 43, "Week 2", "2023-01-11", '08:31', "Present");
 INSERT INTO Attendance VALUES (158, 44, "Week 2", "2023-01-11", '08:31', "Present");
-INSERT INTO Attendance VALUES (159, 45, "Week 2", "2023-01-11", '08:31', "Present"));
+INSERT INTO Attendance VALUES (159, 45, "Week 2", "2023-01-11", '08:31', "Present");
 INSERT INTO Attendance VALUES (160, 46, "Week 2", "2023-01-11", NULL, "Absent");
 INSERT INTO Attendance VALUES (161, 47, "Week 2", "2023-01-11", NULL, "Absent");
 INSERT INTO Attendance VALUES (162, 48, "Week 2", "2023-01-11", NULL, "Absent");
