@@ -12,6 +12,9 @@ const Hero: React.FC = () => {
 
   const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
   const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+  const {dayNumber, setDayNumber} = useContext(WeekContext);
+  const {startTimeNumber, setStartTimeNumber} = useContext(WeekContext);
+  const {endTimeNumber, setEndTimeNumber} = useContext(WeekContext);
 
   const [data, setData] = useState<Array<{ 
     class_type: string; 
@@ -72,7 +75,10 @@ const Hero: React.FC = () => {
                 color="white"
                 onClick={() => {
                   setSubjectCodeNumber(item.subject_code); 
-                  setSessionNumberConNumber(item.session_number)}}
+                  setSessionNumberConNumber(item.session_number);
+                  setDayNumber(item.day);
+                  setStartTimeNumber(item.start_time);
+                  setEndTimeNumber(item.end_time)}}
                 _hover={{
                   bgColor: "white",
                   color: "#818589",

@@ -11,6 +11,9 @@ const Hero: React.FC = () => {
   const {weekNumber, setWeekNumber} = useContext(WeekContext);
   const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
   const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+  const {dayNumber, setDayNumber} = useContext(WeekContext);
+  const {startTimeNumber, setStartTimeNumber} = useContext(WeekContext);
+  const {endTimeNumber, setEndTimeNumber} = useContext(WeekContext);
 
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   
@@ -29,7 +32,7 @@ const Hero: React.FC = () => {
     const fetchData = async () => {
       const result = await axios.get(URL + weekNumber);
       setData(result.data);
-      console.log(subjectCodeNumber + " " + sessionNumberCon);
+      console.log(subjectCodeNumber + " " + sessionNumberCon + " " + dayNumber + " " + startTimeNumber + " " + endTimeNumber);
     };
 
     fetchData();

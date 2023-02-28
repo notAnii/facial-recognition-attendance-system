@@ -4,14 +4,24 @@ import {
   Text, 
   Spacer,
   IconButton,
-  Input,} from '@chakra-ui/react'
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverFooter,
+  Button,
+  Portal,
+  PopoverContent,
+  RadioGroup,
+  Stack,
+  Radio,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
-import { BsFilter, BsFilterLeft } from 'react-icons/bs';
+import { BsFilterLeft } from 'react-icons/bs';
 import Card from './card'
-import { useState } from 'react';
 import { WeekContext } from '../../context';
-
-//import Hero from "../startAttend/hero"
 
 type Props = {}
 
@@ -64,19 +74,50 @@ const Hero = (props: Props) => {
             </Box>
             <Box //Box that has filter button
                 w="4%" h="100%" display="flex" alignItems="center" justifyContent="center">
-                <IconButton 
-                    aria-label='Filter' 
-                    color="black" 
-                    size="sm"
-                    icon={<BsFilterLeft />} px={4} 
-                    fontSize='25px'
-                    variant={"ghost"}
-                    borderRadius={13}
-                    _hover={{
-                    bgColor: "#ECECEC",
-                    color: "#818589",
-                    }}
-                />
+                
+                <Popover 
+                placement='bottom'
+                >
+                    <PopoverTrigger>
+                        <IconButton 
+                            aria-label='Filter' 
+                            color="black" 
+                            size="sm"
+                            icon={<BsFilterLeft />} px={4} 
+                            fontSize='25px'
+                            variant={"ghost"}
+                            borderRadius={13}
+                            _hover={{
+                            bgColor: "#ECECEC",
+                            color: "#818589",
+                            }}
+                        />
+                    </PopoverTrigger>
+                    <Portal>
+                        <PopoverContent>
+                            <PopoverHeader border='0'>
+                                Filter By:
+                            </PopoverHeader>
+                            <PopoverArrow/>
+                            <PopoverCloseButton/>
+                            <PopoverBody>
+                                <RadioGroup>
+                                    <Stack direction='column'>
+                                        <Radio value='1'>All</Radio>
+                                        <Radio value='2'>Present</Radio>
+                                        <Radio value='3'>Absent</Radio>
+                                        <Radio value='4'>Excused</Radio>
+                                    </Stack>
+                                </RadioGroup>
+                            </PopoverBody>
+                            <PopoverFooter>
+                                <Button>Search</Button>
+                            </PopoverFooter>
+                        </PopoverContent>
+                    </Portal>
+
+                </Popover>
+
             </Box>
             
             <Spacer/>
