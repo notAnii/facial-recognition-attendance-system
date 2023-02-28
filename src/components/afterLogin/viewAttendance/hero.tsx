@@ -16,6 +16,9 @@ type Props = {}
 const Hero = (props: Props) => {
 
   const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+  
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -161,7 +164,7 @@ const Hero = (props: Props) => {
                     <Text>Unexcused Absences</Text>
                 </Box>
             </Box>
-            
+   
                 {filteredData.map(item => (
             <Box paddingLeft="2%" h="13%" display="flex">  
                     
@@ -188,6 +191,9 @@ const Hero = (props: Props) => {
             </Box>
             </Box>
             ))}
+            
+            <Card/>
+
 
         </Box>
         <Box //Box under the table that has the weeks

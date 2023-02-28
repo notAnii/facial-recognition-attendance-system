@@ -7,9 +7,13 @@ import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { WeekContext } from '../../context';
 
+
 const Card: React.FC = () => {
-  
+
   const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -28,9 +32,11 @@ const Card: React.FC = () => {
     const fetchData = async () => {
       const result = await axios.get(URL + weekNumber);
       setData(result.data);
+      console.log(subjectCodeNumber + " " + sessionNumberCon);
     };
 
     fetchData();
+
 
   }, [weekNumber]);
 
@@ -43,6 +49,9 @@ const Card: React.FC = () => {
   const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setSearchQuery(e.target.value);
   };
+
+  }, [weekNumber]);
+
 
   return (
     <>

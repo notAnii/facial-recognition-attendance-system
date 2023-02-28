@@ -5,9 +5,14 @@ import {
   } from '@chakra-ui/react';
 import Link from 'next/link';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { WeekContext } from '../../context';
 
 const Hero: React.FC = () => {
+
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+
   const [data, setData] = useState<Array<{ 
     class_type: string; 
     day: string; 
@@ -65,6 +70,9 @@ const Hero: React.FC = () => {
                 variant={"ghost"}
                 bgColor={"#818589"}
                 color="white"
+                onClick={() => {
+                  setSubjectCodeNumber(item.subject_code); 
+                  setSessionNumberConNumber(item.session_number)}}
                 _hover={{
                   bgColor: "white",
                   color: "#818589",
