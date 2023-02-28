@@ -54,6 +54,37 @@ def upcoming_classes(teacher_id):
     result = db.fetch(sql)
     return result
 
+#get class counts for a teacher in dashboard
+def class_counts(teacher_id):
+    db = DBHelper()
+    sql = '''
+        SELECT days.day, COALESCE(counts.num_sessions, 0) AS num_sessions
+        FROM (
+            SELECT 'Monday' AS day
+            UNION SELECT 'Tuesday'
+            UNION SELECT 'Wednesday'
+            UNION SELECT 'Thursday'
+            UNION SELECT 'Friday'
+        ) AS days
+        LEFT JOIN (
+            SELECT Session.day, COUNT(Session.session_id) AS num_sessions
+            FROM Session
+            INNER JOIN Teacher ON Session.teacher_id = Teacher.teacher_id
+            WHERE Teacher.teacher_id = %s
+            GROUP BY Session.day
+        ) AS counts ON days.day = counts.day
+        ORDER BY CASE days.day
+         WHEN 'Monday' THEN 1
+         WHEN 'Tuesday' THEN 2
+         WHEN 'Wednesday' THEN 3
+         WHEN 'Thursday' THEN 4
+         WHEN 'Friday' THEN 5
+         END;
+        ''' % teacher_id
+    result = db.fetch(sql)
+    return result
+
+
 #get teacher password
 def teacher_password(teacher_id):
     db = DBHelper()
