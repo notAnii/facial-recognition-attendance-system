@@ -76,8 +76,44 @@ INSERT INTO Student VALUES (6536177, 'Ismail', 'BCS');
 INSERT INTO Student VALUES (6616781, 'Aeron', 'BCS');
 INSERT INTO Student VALUES (6698360, 'Layton', 'BCS');
 INSERT INTO Student VALUES (6683113, 'Yassin', 'BCS');
-INSERT INTO Student VALUES (1234567, 'Odowa', 'BBIS');
 INSERT INTO Student VALUES (7654321, 'Cat', 'BBIS');
+INSERT INTO Student VALUES (272489, 'Avery', 'BCS')
+INSERT INTO Student VALUES (687192, 'Jordan', 'BCS')
+INSERT INTO Student VALUES (318790, 'Morgan', 'BCS')
+INSERT INTO Student VALUES (405971, 'Casey', 'BCS')
+INSERT INTO Student VALUES (956245, 'Skylar', 'BCS')
+INSERT INTO Student VALUES (937267, 'Cameron', 'BCS')
+INSERT INTO Student VALUES (348606, 'Taylor', 'BCS')
+INSERT INTO Student VALUES (686671, 'Payton', 'BCS')
+INSERT INTO Student VALUES (685842, 'Dakota', 'BCS')
+INSERT INTO Student VALUES (821260, 'Hayden', 'BCS')
+INSERT INTO Student VALUES (550846, 'Riley', 'BCS')
+INSERT INTO Student VALUES (519633, 'Parker', 'BCS')
+INSERT INTO Student VALUES (496417, 'Logan', 'BCS')
+INSERT INTO Student VALUES (793256, 'Alex', 'BCS')
+INSERT INTO Student VALUES (191010, 'Quinn', 'BCS')
+INSERT INTO Student VALUES (995491, 'Drew', 'BCS')
+INSERT INTO Student VALUES (410448, 'Jamie', 'BCS')
+INSERT INTO Student VALUES (974408, 'Charlie', 'BCS')
+INSERT INTO Student VALUES (349199, 'Kai', 'BCS')
+INSERT INTO Student VALUES (426532, 'Addison', 'BCS')
+INSERT INTO Student VALUES (565815, 'Reese', 'BCS')
+INSERT INTO Student VALUES (882659, 'Spencer', 'BCS')
+INSERT INTO Student VALUES (311932, 'Morgan', 'BCS')
+INSERT INTO Student VALUES (367748, 'Elliott', 'BCS')
+INSERT INTO Student VALUES (395607, 'Lane', 'BCS')
+INSERT INTO Student VALUES (571798, 'Hayden', 'BCS')
+INSERT INTO Student VALUES (644785, 'Jules', 'BCS')
+INSERT INTO Student VALUES (950927, 'Sage', 'BCS')
+INSERT INTO Student VALUES (578211, 'River', 'BCS')
+INSERT INTO Student VALUES (897207, 'Phoenix', 'BCS')
+INSERT INTO Student VALUES (632776, 'Dakota', 'BCS')
+INSERT INTO Student VALUES (518962, 'Aspen', 'BCS')
+INSERT INTO Student VALUES (938317, 'Rowan', 'BCS')
+INSERT INTO Student VALUES (822986, 'Parker', 'BCS')
+INSERT INTO Student VALUES (627120, 'Blake', 'BCS')
+INSERT INTO Student VALUES (769520, 'Reese', 'BCS')
+
 
 #inserting subjects
 INSERT INTO Subject VALUES ('CSIT321', 'Project', 'Graduation project subject.');
@@ -86,46 +122,395 @@ INSERT INTO Subject VALUES ('CSIT214', 'Project Management', 'Teaches how to man
 INSERT INTO Subject VALUES ('CSCI369', 'Ethical Hacking', 'Teaches how to hack.');
 INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
 
+
+
 #inserting teachers
-INSERT INTO Teacher VALUES (123, 'Not Sloy', 'FEIS', 'Tutor', NULL);
-INSERT INTO Teacher VALUES (456, 'Mai', 'FEIS', 'Tutor', NULL);
-INSERT INTO Teacher VALUES (789, 'Farhad', 'FEIS', 'Lecturer', NULL);
+INSERT INTO Teacher VALUES (123, 'Hamood', 'FEIS', 'Tutor', NULL);
+INSERT INTO Teacher VALUES (456, 'Sultan', 'FEIS', 'Tutor', NULL);
+INSERT INTO Teacher VALUES (789, 'Jafar', 'FEIS', 'Lecturer', NULL);
+
+
 
 #inserting sessions
-INSERT INTO Session VALUES (1, 'CSCI369', 1, 'Monday', '13:30', '16:30', '5.11', "Lecture", 456);
-INSERT INTO Session VALUES (2, 'CSIT321', 1, 'Thursday', '13:30', '15:30', '4.42', "Tutorial", 789);
-INSERT INTO Session VALUES (3, 'CSIT111', 1, 'Tuesday', '13:30', '15:30', '5.11', "Tutorial", 123);
-INSERT INTO Session VALUES (4, 'MATH221', 1, 'Tuesday', '09:30', '10:30', '3.43', "Lab", 123);
-INSERT INTO Session VALUES (5, 'CSCI369', 2, 'Sunday', '09:30', '11:30', '4.21', "Lab", 456);
-INSERT INTO Session VALUES (6, 'MATH221', 2, 'Friday', '09:30', '10:30', '3.43', "Lab", 123);
-INSERT INTO Session VALUES (7, 'MATH221', 3, 'Friday', '14:30', '16:30', '3.43', "Lab", 123);
+
+#teacher123
+INSERT INTO Session VALUES (1, 'CSCI369', 1, 'Monday', '13:30', '15:30', '5.11', "Lab", 123);
+INSERT INTO Session VALUES (2, 'CSCI369', 2, 'Tuesday', '13:30', '15:30', '3.43', "Lab", 123);
+INSERT INTO Session VALUES (3, 'CSCI369', 3, 'Friday', '08:30', '10:30', '3.43', "Lab", 123);
+INSERT INTO Session VALUES (4, 'MATH221', 1, 'Wednesday', '08:30', '10:30', '3.43', "Lab", 123);
+INSERT INTO Session VALUES (5, 'CSIT111', 1, 'Thursday', '10:30', '12:30', '4.42', "Lab", 123);
+
+#teacher456 (has no one enrolled in them)
+INSERT INTO Session VALUES (6, 'MATH221', 2, 'Friday', '08:30', '10:30', '3.43', "Lab", 456);
+INSERT INTO Session VALUES (7, 'CSIT214', 1, 'Monday', '08:30', '10:30', '5.11', "Lab", 456);
+
+#teacher789 (has no one enrolled in them)
+INSERT INTO Session VALUES (8, 'CSCI369', 1, 'Wednesday', '10:30', '13:30', '3.43', "Lecture", 789);
+
 
 #inserting enrolments
-INSERT INTO Enrolment VALUES (1, 6633249, 1);
-INSERT INTO Enrolment VALUES (2, 6633249, 2);
-INSERT INTO Enrolment VALUES (3, 6536177, 2);
-INSERT INTO Enrolment VALUES (4, 6536177, 3);
-INSERT INTO Enrolment VALUES (5, 6536177, 4);
-INSERT INTO Enrolment VALUES (6, 6616781, 1);
-INSERT INTO Enrolment VALUES (7, 6698360, 2);
-INSERT INTO Enrolment VALUES (8, 6698360, 4);
-INSERT INTO Enrolment VALUES (9, 6683113, 1);
-INSERT INTO Enrolment VALUES (10, 6683113, 3);
-INSERT INTO Enrolment VALUES (11, 1234567, 5);
+# Enrolment for 369(1)
 
-#inserting attendance
+INSERT INTO Enrolment VALUES (1, 6633249, 1);
+INSERT INTO Enrolment VALUES (2, 6536177, 1);
+INSERT INTO Enrolment VALUES (3, 6616781, 1);
+INSERT INTO Enrolment VALUES (4, 6698360, 1);
+INSERT INTO Enrolment VALUES (5, 6683113, 1);
+INSERT INTO Enrolment VALUES (6, 7654321, 1);
+INSERT INTO Enrolment VALUES (7, 272489, 1);
+INSERT INTO Enrolment VALUES (8, 687192, 1);
+INSERT INTO Enrolment VALUES (9, 318790, 1);
+INSERT INTO Enrolment VALUES (10, 405971, 1);
+INSERT INTO Enrolment VALUES (11, 956245, 1);
+INSERT INTO Enrolment VALUES (12, 937267, 1);
+INSERT INTO Enrolment VALUES (13, 348606, 1);
+INSERT INTO Enrolment VALUES (14, 686671, 1);
+INSERT INTO Enrolment VALUES (15, 685842, 1);
+INSERT INTO Enrolment VALUES (16, 821260, 1);
+INSERT INTO Enrolment VALUES (17, 550846, 1);
+INSERT INTO Enrolment VALUES (18, 519633, 1);
+INSERT INTO Enrolment VALUES (19, 496417, 1);
+INSERT INTO Enrolment VALUES (20, 793256, 1);
+
+
+# Enrolment for 369(2)
+
+INSERT INTO Enrolment VALUES (21, 191010, 2);
+INSERT INTO Enrolment VALUES (22, 995491, 2);
+INSERT INTO Enrolment VALUES (23, 410448, 2);
+INSERT INTO Enrolment VALUES (24, 974408, 2);
+INSERT INTO Enrolment VALUES (25, 349199, 2);
+INSERT INTO Enrolment VALUES (26, 426532, 2);
+INSERT INTO Enrolment VALUES (27, 565815, 2);
+INSERT INTO Enrolment VALUES (28, 882659, 2);
+INSERT INTO Enrolment VALUES (29, 311932, 2);
+INSERT INTO Enrolment VALUES (30, 367748, 2);
+INSERT INTO Enrolment VALUES (31, 395607, 2);
+
+# Enrolment for 369 (3)
+
+INSERT INTO Enrolment VALUES (32, 571798, 3);
+INSERT INTO Enrolment VALUES (33, 644785, 3);
+INSERT INTO Enrolment VALUES (34, 950927, 3);
+INSERT INTO Enrolment VALUES (35, 578211, 3);
+INSERT INTO Enrolment VALUES (36, 897207, 3);
+INSERT INTO Enrolment VALUES (37, 632776, 3);
+INSERT INTO Enrolment VALUES (38, 518962, 3);
+INSERT INTO Enrolment VALUES (39, 938317, 3);
+INSERT INTO Enrolment VALUES (40, 822986, 3);
+INSERT INTO Enrolment VALUES (41, 627120, 3);
+INSERT INTO Enrolment VALUES (42, 769520, 3);
+
+
+# Enrolment for math221 (1)
+
+INSERT INTO Enrolment VALUES (43, 6633249, 4);
+INSERT INTO Enrolment VALUES (44, 6536177, 4);
+INSERT INTO Enrolment VALUES (45, 6616781, 4);
+INSERT INTO Enrolment VALUES (46, 6698360, 4);
+INSERT INTO Enrolment VALUES (47, 6683113, 4);
+INSERT INTO Enrolment VALUES (48, 7654321, 4);
+INSERT INTO Enrolment VALUES (49, 272489, 4);
+INSERT INTO Enrolment VALUES (50, 687192, 4);
+INSERT INTO Enrolment VALUES (51, 318790, 4);
+INSERT INTO Enrolment VALUES (52, 405971, 4);
+INSERT INTO Enrolment VALUES (53, 956245, 4);
+INSERT INTO Enrolment VALUES (54, 937267, 4);
+INSERT INTO Enrolment VALUES (55, 348606, 4);
+INSERT INTO Enrolment VALUES (56, 686671, 4);
+INSERT INTO Enrolment VALUES (57, 685842, 4);
+INSERT INTO Enrolment VALUES (58, 821260, 4);
+INSERT INTO Enrolment VALUES (59, 550846, 4);
+INSERT INTO Enrolment VALUES (60, 519633, 4);
+INSERT INTO Enrolment VALUES (61, 496417, 4);
+INSERT INTO Enrolment VALUES (62, 793256, 4);
+INSERT INTO Enrolment VALUES (63, 191010, 4);
+INSERT INTO Enrolment VALUES (64, 995491, 4);
+INSERT INTO Enrolment VALUES (65, 410448, 4);
+INSERT INTO Enrolment VALUES (66, 974408, 4);
+INSERT INTO Enrolment VALUES (67, 349199, 4);
+INSERT INTO Enrolment VALUES (68, 426532, 4);
+INSERT INTO Enrolment VALUES (69, 565815, 4);
+INSERT INTO Enrolment VALUES (70, 882659, 4);
+INSERT INTO Enrolment VALUES (71, 311932, 4);
+INSERT INTO Enrolment VALUES (72, 367748, 4);
+
+# Enrollment for csit111 (1)
+
+INSERT INTO Enrolment VALUES (73, 395607, 5);
+INSERT INTO Enrolment VALUES (74, 571798, 5);
+INSERT INTO Enrolment VALUES (75, 644785, 5);
+INSERT INTO Enrolment VALUES (76, 950927, 5);
+INSERT INTO Enrolment VALUES (77, 578211, 5);
+INSERT INTO Enrolment VALUES (78, 897207, 5);
+INSERT INTO Enrolment VALUES (79, 632776, 5);
+INSERT INTO Enrolment VALUES (80, 518962, 5);
+INSERT INTO Enrolment VALUES (81, 938317, 5);
+INSERT INTO Enrolment VALUES (82, 822986, 5);
+INSERT INTO Enrolment VALUES (83, 627120, 5);
+INSERT INTO Enrolment VALUES (84, 769520, 5);
+
+
+
+# insert attendance
+
+#attendance for 369 (1)
+#week 1
+
 INSERT INTO Attendance VALUES (1, 1, "Week 1", "2023-01-02", '13:30', "Present");
-INSERT INTO Attendance VALUES (2, 2, "Week 1", "2023-01-05", NULL, "Absent");
-INSERT INTO Attendance VALUES (3, 3, "Week 1", "2023-01-05", NULL, "Absent");
-INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-03", '13:30', "Present");
-INSERT INTO Attendance VALUES (5, 5, "Week 1", "2023-01-03", NULL, "Excused");
-INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", '13:31', "Present");
-INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-05", '13:30', "Present");
-INSERT INTO Attendance VALUES (8, 8, "Week 1", "2023-01-03", NULL, "Excused");
-INSERT INTO Attendance VALUES (9, 9, "Week 1", "2023-01-02", NULL, "Excused");
-INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-03", '13:30', "Present");
-INSERT INTO Attendance VALUES (11, 1, "Week 2", "2023-01-09", '13:30', "Present");
-INSERT INTO Attendance VALUES (12, 1, "Week 3", "2023-01-16", NULL, "Excused");
+INSERT INTO Attendance VALUES (2, 2, "Week 1", "2023-01-02", '13:31', "Present");
+INSERT INTO Attendance VALUES (3, 3, "Week 1", "2023-01-02", '13:32', "Present");
+INSERT INTO Attendance VALUES (4, 4, "Week 1", "2023-01-02", '13:33', "Present");
+INSERT INTO Attendance VALUES (5, 5, "Week 1", "2023-01-02", '13:34', "Present");
+INSERT INTO Attendance VALUES (6, 6, "Week 1", "2023-01-02", '13:35', "Present");
+INSERT INTO Attendance VALUES (7, 7, "Week 1", "2023-01-02", '13:35', "Present");
+INSERT INTO Attendance VALUES (8, 8, "Week 1", "2023-01-02", '13:35', "Present");
+INSERT INTO Attendance VALUES (9, 9, "Week 1", "2023-01-02", '13:35', "Present");
+INSERT INTO Attendance VALUES (10, 10, "Week 1", "2023-01-02", '13:36', "Present");
+INSERT INTO Attendance VALUES (11, 11, "Week 1", "2023-01-02", '13:36', "Present");
+INSERT INTO Attendance VALUES (12, 12, "Week 1", "2023-01-02", '13:37', "Present");
+INSERT INTO Attendance VALUES (13, 13, "Week 1", "2023-01-02", '13:37', "Present");
+INSERT INTO Attendance VALUES (14, 14, "Week 1", "2023-01-02", '13:37', "Present");
+INSERT INTO Attendance VALUES (15, 15, "Week 1", "2023-01-02", NULL, "Absent");
+INSERT INTO Attendance VALUES (16, 16, "Week 1", "2023-01-02", NULL, "Absent");
+INSERT INTO Attendance VALUES (17, 17, "Week 1", "2023-01-02", NULL, "Absent");
+INSERT INTO Attendance VALUES (18, 18, "Week 1", "2023-01-02", NULL, "Absent");
+INSERT INTO Attendance VALUES (19, 19, "Week 1", "2023-01-02", NULL, "Absent");
+INSERT INTO Attendance VALUES (20, 20, "Week 1", "2023-01-02", NULL, "Excused");
+
+
+#week2
+INSERT INTO Attendance VALUES (21, 1, "Week 2", "2023-01-09", NULL, "Excused");
+INSERT INTO Attendance VALUES (22, 2, "Week 2", "2023-01-09", NULL, "Absent");
+INSERT INTO Attendance VALUES (23, 3, "Week 2", "2023-01-09", '13:32', "Present");
+INSERT INTO Attendance VALUES (24, 4, "Week 2", "2023-01-09", '13:33', "Present");
+INSERT INTO Attendance VALUES (25, 5, "Week 2", "2023-01-09", '13:34', "Present");
+INSERT INTO Attendance VALUES (26, 6, "Week 2", "2023-01-09", '13:35', "Present");
+INSERT INTO Attendance VALUES (27, 7, "Week 2", "2023-01-09", '13:35', "Present");
+INSERT INTO Attendance VALUES (28, 8, "Week 2", "2023-01-09", '13:35', "Present");
+INSERT INTO Attendance VALUES (29, 9, "Week 2", "2023-01-09", '13:35', "Present");
+INSERT INTO Attendance VALUES (30, 10, "Week 2", "2023-01-09", '13:36', "Present");
+INSERT INTO Attendance VALUES (31, 11, "Week 2", "2023-01-09", '13:36', "Present");
+INSERT INTO Attendance VALUES (32, 12, "Week 2", "2023-01-09", '13:37', "Present");
+INSERT INTO Attendance VALUES (33, 13, "Week 2", "2023-01-09", '13:37', "Present");
+INSERT INTO Attendance VALUES (34, 14, "Week 2", "2023-01-09", '13:37', "Present");
+INSERT INTO Attendance VALUES (35, 15, "Week 2", "2023-01-09", '13:37', "Present");
+INSERT INTO Attendance VALUES (36, 16, "Week 2", "2023-01-09", '13:38', "Present");
+INSERT INTO Attendance VALUES (37, 17, "Week 2", "2023-01-09", NULL, "Absent");
+INSERT INTO Attendance VALUES (38, 18, "Week 2", "2023-01-09", NULL, "Absent");
+INSERT INTO Attendance VALUES (39, 19, "Week 2", "2023-01-09", NULL, "Absent");
+INSERT INTO Attendance VALUES (40, 20, "Week 2", "2023-01-09", NULL, "Excused");
+
+#week3
+INSERT INTO Attendance VALUES (41, 1, "Week 3", "2023-01-16", '13:31', "Present");
+INSERT INTO Attendance VALUES (42, 2, "Week 3", "2023-01-16", NULL, "Excused");
+INSERT INTO Attendance VALUES (43, 3, "Week 3", "2023-01-16", '13:32', "Present");
+INSERT INTO Attendance VALUES (44, 4, "Week 3", "2023-01-16", '13:33', "Present");
+INSERT INTO Attendance VALUES (45, 5, "Week 3", "2023-01-16", '13:34', "Present");
+INSERT INTO Attendance VALUES (46, 6, "Week 3", "2023-01-16", '13:35', "Present");
+INSERT INTO Attendance VALUES (47, 7, "Week 3", "2023-01-16", '13:35', "Present");
+INSERT INTO Attendance VALUES (48, 8, "Week 3", "2023-01-16", '13:35', "Present");
+INSERT INTO Attendance VALUES (49, 9, "Week 3", "2023-01-16", '13:35', "Present");
+INSERT INTO Attendance VALUES (50, 10, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (51, 11, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (52, 12, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (53, 13, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (54, 14, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (55, 15, "Week 3", "2023-01-16", '13:37', "Present");
+INSERT INTO Attendance VALUES (56, 16, "Week 3", "2023-01-16", '13:38', "Present");
+INSERT INTO Attendance VALUES (57, 17, "Week 3", "2023-01-16", NULL, "Absent");
+INSERT INTO Attendance VALUES (58, 18, "Week 3", "2023-01-16", NULL, "Excused");
+INSERT INTO Attendance VALUES (59, 19, "Week 3", "2023-01-16", NULL, "Excused");
+INSERT INTO Attendance VALUES (60, 20, "Week 3", "2023-01-16", NULL, "Excused");
+
+
+
+
+#attendance for 369 (2)
+#week1
+
+INSERT INTO Attendance VALUES (61, 21, "Week 1", "2023-01-03", '13:31', "Present");
+INSERT INTO Attendance VALUES (62, 22, "Week 1", "2023-01-03", '13:31', "Present");
+INSERT INTO Attendance VALUES (63, 23, "Week 1", "2023-01-03", '13:34', "Present");
+INSERT INTO Attendance VALUES (64, 24, "Week 1", "2023-01-03", '13:33', "Present");
+INSERT INTO Attendance VALUES (65, 25, "Week 1", "2023-01-03", '13:31', "Present");
+INSERT INTO Attendance VALUES (66, 26, "Week 1", "2023-01-03", '13:32', "Present");
+INSERT INTO Attendance VALUES (67, 27, "Week 1", "2023-01-03", '13:32', "Present");
+INSERT INTO Attendance VALUES (68, 28, "Week 1", "2023-01-03", '13:38', "Present");
+INSERT INTO Attendance VALUES (69, 29, "Week 1", "2023-01-03", NULL, "Absent");
+INSERT INTO Attendance VALUES (70, 30, "Week 1", "2023-01-03", NULL, "Absent");
+INSERT INTO Attendance VALUES (71, 31, "Week 1", "2023-01-03", NULL, "Excused");
+
+
+#week2
+INSERT INTO Attendance VALUES (72, 21, "Week 2", "2023-01-10", '13:31', "Present");
+INSERT INTO Attendance VALUES (73, 22, "Week 2", "2023-01-10", '13:31', "Present");
+INSERT INTO Attendance VALUES (74, 23, "Week 2", "2023-01-10", '13:32', "Present");
+INSERT INTO Attendance VALUES (75, 24, "Week 2", "2023-01-10", '13:31', "Present");
+INSERT INTO Attendance VALUES (76, 25, "Week 2", "2023-01-10", '13:32', "Present");
+INSERT INTO Attendance VALUES (77, 26, "Week 2", "2023-01-10", '13:31', "Present");
+INSERT INTO Attendance VALUES (78, 27, "Week 2", "2023-01-10", '13:35', "Present");
+INSERT INTO Attendance VALUES (79, 28, "Week 2", "2023-01-10", '13:31', "Present");
+INSERT INTO Attendance VALUES (80, 29, "Week 2", "2023-01-10", NULL, "Absent");
+INSERT INTO Attendance VALUES (81, 30, "Week 2", "2023-01-10", NULL, "Excused");
+INSERT INTO Attendance VALUES (82, 31, "Week 2", "2023-01-10", NULL, "Excused");
+
+
+#week3
+INSERT INTO Attendance VALUES (83, 21, "Week 3", "2023-01-17", NULL, "Absent");
+INSERT INTO Attendance VALUES (84, 22, "Week 3", "2023-01-17", NULL, "Absent");
+INSERT INTO Attendance VALUES (85, 23, "Week 3", "2023-01-17", '13:32', "Present");
+INSERT INTO Attendance VALUES (86, 24, "Week 3", "2023-01-17", '13:31', "Present");
+INSERT INTO Attendance VALUES (87, 25, "Week 3", "2023-01-17", '13:32', "Present");
+INSERT INTO Attendance VALUES (88, 26, "Week 3", "2023-01-17", '13:31', "Present");
+INSERT INTO Attendance VALUES (89, 27, "Week 3", "2023-01-17", '13:35', "Present");
+INSERT INTO Attendance VALUES (90, 28, "Week 3", "2023-01-17", '13:31', "Present");
+INSERT INTO Attendance VALUES (91, 29, "Week 3", "2023-01-17", NULL, "Absent");
+INSERT INTO Attendance VALUES (92, 30, "Week 3", "2023-01-17", NULL, "Excused");
+INSERT INTO Attendance VALUES (93, 31, "Week 3", "2023-01-17", NULL, "Excused");
+
+
+
+#attendance for 369 (3)
+#week 1
+
+INSERT INTO Attendance VALUES (94, 32, "Week 1", "2023-01-06", NULL, "Absent");
+INSERT INTO Attendance VALUES (95, 33, "Week 1", "2023-01-06", NULL, "Absent");
+INSERT INTO Attendance VALUES (96, 34, "Week 1", "2023-01-06", '08:31', "Present");
+INSERT INTO Attendance VALUES (97, 35, "Week 1", "2023-01-06", '08:36', "Present");
+INSERT INTO Attendance VALUES (98, 36, "Week 1", "2023-01-06", '08:37', "Present");
+INSERT INTO Attendance VALUES (99, 37, "Week 1", "2023-01-06", '08:32', "Present");
+INSERT INTO Attendance VALUES (100, 38, "Week 1", "2023-01-06", '08:34', "Present");
+INSERT INTO Attendance VALUES (101, 39, "Week 1", "2023-01-06", '08:31', "Present");
+INSERT INTO Attendance VALUES (102, 40, "Week 1", "2023-01-06", NULL, "Absent");
+INSERT INTO Attendance VALUES (103, 41, "Week 1", "2023-01-06", NULL, "Absent");
+INSERT INTO Attendance VALUES (104, 42, "Week 1", "2023-01-06", NULL, "Excused");
+
+#week 2
+INSERT INTO Attendance VALUES (105, 32, "Week 2", "2023-01-13", '08:31', "Present");
+INSERT INTO Attendance VALUES (106, 33, "Week 2", "2023-01-13", NULL, "Absent");
+INSERT INTO Attendance VALUES (107, 34, "Week 2", "2023-01-13", '08:31', "Present");
+INSERT INTO Attendance VALUES (108, 35, "Week 2", "2023-01-13", '08:36', "Present");
+INSERT INTO Attendance VALUES (109, 36, "Week 2", "2023-01-13", '08:37', "Present");
+INSERT INTO Attendance VALUES (110, 37, "Week 2", "2023-01-13", '08:32', "Present");
+INSERT INTO Attendance VALUES (111, 38, "Week 2", "2023-01-13", '08:34', "Present");
+INSERT INTO Attendance VALUES (112, 39, "Week 2", "2023-01-13", '08:31', "Present");
+INSERT INTO Attendance VALUES (113, 40, "Week 2", "2023-01-13", NULL, "Excused");
+INSERT INTO Attendance VALUES (114, 41, "Week 2", "2023-01-13", NULL, "Excused");
+INSERT INTO Attendance VALUES (115, 42, "Week 2", "2023-01-13", NULL, "Excused");
+
+#week 3
+INSERT INTO Attendance VALUES (116, 32, "Week 3", "2023-01-21", '08:31', "Present");
+INSERT INTO Attendance VALUES (117, 33, "Week 3", "2023-01-21", '08:31', "Present");
+INSERT INTO Attendance VALUES (118, 34, "Week 3", "2023-01-21", '08:31', "Present");
+INSERT INTO Attendance VALUES (119, 35, "Week 3", "2023-01-21", '08:36', "Present");
+INSERT INTO Attendance VALUES (120, 36, "Week 3", "2023-01-21", '08:37', "Present");
+INSERT INTO Attendance VALUES (121, 37, "Week 3", "2023-01-21", '08:32', "Present");
+INSERT INTO Attendance VALUES (122, 38, "Week 3", "2023-01-21", '08:34', "Present");
+INSERT INTO Attendance VALUES (123, 39, "Week 3", "2023-01-21", '08:31', "Present");
+INSERT INTO Attendance VALUES (124, 40, "Week 3", "2023-01-21", '08:36', "Present");
+INSERT INTO Attendance VALUES (125, 41, "Week 3", "2023-01-21", '08:33', "Present");
+INSERT INTO Attendance VALUES (126, 42, "Week 3", "2023-01-21", '08:33', "Present");
+
+
+
+# attendance for 221 (1)
+#week1
+
+INSERT INTO Attendance VALUES (127, 43, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (128, 44, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (129, 45, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (130, 46, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (131, 47, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (132, 48, "Week 1", "2023-01-04", NULL, "Absent");
+INSERT INTO Attendance VALUES (133, 49, "Week 1", "2023-01-04", NULL, "Excused");
+INSERT INTO Attendance VALUES (134, 50, "Week 1", "2023-01-04", '08:31', "Present");
+INSERT INTO Attendance VALUES (135, 51, "Week 1", "2023-01-04", '08:36', "Present");
+INSERT INTO Attendance VALUES (136, 52, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (137, 53, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (138, 54, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (139, 54, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (140, 56, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (141, 57, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (142, 58, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (143, 59, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (144, 60, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (145, 61, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (146, 62, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (147, 63, "Week 1", "2023-01-04", '08:32', "Present");
+INSERT INTO Attendance VALUES (148, 64, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (149, 65, "Week 1", "2023-01-04", '08:31', "Present");
+INSERT INTO Attendance VALUES (150, 66, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (151, 67, "Week 1", "2023-01-04", '08:32', "Present");
+INSERT INTO Attendance VALUES (152, 68, "Week 1", "2023-01-04", '08:37', "Present");
+INSERT INTO Attendance VALUES (153, 69, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (154, 70, "Week 1", "2023-01-04", '08:33', "Present");
+INSERT INTO Attendance VALUES (155, 71, "Week 1", "2023-01-04", '08:37', "Present");
+INSERT INTO Attendance VALUES (156, 72, "Week 1", "2023-01-04", '08:33', "Present");
+
+
+#week2
+
+INSERT INTO Attendance VALUES (157, 43, "Week 2", "2023-01-11", '08:31', "Present");
+INSERT INTO Attendance VALUES (158, 44, "Week 2", "2023-01-11", '08:31', "Present");
+INSERT INTO Attendance VALUES (159, 45, "Week 2", "2023-01-11", '08:31', "Present"));
+INSERT INTO Attendance VALUES (160, 46, "Week 2", "2023-01-11", NULL, "Absent");
+INSERT INTO Attendance VALUES (161, 47, "Week 2", "2023-01-11", NULL, "Absent");
+INSERT INTO Attendance VALUES (162, 48, "Week 2", "2023-01-11", NULL, "Absent");
+INSERT INTO Attendance VALUES (164, 49, "Week 2", "2023-01-11", NULL, "Excused");
+INSERT INTO Attendance VALUES (165, 50, "Week 2", "2023-01-11", '08:31', "Present");
+INSERT INTO Attendance VALUES (166, 51, "Week 2", "2023-01-11", '08:36', "Present");
+INSERT INTO Attendance VALUES (167, 52, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (168, 53, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (169, 54, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (170, 54, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (171, 56, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (172, 57, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (173, 58, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (174, 59, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (175, 60, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (176, 61, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (177, 62, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (178, 63, "Week 2", "2023-01-11", '08:32', "Present");
+INSERT INTO Attendance VALUES (179, 64, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (180, 65, "Week 2", "2023-01-11", '08:31', "Present");
+INSERT INTO Attendance VALUES (181, 66, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (182, 67, "Week 2", "2023-01-11", '08:31', "Present");
+INSERT INTO Attendance VALUES (183, 68, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (184, 69, "Week 2", "2023-01-11", NULL, "Absent");
+INSERT INTO Attendance VALUES (185, 70, "Week 2", "2023-01-11", NULL, "Absent");
+INSERT INTO Attendance VALUES (186, 71, "Week 2", "2023-01-11", '08:33', "Present");
+INSERT INTO Attendance VALUES (187, 72, "Week 2", "2023-01-11", '08:33', "Present");
+
+
+#attendance for 111 (1)
+#week 1
+INSERT INTO Attendance VALUES (188, 73, "Week 1", "2023-01-05", '10:30', "Present");
+INSERT INTO Attendance VALUES (189, 74, "Week 1", "2023-01-05", '10:37', "Present");
+INSERT INTO Attendance VALUES (190, 75, "Week 1", "2023-01-05", '10:33', "Present");
+INSERT INTO Attendance VALUES (191, 76, "Week 1", "2023-01-05", '10:38', "Present");
+INSERT INTO Attendance VALUES (192, 77, "Week 1", "2023-01-05", '10:31', "Present");
+INSERT INTO Attendance VALUES (193, 78, "Week 1", "2023-01-05", '10:33', "Present");
+INSERT INTO Attendance VALUES (194, 79, "Week 1", "2023-01-05", '10:33', "Present");
+INSERT INTO Attendance VALUES (195, 80, "Week 1", "2023-01-05", '10:33', "Present");
+INSERT INTO Attendance VALUES (196, 81, "Week 1", "2023-01-05", '10:36', "Present");
+INSERT INTO Attendance VALUES (197, 82, "Week 1", "2023-01-05", '10:33', "Present");
+INSERT INTO Attendance VALUES (198, 83, "Week 1", "2023-01-05", '10:39', "Present");
+INSERT INTO Attendance VALUES (199, 84, "Week 1", "2023-01-05", '10:33', "Present");
+
+#week 2
+INSERT INTO Attendance VALUES (200, 73, "Week 2", "2023-01-12", NULL, "Excused");
+INSERT INTO Attendance VALUES (201, 74, "Week 2", "2023-01-12", '10:37', "Present");
+INSERT INTO Attendance VALUES (202, 75, "Week 2", "2023-01-12", '10:33', "Present");
+INSERT INTO Attendance VALUES (203, 76, "Week 2", "2023-01-12", '10:38', "Present");
+INSERT INTO Attendance VALUES (204, 77, "Week 2", "2023-01-12", '10:31', "Present");
+INSERT INTO Attendance VALUES (205, 78, "Week 2", "2023-01-12", '10:33', "Present");
+INSERT INTO Attendance VALUES (206, 79, "Week 2", "2023-01-12", '10:33', "Present");
+INSERT INTO Attendance VALUES (207, 80, "Week 2", "2023-01-12", '10:33', "Present");
+INSERT INTO Attendance VALUES (208, 81, "Week 2", "2023-01-12", '10:36', "Present");
+INSERT INTO Attendance VALUES (209, 82, "Week 2", "2023-01-12", '10:33', "Present");
+INSERT INTO Attendance VALUES (210, 83, "Week 2", "2023-01-12", NULL, "Absent");
+INSERT INTO Attendance VALUES (211, 84, "Week 2", "2023-01-12", NULL, "Absent");
 
 ############################################################################################################################
 
