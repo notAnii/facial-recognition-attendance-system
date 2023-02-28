@@ -9,19 +9,12 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
   useDisclosure,
   BoxProps,
   FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Breadcrumb,
   Image,
   Popover,
   PopoverTrigger,
@@ -47,6 +40,7 @@ import {SiGoogleclassroom,} from "react-icons/si";
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import "@fontsource/open-sans"
+import Link from 'next/link'
 
 interface LinkItemProps {
   name: string;
@@ -140,7 +134,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       
       <Box marginLeft={-4}>
       <Link //LINK FOR FIRST BUTTON
-      href="/afterLogin/home" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      href="/afterLogin/home" style={{ textDecoration: 'none' }}>
       {FirstLink.map((link) => (
         <NavItem 
         textColor={"white"}
@@ -151,8 +145,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ))}
       </Link>
 
-      <Link href='https://outlook.office.com/mail/' isExternal
-      style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      <Link href='https://outlook.office.com/mail/' 
+      style={{ textDecoration: 'none' }} >
       {FourthLink.map((link) => (
         <NavItem 
         textColor={"white"}
@@ -164,7 +158,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Link>
 
       <Link //LINK FOR FIFTH BUTTON
-      href="/afterLogin/classes" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      href="/afterLogin/classes" style={{ textDecoration: 'none' }}>
       {FifthLink.map((link) => (
         <NavItem 
         textColor={"white"}
@@ -213,7 +207,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Link //LINK FOR SIXTH BUTTON
       href="/" 
       style={{ textDecoration: 'none' }} 
-      _focus={{ boxShadow: 'none' }}
       >
       {SixthLink.map((link) => (
         <Text

@@ -8,18 +8,28 @@ import { Box, Container, Text, Stack, VStack, Avatar, HStack,
   Td,
   TableCaption,
   TableContainer,} from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "@fontsource/open-sans"
 import Chart from './chart'
 import Card from './card'
+import { Router } from 'next/router'
 
 type Props = {}
 
 const Hero = (props: Props) => {
-  const [classes,setClasses] = useState([
-    {}
-  ]);
+
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
+
     <Container 
     h="100vh" 
     display={"flex"} 
@@ -29,6 +39,7 @@ const Hero = (props: Props) => {
       <VStack 
       w = "100%"
       >
+        
       
       <Box //Box Top
       backgroundColor={"white"} 
@@ -167,12 +178,12 @@ const Hero = (props: Props) => {
             paddingBottom={25}
             fontWeight="bold"
             textAlign={"center"}
-            
             >
-              2022 Class attendance
+              2023 Spring Semester Schedule 
               </Text>
   
           <Chart/>
+
           </VStack>
 
           </HStack>
@@ -234,9 +245,6 @@ const Hero = (props: Props) => {
 
       </VStack>
       </Container>
-      
-      
-    
   )
 }
 
