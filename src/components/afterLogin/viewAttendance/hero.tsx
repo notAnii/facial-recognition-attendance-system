@@ -4,20 +4,36 @@ import {
   Text, 
   Spacer,
   IconButton,
-  Input,} from '@chakra-ui/react'
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverFooter,
+  Button,
+  Portal,
+  PopoverContent,
+  RadioGroup,
+  Stack,
+  Radio,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
-import { BsFilter, BsFilterLeft } from 'react-icons/bs';
-import { useState } from 'react';
+import { BsFilterLeft } from 'react-icons/bs';
 import { WeekContext } from '../../context';
 import axios from 'axios';
+import { useState } from 'react';
 
 type Props = {}
 
 const Hero = (props: Props) => {
 
-  const {weekNumber, setWeekNumber} = useContext(WeekContext);
-  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
-  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+    const {weekNumber, setWeekNumber} = useContext(WeekContext);
+    const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+    const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+    const {dayNumber, setDayNumber} = useContext(WeekContext);
+    const {startTimeNumber, setStartTimeNumber} = useContext(WeekContext);
+    const {endTimeNumber, setEndTimeNumber} = useContext(WeekContext);
   
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,6 +53,7 @@ const Hero = (props: Props) => {
     const fetchData = async () => {
       const result = await axios.get(URL + weekNumber);
       setData(result.data);
+      console.log(subjectCodeNumber + " " + sessionNumberCon + " " + dayNumber + " " + startTimeNumber + " " + endTimeNumber);
     };
 
     fetchData();
@@ -97,19 +114,50 @@ const Hero = (props: Props) => {
             </Box>
             <Box //Box that has filter button
                 w="4%" h="100%" display="flex" alignItems="center" justifyContent="center">
-                <IconButton 
-                    aria-label='Filter' 
-                    color="black" 
-                    size="sm"
-                    icon={<BsFilterLeft />} px={4} 
-                    fontSize='25px'
-                    variant={"ghost"}
-                    borderRadius={13}
-                    _hover={{
-                    bgColor: "#ECECEC",
-                    color: "#818589",
-                    }}
-                />
+                
+                <Popover 
+                placement='bottom'
+                >
+                    <PopoverTrigger>
+                        <IconButton 
+                            aria-label='Filter' 
+                            color="black" 
+                            size="sm"
+                            icon={<BsFilterLeft />} px={4} 
+                            fontSize='25px'
+                            variant={"ghost"}
+                            borderRadius={13}
+                            _hover={{
+                            bgColor: "#ECECEC",
+                            color: "#818589",
+                            }}
+                        />
+                    </PopoverTrigger>
+                    <Portal>
+                        <PopoverContent>
+                            <PopoverHeader border='0'>
+                                Filter By:
+                            </PopoverHeader>
+                            <PopoverArrow/>
+                            <PopoverCloseButton/>
+                            <PopoverBody>
+                                <RadioGroup>
+                                    <Stack direction='column'>
+                                        <Radio value='1'>All</Radio>
+                                        <Radio value='2'>Present</Radio>
+                                        <Radio value='3'>Absent</Radio>
+                                        <Radio value='4'>Excused</Radio>
+                                    </Stack>
+                                </RadioGroup>
+                            </PopoverBody>
+                            <PopoverFooter>
+                                <Button>Search</Button>
+                            </PopoverFooter>
+                        </PopoverContent>
+                    </Portal>
+
+                </Popover>
+
             </Box>
             
             <Spacer/>
@@ -191,9 +239,6 @@ const Hero = (props: Props) => {
             </Box>
             </Box>
             ))}
-            
-            <Card/>
-
 
         </Box>
         <Box //Box under the table that has the weeks
