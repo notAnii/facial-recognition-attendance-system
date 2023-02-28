@@ -132,7 +132,7 @@ const Hero = (props: Props) => {
                 </Box>
             </Box>
 
-            <Card week={weekNumber}/>
+            <Card/>
 
         </Box>
         <Box //Box under the table that has the weeks

@@ -7,14 +7,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import { WeekContext } from '../../context';
 
 
-interface WeekProperty {
-  week: number;
-}
-
-
-
-const Hero: React.FC<WeekProperty> = ({week}) => {
+const Hero: React.FC = () => {
   const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   
   const [data, setData] = useState<Array<{ 
@@ -29,13 +26,14 @@ const Hero: React.FC<WeekProperty> = ({week}) => {
 
   useEffect(() => {
     
-    const fetchData = async (week: number) => {
-      const result = await axios.get(URL + week);
+    const fetchData = async () => {
+      const result = await axios.get(URL + weekNumber);
       setData(result.data);
+      console.log(subjectCodeNumber + " " + sessionNumberCon);
     };
 
-    fetchData(week);
-  }, [week]);
+    fetchData();
+  }, [weekNumber]);
 
   return (
     <>
