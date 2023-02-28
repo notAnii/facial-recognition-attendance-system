@@ -52,8 +52,8 @@ const Hero: React.FC = () => {
     <Container 
     h="100vh" 
     display={"flex"} 
-    maxW={"7xl"}
-    //justifyContent={"center"}
+    maxW={"9xl"}
+    justifyContent={"center"}
     backgroundColor="#E5E5E5"
     overflow={"hidden"}
     >

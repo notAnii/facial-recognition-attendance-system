@@ -1,5 +1,6 @@
 import {
   Box,
+  Input,
   Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
@@ -7,12 +8,14 @@ import React, { useState, useEffect, useContext } from 'react'
 import { WeekContext } from '../../context';
 
 
-const Hero: React.FC = () => {
+const Card: React.FC = () => {
+
   const {weekNumber, setWeekNumber} = useContext(WeekContext);
   const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
   const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
 
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [data, setData] = useState<Array<{ 
     student_id: number; 
@@ -33,11 +36,28 @@ const Hero: React.FC = () => {
     };
 
     fetchData();
+
+
   }, [weekNumber]);
+
+  const filteredData = data.filter(
+    item =>
+      item.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.student_id.toString().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearchQuery(e.target.value);
+  };
+
+  }, [weekNumber]);
+
 
   return (
     <>
-      {data.map((item) => (  
+    <Input placeholder="Search by name or ID" onChange={handleSearch} value={searchQuery} />
+    
+        {filteredData.map(item => (
         <Box paddingLeft="2%" h="13%" display="flex">  
                 
           <Box w='10%' display="flex" alignItems="center">
@@ -62,9 +82,9 @@ const Hero: React.FC = () => {
             <Text>{item.unexcused_absences}</Text>
           </Box>
         </Box>
-      ))}
+        ))}
     </>
   );
 };
 
-export default Hero;
+export default Card;

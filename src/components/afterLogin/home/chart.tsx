@@ -13,16 +13,11 @@ import {
 
 const Chart = () => {
   const data = [
-    { month: "Week1", Days: 100 },
-    { month: "Week2", Days: 75 },
-    { month: "Week3", Days: 50 },
-    { month: "Week4", Days: 25 },
-    { month: "Week5", Days: 100 },
-    { month: "Week6", Days: 78 },
-    { month: "Week7", Days: 50 },
-    { month: "Week8", Days: 25 },
-    { month: "Week9", Days: 100 },
-    { month: "Week10", Days: 75 },
+    { Day: "Monday", Classes: 4 },
+    { Day: "Tuesday", Classes: 2 },
+    { Day: "Wednesday", Classes: 3 },
+    { Day: "Thursday", Classes: 5 },
+    { Day: "Friday", Classes: 1},
   ];
 
   return (
@@ -43,21 +38,21 @@ const Chart = () => {
           barSize={13}
         >
           <XAxis
-            dataKey="month"
-            fontSize={10}
+            dataKey="Day"
+            fontSize={13}
             fontWeight="bold"
             fontFamily={"Open Sans"}
             scale="point"
-            padding={{ left: 10, right: 10 }}
+            padding={{ left: 20, right: 20 }}
           />
           <YAxis 
-           fontSize={10}
+           fontSize={13}
            fontWeight="bold"
            fontFamily={"Open Sans"}
           />
           <Tooltip />
           <CartesianGrid strokeDasharray="4 4" />
-          <Bar dataKey="Days" fill="black" radius={10}/>
+          <Bar dataKey="Classes" fill="black" radius={10}/>
         </BarChart>
       </div>
     </div>

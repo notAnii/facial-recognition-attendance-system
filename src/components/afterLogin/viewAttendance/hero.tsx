@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { 
   Box, 
   Text, 
@@ -7,20 +7,51 @@ import {
   Input,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilter, BsFilterLeft } from 'react-icons/bs';
-import Card from './card'
 import { useState } from 'react';
 import { WeekContext } from '../../context';
-
-//import Hero from "../startAttend/hero"
+import axios from 'axios';
 
 type Props = {}
 
 const Hero = (props: Props) => {
-  const {weekNumber, setWeekNumber} = useContext(WeekContext);
 
-  function rgba(arg0: number, arg1: number, arg2: number, arg3: number) {
-    throw new Error('Function not implemented.')
-  }
+  const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+  
+  const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [data, setData] = useState<Array<{ 
+    student_id: number; 
+    student_name: string; 
+    week: string;
+    date: string;
+    attedance_percentage: string;
+    status: string;
+    unexcused_absences: string; 
+  }>>([]);
+
+  useEffect(() => {
+    
+    const fetchData = async () => {
+      const result = await axios.get(URL + weekNumber);
+      setData(result.data);
+    };
+
+    fetchData();
+
+  }, [weekNumber]);
+
+  const filteredData = data.filter(
+    item =>
+      item.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.student_id.toString().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <Box //Whole page box excluding the tast bar
@@ -60,7 +91,9 @@ const Hero = (props: Props) => {
                 bg='#F0F0F0' 
                 borderRadius={30} 
                 border={"1px"} 
-                borderColor={"Black"}/>        
+                borderColor={"Black"}
+                onChange={handleSearch} value={searchQuery}
+                />        
             </Box>
             <Box //Box that has filter button
                 w="4%" h="100%" display="flex" alignItems="center" justifyContent="center">
@@ -131,8 +164,36 @@ const Hero = (props: Props) => {
                     <Text>Unexcused Absences</Text>
                 </Box>
             </Box>
-
+   
+                {filteredData.map(item => (
+            <Box paddingLeft="2%" h="13%" display="flex">  
+                    
+            <Box w='10%' display="flex" alignItems="center">
+                <Text>{item.student_id}</Text>
+            </Box>
+            <Box w='13%' display="flex" alignItems="center">
+                <Text>{item.student_name}</Text>
+            </Box>
+            <Box w='7%' display="flex" alignItems="center">
+                <Text>{item.week}</Text>
+            </Box>
+            <Box w='8%' display="flex" alignItems="center">
+                <Text>{item.date}</Text>
+            </Box>
+            <Box w='15%' display="flex" alignItems="center">
+                <Text>{item.attedance_percentage + "%"}</Text>
+            </Box>
+            <Box w='15%' display="flex" alignItems="center">
+                <Text>{item.status}</Text>
+            </Box>
+            <Box w='15%' display="flex" alignItems="center">
+                <Text>{item.unexcused_absences}</Text>
+            </Box>
+            </Box>
+            ))}
+            
             <Card/>
+
 
         </Box>
         <Box //Box under the table that has the weeks
