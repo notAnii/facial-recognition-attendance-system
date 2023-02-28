@@ -60,11 +60,23 @@ const Hero = (props: Props) => {
 
   }, [weekNumber]);
 
-  const filteredData = data.filter(
-    item =>
-      item.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.student_id.toString().includes(searchQuery.toLowerCase())
-  );
+  const filteredData = data.filter((item) => {
+    const searchQueryLower = searchQuery.toLowerCase();
+    const studentIdLower = item.student_id.toString().toLowerCase();
+  
+    // Filter out items that match the search query exactly
+    if (studentIdLower === searchQueryLower) {
+      return true;
+    }
+  
+    // Filter out items that start with the search query
+    if (studentIdLower.startsWith(searchQueryLower)) {
+      return true;
+    }
+  
+    // Filter out items that don't match the search query
+    return item.student_name.toLowerCase().includes(searchQueryLower);
+  });
 
   const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setSearchQuery(e.target.value);
