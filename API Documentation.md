@@ -70,7 +70,7 @@ In summary, bcrypt is a widely used password hashing function that uses the Blow
    }
   ```
 - **404 Not Found:** The requested data was not found.
-- **500 Internal Server Error:** An unexpected error occurred.
+- **500 Internal Server Error:** An unexpected error occurred while logging in.
 
 
 
@@ -115,7 +115,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
    }
   ```
 - **404 Not Found:** The requested data was not found.
-- **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
+- **500 Internal Server Error:** An unexpected error occurred while logging out.
 *  _**Note:**_ 
     * _This endpoint requires the user to be authenticated via a valid access token cookie. If the access token cookie is not present or is invalid, the user will     receive a 401 Unauthorized response._
     * _If the user is already logged out or their token has expired, the endpoint will still return a 200 OK response._
@@ -479,7 +479,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
    }
   ```
 - **404 Not Found:** The requested data was not found.
-- **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
+- **500 Internal Server Error:** An unexpected error occurred while retrieving the teacher information.
 
 
 
@@ -536,7 +536,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
    }
   ```
 - **404 Not Found:** The requested data was not found.
-- **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
+- **500 Internal Server Error:** An unexpected error occurred while retrieving the upcoming classes.
 
 
 
@@ -600,7 +600,60 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
    }
   ```
 - **404 Not Found:** The requested data was not found.
-- **500 Internal Server Error:** An unexpected error occurred while retrieving the attendance.
+- **500 Internal Server Error:** An unexpected error occurred while retrieving the classes.
+
+</br>
+
+
+
+
+# Teacher's class counts
+
+### URL: `GET /api/v1/class-counts`
+
+#### **Description:**
+Returns the class counts per day for a specific teacher 
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Responses:**
+- **200 OK:** The class counts for teacher was successfully retrieved.
+  Body:
+  
+   ```json
+   [
+    {
+        "day": "Monday",
+        "num_sessions": 1
+    },
+    {
+        "day": "Tuesday",
+        "num_sessions": 1
+    },
+    {
+        "day": "Wednesday",
+        "num_sessions": 1
+    },
+  ```
+  
+- **204 No Content:** No classes data was found for this teacher.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred while retrieving the class counts for teacher.
+
 
 </br>
 </br>
