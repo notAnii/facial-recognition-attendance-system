@@ -1,6 +1,13 @@
 # Facial Recognition Attendance System
 
  ## Changelog
+* [01/03/2023]
+  * Added `class-counts` route to count number of classes per day for a teacher
+  * Updated dummy password generator to create more test users
+
+* [28/02/2023]
+  * Added more sample data to database
+
 * [25/02/2023]
   * Added `script.sh` bash file to activate venv and run the flask application
  
