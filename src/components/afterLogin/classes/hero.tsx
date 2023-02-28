@@ -3,6 +3,7 @@ import {
   Box, 
   Text, 
   IconButton,
+  Input,
 } from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon,} from '@chakra-ui/icons'
 import { BsFilterLeft } from 'react-icons/bs';
@@ -42,7 +43,7 @@ const Hero = (props: Props) => {
           alignItems="center" 
           borderRadius={10}>
           <Box //Box thhat has the teachers name
-            w="50%" 
+            w="80%" 
             h="100%" 
             display="flex" 
             alignItems="center" 
@@ -50,25 +51,21 @@ const Hero = (props: Props) => {
             paddingLeft="2%">
             <Text fontSize="2xl">Hammood Teacher</Text>
             <Box //Box that has the filter button
-              w="30%" 
+              w="50%" 
               h="100%" 
               display="flex" 
               alignItems="center"
               marginLeft={'1%'} 
               borderRadius={10}>
-              <IconButton 
-                aria-label='Filter' 
-                color="black" 
-                size="sm"
-                icon={<BsFilterLeft />} px={4} 
-                fontSize='25px'
-                variant={"ghost"}
-                borderRadius={13}
-                _hover={{
-                  bgColor: "#ECECEC",
-                  color: "#818589",
-                }}
-              />
+              <Input 
+                placeholder='Search' 
+                size='sm' 
+                variant='filled' 
+                bg='#F0F0F0' 
+                borderRadius={30} 
+                border={"1px"} 
+                borderColor={"Black"}
+                />
             </Box>
           </Box>
         </Box>
