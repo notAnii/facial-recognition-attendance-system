@@ -41,7 +41,9 @@ def refresh_expiring_jwt(response):
 
 
 # populate user 123 with dummy password
-dummy_password(hash_password("abshir"))
+dummy_password('123', hash_password("abshir"))
+dummy_password('456', hash_password("naruto"))
+
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
 def login():
