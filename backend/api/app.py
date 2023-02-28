@@ -315,6 +315,22 @@ def test_get_upcoming_classes():
     result = upcoming_classes(123)
     return jsonify(result), 200
 
+#get class counts for a teacher in dashboard
+@app.route("/api/v1/class-counts", methods=["GET"])
+@jwt_required()
+def get_class_count():
+    try:
+        result = class_counts(get_jwt_identity())
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred while retrieving class count", 500, f"Error while retrieving class count for teacher: {get_jwt_identity()}. Exception: {e}")
+    
+    if not result:
+        return log_and_return_error("No classes found", 204, f"No classes found for teacher: {get_jwt_identity()}")
+    
+
+    return jsonify(result), 200
+
+
 #starting the attendance 
 @app.route('/api/v1/start-recognition', methods = ['GET'])
 @jwt_required()
