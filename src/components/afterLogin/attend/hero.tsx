@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 import { Box, 
   Text, 
@@ -20,18 +20,24 @@ import { Box,
 import "@fontsource/open-sans"
 import Card from '../attend/card'
 import Webcam from "react-webcam";
+import { WeekContext } from '../../context';
 
 type Props = {}
 
 const Hero: React.FC = () => {
 
+  const {weekNumber, setWeekNumber} = useContext(WeekContext);
+  const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
+  const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
+
   //here you list down the json titles you want to list for example: 
   //Id, title, and userId (should be written exactly like the json file)
 
   const [data, setData] = useState<Array<{ 
-    session_number: number; 
-    subject_name: string; 
-    room: string 
+    student_id: number; 
+    clock_in: string; 
+    program: string;
+    student_name: string;
   }>>([]);
 
   //make a GET request to the https://jsonplaceholder.typicode.com/posts API endpoint 
@@ -39,7 +45,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://127.0.0.1:5000/api/v1/classes', {withCredentials:true});
+      const result = await axios.get("http://127.0.0.1:5000/api/v1/live-attendance/csci369/1/1", {withCredentials:true});
       console.log(result.data)
       setData(result.data);
     };
@@ -177,11 +183,11 @@ const Hero: React.FC = () => {
     <Tbody //DATA INSIDE THE TABLE (it will auto increment)
     >
        {data.map((item) => (
-      <Tr key={item.session_number}>
-        <Td>{item.session_number}</Td>
-        <Td>{item.subject_name}</Td>
-        <Td>{item.room}</Td>
-        <Td isNumeric>13:31</Td>
+      <Tr key={item.student_id}>
+        <Td>{item.student_id}</Td>
+        <Td>{item.student_name}</Td>
+        <Td>{item.program}</Td>
+        <Td isNumeric>{item.clock_in}</Td>
       </Tr>
       ))}
     </Tbody>

@@ -19,11 +19,11 @@ const Hero: React.FC = () => {
   //Id, title, and userId (should be written exactly like the json file)
 
   const [data, setData] = useState<Array<{ 
-    subject_code: string; 
+    room: string; 
+    session_number: number; 
+    subject_code: string;
     subject_name: string; 
-    room: string;
-    start_time: number; 
-    end_time: number; 
+    timing: string; 
   }>>([]);
 
   //make a GET request to the https://jsonplaceholder.typicode.com/posts API endpoint 
@@ -31,7 +31,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://127.0.0.1:5000/api/v1/classes', {withCredentials:true});
+      const result = await axios.get('http://127.0.0.1:5000/api/v1/upcoming-classes', {withCredentials:true});
       console.log(result.data)
       setData(result.data);
     };
@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
               fontFamily={"Open Sans"}
               fontWeight="thin"
               >
-              Timing: {item.start_time} - {item.end_time}
+              Timing: {item.timing}
               </Text>
             </Stack>
           </Stack>
