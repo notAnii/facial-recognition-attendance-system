@@ -17,9 +17,7 @@ import {
   PopoverContent,
   RadioGroup,
   Stack,
-  Radio,
-  CheckboxGroup,
-  Checkbox,} from '@chakra-ui/react'
+  Radio,} from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { BsFilterLeft } from 'react-icons/bs';
 import { WeekContext } from '../../context';
@@ -36,10 +34,6 @@ const Hero = (props: Props) => {
     const {dayNumber, setDayNumber} = useContext(WeekContext);
     const {startTimeNumber, setStartTimeNumber} = useContext(WeekContext);
     const {endTimeNumber, setEndTimeNumber} = useContext(WeekContext);
-
-    const [checkedItems, setCheckedItems] = React.useState([true, true, true])
-
-    const allChecked = checkedItems.every(Boolean)
   
   const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,20 +61,18 @@ const Hero = (props: Props) => {
   }, [weekNumber]);
 
   const filteredData = data.filter((item) => {
+    
     const searchQueryLower = searchQuery.toLowerCase();
     const studentIdLower = item.student_id.toString().toLowerCase();
   
-    // Filter out items that match the search query exactly
     if (studentIdLower === searchQueryLower) {
       return true;
     }
   
-    // Filter out items that start with the search query
     if (studentIdLower.startsWith(searchQueryLower)) {
       return true;
     }
-  
-    // Filter out items that don't match the search query
+
     return item.student_name.toLowerCase().includes(searchQueryLower);
   });
 
@@ -159,30 +151,14 @@ const Hero = (props: Props) => {
                             <PopoverArrow/>
                             <PopoverCloseButton/>
                             <PopoverBody>
-                                <CheckboxGroup>
-                                    <Checkbox 
-                                    isChecked={allChecked}
-                                    onChange={(e) => setCheckedItems([e.target.checked, e.target.checked, e.target.checked])}>
-                                        All
-                                    </Checkbox>
-                                    <Stack direction="column" mt={2}>
-                                        <Checkbox 
-                                        isChecked={checkedItems[0]}
-                                        onChange={(e) => setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2]])}>
-                                            Present
-                                        </Checkbox>
-                                        <Checkbox 
-                                        isChecked={checkedItems[1]}
-                                        onChange={(e) => setCheckedItems([checkedItems[0], e.target.checked, checkedItems[2]])}>
-                                            Absent
-                                        </Checkbox>
-                                        <Checkbox
-                                        isChecked={checkedItems[2]}
-                                        onChange={(e) => setCheckedItems([checkedItems[0], checkedItems[1], e.target.checked])}>
-                                            Excused
-                                        </Checkbox>
+                                <RadioGroup>
+                                    <Stack direction='column'>
+                                        <Radio value='1'>All</Radio>
+                                        <Radio value='2'>Present</Radio>
+                                        <Radio value='3'>Absent</Radio>
+                                        <Radio value='4'>Excused</Radio>
                                     </Stack>
-                                </CheckboxGroup>
+                                </RadioGroup>
                             </PopoverBody>
                             <PopoverFooter>
                                 <Button>Search</Button>
