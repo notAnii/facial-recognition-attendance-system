@@ -33,6 +33,11 @@ const Chart = () => {
     fetchData();
   }, []);
 
+  const uniqueYValues = [...new Set(dataa.map((d) => d.num_sessions))];
+  const formatYAxisTick = (tickItem: number) => {
+    return Math.round(tickItem).toString();
+  };
+
   return (
     <div style={{ textAlign: "center" }}>
       <div className="Chart">
@@ -56,7 +61,13 @@ const Chart = () => {
             scale="point"
             padding={{ left: 20, right: 20 }}
           />
-          <YAxis fontSize={13} fontWeight="bold" fontFamily={"Open Sans"} />
+          <YAxis
+            fontSize={13}
+            fontWeight="bold"
+            fontFamily={"Open Sans"}
+            tickFormatter={formatYAxisTick}
+            tickCount={uniqueYValues.length}
+          />
           <Tooltip />
           <CartesianGrid strokeDasharray="4 4" />
           <Bar dataKey="num_sessions" fill="black" radius={10} />

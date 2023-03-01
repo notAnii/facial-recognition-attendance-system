@@ -1,12 +1,18 @@
 import { Box, Container, VStack, Text, Heading} from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import Image from 'next/image'
+import Head from "next/head";
 
 type Props = {}
 
 const Hero = (props: Props) => {
   return (
     <Box h="100vh">
+
+        <Head>
+        <title>Landing Page</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
 
         <Image
         src={"/back4.jpg"}

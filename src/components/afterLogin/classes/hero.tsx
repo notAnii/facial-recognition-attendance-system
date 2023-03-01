@@ -5,6 +5,7 @@ import { BsFilterLeft } from "react-icons/bs";
 import { WeekContext } from "../../context";
 import axios from "axios";
 import Link from "next/link";
+import Head from "next/head";
 
 type Props = {};
 
@@ -93,6 +94,11 @@ const Hero = (props: Props) => {
       h="100vh"
       bg="white"
     >
+      <Head>
+        <title>Classes</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
+      
       <Box //Top of page space
         h="5%"
         display="flex"

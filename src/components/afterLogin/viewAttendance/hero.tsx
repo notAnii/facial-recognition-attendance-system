@@ -28,6 +28,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps, NextPageContext } from "next";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
@@ -50,7 +51,7 @@ const Hero = (props: any) => {
 
   const { weekNumber, setWeekNumber } = useContext(WeekContext);
 
-  const [checkedItems, setCheckedItems] = React.useState([true, true, true]);
+  const [checkedItems, setCheckedItems] = React.useState([false, false, false]);
 
   const allChecked = checkedItems.every(Boolean);
 
@@ -105,6 +106,11 @@ const Hero = (props: any) => {
       h="100vh"
       bg="white"
     >
+      <Head>
+        <title>View Attendance Page</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
+
       <Box //Top of page space
         h="5%"
         display="flex"
@@ -178,69 +184,51 @@ const Hero = (props: any) => {
                   <PopoverCloseButton />
                   <PopoverBody>
                     <CheckboxGroup>
+                    
+                      <Stack direction="column" mt={2}>
                       <Checkbox
-                        isChecked={allChecked}
-                        onChange={(e) =>
+                        isChecked={checkedItems[0]}
+                        onChange={(e) => {
+                          const index = 0;
                           setCheckedItems([
                             e.target.checked,
-                            e.target.checked,
-                            e.target.checked,
+                            !e.target.checked && checkedItems[1], // Uncheck Absent checkbox
+                            !e.target.checked && checkedItems[2], // Uncheck Excused checkbox
                           ])
-                        }
+                        }}
                       >
-                        All
-                      </Checkbox>
-                      <Stack direction="column" mt={2}>
-                        <Checkbox
-                          isChecked={checkedItems[0]}
-                          onChange={(e) =>
-                            setCheckedItems([
-                              e.target.checked,
-                              checkedItems[1],
-                              checkedItems[2],
-                            ])
-                          }
-                        >
                           Present
                         </Checkbox>
                         <Checkbox
                           isChecked={checkedItems[1]}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const index = 1;
                             setCheckedItems([
-                              checkedItems[0],
+                              !e.target.checked && checkedItems[0], // Uncheck Present checkbox
                               e.target.checked,
-                              checkedItems[2],
+                              !e.target.checked && checkedItems[2], // Uncheck Excused checkbox
                             ])
-                          }
+                          }}
                         >
                           Absent
                         </Checkbox>
                         <Checkbox
                           isChecked={checkedItems[2]}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const index = 2;
                             setCheckedItems([
-                              checkedItems[0],
-                              checkedItems[1],
+                              !e.target.checked && checkedItems[0], // Uncheck Present checkbox
+                              !e.target.checked && checkedItems[1], // Uncheck Absent checkbox
                               e.target.checked,
                             ])
-                          }
+                          }}
                         >
                           Excused
                         </Checkbox>
                       </Stack>
                     </CheckboxGroup>
                   </PopoverBody>
-                  <PopoverFooter>
-                  <Button
-                    colorScheme="black"
-                    variant="outline"
-                    _hover={{ bg: "black", color: "white" }}
-                    _active={{ bg: "black", color: "white" }}
-                    borderRadius={10}
-                  >
-                    Search
-                  </Button>
-                  </PopoverFooter>
+                  
                 </PopoverContent>
               </Portal>
             </Popover>
@@ -309,7 +297,25 @@ const Hero = (props: any) => {
             </Box>
           </Box>
 
-          {filteredData.map((item) => (
+                  {filteredData
+          .filter((item) => {
+            // Filter based on checkbox state
+            if (checkedItems[0]) {
+              return item.status.toLowerCase() === "present";
+            } 
+
+            if (checkedItems[1]) {
+              return item.status.toLowerCase() === "absent";
+            }
+
+            if (checkedItems[2]) {
+              return item.status.toLowerCase() === "excused";
+            }
+            else {
+              return true;
+            }
+          })
+          .map((item) => (
             <Box paddingLeft="2%" h="13%" display="flex">
               <Box w="10%" display="flex" alignItems="center">
                 <Text>{item.student_id}</Text>

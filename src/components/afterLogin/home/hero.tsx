@@ -22,6 +22,7 @@ import Chart from "./chart";
 import Card from "./card";
 import { Router } from "next/router";
 import axios from "axios";
+import Head from "next/head";
 
 type Props = {};
 
@@ -63,6 +64,11 @@ const Hero = (props: Props) => {
       maxW={"7xl"}
       justifyContent={"center"}
     >
+      <Head>
+        <title>Dashboard</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
+      
       <VStack w="100%">
         <Box //Box Top
           backgroundColor={"white"}
