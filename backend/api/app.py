@@ -70,6 +70,7 @@ def login():
     response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True, secure=True, samesite='None')
     return response
 
+
 #logout route to revoke jwt access
 blacklist = set()
 @jwt.token_in_blocklist_loader
@@ -93,6 +94,7 @@ def logout():
 
     return response
 
+
 #get all classes for a teacher
 @app.route("/api/v1/classes", methods=["GET"])
 @jwt_required()
@@ -107,12 +109,6 @@ def get_classes():
         
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/classes", methods=["GET"])
-#@jwt_required()
-def test_get_classes():
-    result = all_classes(123)
-    return jsonify(result), 200
 
 #get attendance list for a specific session with additional query v2
 @app.route("/api/v2/attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
@@ -150,6 +146,7 @@ def get_session_attendance_v2(subject_code, session_number, week):
         return log_and_return_error("No attendance data found", 204, f"No attendance data found for subject_code: {subject_code}, session_number: {session_number}, week: {week}, status: {status}")
 
     return jsonify(result), 200
+
 
 #get attendance list for a specific session with additional query
 @app.route("/api/v1/attendance/<subject_code>/<session_number>", methods=["GET"])
@@ -192,13 +189,6 @@ def get_session_attendance(subject_code, session_number):
 
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/attendance/<subject_code>/<session_number>", methods=["GET"])
-def test_get_session_attendance(subject_code, session_number):
-    status = request.args.get('status')
-    week = request.args.get('week')
-    result = session_attendance(subject_code, session_number, status, week)
-    return jsonify(result), 200
 
 #get live attendance list for a specific session (list displayed while attendance recording is active)
 @app.route("/api/v1/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
@@ -231,11 +221,6 @@ def get_live_session_attendance(subject_code, session_number, week):
 
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/live-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
-def test_get_live_session_attendance(subject_code, session_number, week):
-    result = live_session_attendance(subject_code, session_number, week)
-    return jsonify(result), 200
 
 #get recent attendance list for a specific session (sorted by time)
 @app.route("/api/v1/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
@@ -268,11 +253,6 @@ def get_recent_session_attendance(subject_code, session_number, week):
 
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/recent-attendance/<subject_code>/<session_number>/<week>", methods=["GET"])
-def test_get_recent_session_attendance(subject_code, session_number, week):
-    result = recent_session_attendance(subject_code, session_number, week)
-    return jsonify(result), 200
 
 #get teacher information for dashboard
 @app.route("/api/v1/teacher-info", methods=["GET"])
@@ -288,12 +268,6 @@ def get_teacher_info():
     
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/teacher-info", methods=["GET"])
-#@jwt_required()
-def test_get_teacher_info():
-    result = teacher_info(123)
-    return jsonify(result), 200
 
 #get upcoming classes for a teacher in dashboard
 @app.route("/api/v1/upcoming-classes", methods=["GET"])
@@ -310,12 +284,6 @@ def get_upcoming_classes():
 
     return jsonify(result), 200
 
-#tester
-@app.route("/api/test/upcoming-classes", methods=["GET"])
-#@jwt_required()
-def test_get_upcoming_classes():
-    result = upcoming_classes(123)
-    return jsonify(result), 200
 
 #get class counts for a teacher in dashboard
 @app.route("/api/v1/class-counts", methods=["GET"])
