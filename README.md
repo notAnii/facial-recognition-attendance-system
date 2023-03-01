@@ -4,6 +4,7 @@
 * [01/03/2023]
   * Added `class-counts` route to count number of classes per day for a teacher
   * Updated dummy password generator to create more test users
+  * Deleted test routes
 
 * [28/02/2023]
   * Added more sample data to database
