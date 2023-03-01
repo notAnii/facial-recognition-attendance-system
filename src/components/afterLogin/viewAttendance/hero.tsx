@@ -79,11 +79,20 @@ const Hero = (props: any) => {
     fetchData();
   }, [weekNumber]);
 
-  const filteredData = data.filter(
-    (item) =>
-      item.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.student_id.toString().includes(searchQuery.toLowerCase())
-  );
+  const filteredData = data.filter((item) => {
+    const searchQueryLower = searchQuery.toLowerCase();
+    const studentIdLower = item.student_id.toString().toLowerCase();
+
+    if (studentIdLower === searchQueryLower) {
+      return true;
+    }
+
+    if (studentIdLower.startsWith(searchQueryLower)) {
+      return true;
+    }
+
+    return item.student_name.toLowerCase().includes(searchQueryLower);
+  });
 
   const handleSearch = (e: {
     target: { value: React.SetStateAction<string> };

@@ -37,12 +37,23 @@ const Hero = (props: Props) => {
     fetchData();
   }, [weekNumber]);
 
-  const filteredData = data.filter(
-    (item) =>
-      item.subject_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.subject_code.toString().includes(searchQuery.toLowerCase()) ||
-      item.day.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredData = data.filter((item) => {
+    const searchQueryLower = searchQuery.toLowerCase();
+    const subject_codeLower = item.subject_code.toString().toLowerCase();
+
+    // Filter out items that match the search query exactly
+    if (subject_codeLower === searchQueryLower) {
+      return true;
+    }
+
+    // Filter out items that start with the search query
+    if (subject_codeLower.startsWith(searchQueryLower)) {
+      return true;
+    }
+
+    // Filter out items that don't match the search query
+    return item.subject_name.toLowerCase().includes(searchQueryLower);
+  });
 
   const handleSearch = (e: {
     target: { value: React.SetStateAction<string> };
