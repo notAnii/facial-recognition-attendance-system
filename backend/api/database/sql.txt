@@ -143,9 +143,10 @@ INSERT INTO Session VALUES (5, 'CSIT111', 1, 'Thursday', '10:30', '12:30', '4.42
 #teacher456 (has no one enrolled in them)
 INSERT INTO Session VALUES (6, 'MATH221', 2, 'Friday', '08:30', '10:30', '3.43', "Lab", 456);
 INSERT INTO Session VALUES (7, 'CSIT214', 1, 'Monday', '08:30', '10:30', '5.11', "Lab", 456);
+INSERT INTO Session VALUES (8, 'CSIT214', 2, 'Monday', '10:30', '12:30', '5.11', "Lab", 456);
 
 #teacher789 (has no one enrolled in them)
-INSERT INTO Session VALUES (8, 'CSCI369', 1, 'Wednesday', '10:30', '13:30', '3.43', "Lecture", 789);
+INSERT INTO Session VALUES (9, 'CSCI369', 4, 'Wednesday', '10:30', '13:30', '3.43', "Lecture", 789);
 
 
 #inserting enrolments
