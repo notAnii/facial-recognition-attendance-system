@@ -40,7 +40,6 @@ const Hero = (props: Props) => {
       w = "100%"
       >
         
-      
       <Box //Box Top
       backgroundColor={"white"} 
       w="100%"
