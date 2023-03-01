@@ -40,19 +40,27 @@ const Hero = (props: Props) => {
   const filteredData = data.filter((item) => {
     const searchQueryLower = searchQuery.toLowerCase();
     const subject_codeLower = item.subject_code.toString().toLowerCase();
+    const dayLower = item.day.toString().toLowerCase();
 
     // Filter out items that match the search query exactly
     if (subject_codeLower === searchQueryLower) {
       return true;
     }
-
+    
+    if (dayLower === searchQueryLower) {
+      return true;
+    }
     // Filter out items that start with the search query
     if (subject_codeLower.startsWith(searchQueryLower)) {
       return true;
     }
 
+    if (dayLower.startsWith(searchQueryLower)) {
+      return true;
+    }
+
     // Filter out items that don't match the search query
-    return item.subject_name.toLowerCase().includes(searchQueryLower);
+    return item.subject_name.toLowerCase().startsWith(searchQueryLower);
   });
 
   const handleSearch = (e: {
