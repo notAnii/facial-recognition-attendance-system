@@ -82,16 +82,16 @@ const Hero = (props: any) => {
   const filteredData = data.filter((item) => {
     const searchQueryLower = searchQuery.toLowerCase();
     const studentIdLower = item.student_id.toString().toLowerCase();
-
+  
     if (studentIdLower === searchQueryLower) {
       return true;
     }
-
+  
     if (studentIdLower.startsWith(searchQueryLower)) {
       return true;
     }
-
-    return item.student_name.toLowerCase().includes(searchQueryLower);
+  
+    return item.student_name.toLowerCase().startsWith(searchQueryLower);
   });
 
   const handleSearch = (e: {
@@ -231,7 +231,15 @@ const Hero = (props: any) => {
                     </CheckboxGroup>
                   </PopoverBody>
                   <PopoverFooter>
-                    <Button>Search</Button>
+                  <Button
+                    colorScheme="black"
+                    variant="outline"
+                    _hover={{ bg: "black", color: "white" }}
+                    _active={{ bg: "black", color: "white" }}
+                    borderRadius={10}
+                  >
+                    Search
+                  </Button>
                   </PopoverFooter>
                 </PopoverContent>
               </Portal>
