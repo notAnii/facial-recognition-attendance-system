@@ -24,6 +24,7 @@ import Card from "../attend/card";
 import Webcam from "react-webcam";
 import { WeekContext } from "../../context";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 type Props = {};
 
@@ -71,6 +72,11 @@ const Hero: React.FC = () => {
       backgroundColor="#E5E5E5"
       overflow={"hidden"}
     >
+      <Head>
+        <title>Start Attendance Page</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
+      
       <VStack spacing={2} align="stretch" paddingTop={7}>
         <Box //Text Here
           h="7vh"

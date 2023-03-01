@@ -13,6 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import Head from "next/head";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -72,6 +73,11 @@ const Hero = (props: Props) => {
       maxW={"7xl"}
       h={"100%"} //to determine center of the page
     >
+       <Head>
+        <title>Log In Page</title>
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      </Head>
+
       <Box //bos = dev
         bgColor={"white"}
         p={6}
