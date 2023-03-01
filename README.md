@@ -128,7 +128,7 @@
     * ~~Fix issues with token expiration and token refreshes~~
     * ~~Find where to stash access tokens in frontend~~
     
-  * [ABANDONED]Notifications Feature
+  * [ABANDONED] Notifications Feature
     * Decide if notifications needs a table 
     * Figure out how to have timed notifications system (do we need request to an API?)
   
@@ -157,7 +157,7 @@
   
   * ~~Error handling~~ 
   
-  * Dashboard graphs
+  * ~~Dashboard graphs~~
   
 * Backend/Facial-Recognition
   * Find reasonable size for dataset or decide who's system to running the tranining file in
