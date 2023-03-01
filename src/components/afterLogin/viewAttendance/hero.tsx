@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import { 
-  Box, 
-  Text, 
+import React, { useContext, useEffect } from "react";
+import {
+  Box,
+  Text,
   Spacer,
   IconButton,
   Input,
@@ -19,297 +19,354 @@ import {
   Stack,
   Radio,
   CheckboxGroup,
-  Checkbox,} from '@chakra-ui/react'
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
-import { BsFilterLeft } from 'react-icons/bs';
-import { WeekContext } from '../../context';
-import axios from 'axios';
-import { useState } from 'react';
+  Checkbox,
+} from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { BsFilterLeft } from "react-icons/bs";
+import { WeekContext } from "../../context";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { GetServerSideProps, NextPageContext } from "next";
 
-type Props = {}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  console.log(query);
+  return { props: { query } };
+};
 
-const Hero = (props: Props) => {
+type Props = {};
 
-    const {weekNumber, setWeekNumber} = useContext(WeekContext);
-    const {subjectCodeNumber, setSubjectCodeNumber} = useContext(WeekContext);
-    const {sessionNumberCon, setSessionNumberConNumber} = useContext(WeekContext);
-    const {dayNumber, setDayNumber} = useContext(WeekContext);
-    const {startTimeNumber, setStartTimeNumber} = useContext(WeekContext);
-    const {endTimeNumber, setEndTimeNumber} = useContext(WeekContext);
-
-    const [checkedItems, setCheckedItems] = React.useState([true, true, true])
-
-    const allChecked = checkedItems.every(Boolean)
-  
-  const URL = 'http://127.0.0.1:5000/api/test/attendance/csci369/1?week=';
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const [data, setData] = useState<Array<{ 
-    student_id: number; 
-    student_name: string; 
-    week: string;
-    date: string;
-    attedance_percentage: string;
-    status: string;
-    unexcused_absences: string; 
-  }>>([]);
+const Hero = (props: any) => {
+  const router = useRouter();
+  const { subjectCode, sessionNumber, day, startTime, endTime, classType } =
+    router.query;
 
   useEffect(() => {
-    
+    console.log(props.query);
+  }, []);
+
+  const [testState, setTestState] = useState({});
+
+  const { weekNumber, setWeekNumber } = useContext(WeekContext);
+
+  const [checkedItems, setCheckedItems] = React.useState([true, true, true]);
+
+  const allChecked = checkedItems.every(Boolean);
+
+  const URL = `http://127.0.0.1:5000/api/v2/attendance/${subjectCode}/${sessionNumber}/${weekNumber}`;
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [data, setData] = useState<
+    Array<{
+      student_id: number;
+      student_name: string;
+      week: string;
+      date: string;
+      attedance_percentage: string;
+      status: string;
+      unexcused_absences: string;
+    }>
+  >([]);
+
+  useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(URL + weekNumber);
-      setData(result.data);
-      console.log(subjectCodeNumber + " " + sessionNumberCon + " " + dayNumber + " " + startTimeNumber + " " + endTimeNumber);
+      const result = await axios.get(URL, { withCredentials: true });
+      setData(result.status == 200 ? result.data : []);
     };
 
     fetchData();
-
   }, [weekNumber]);
 
   const filteredData = data.filter(
-    item =>
+    (item) =>
       item.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.student_id.toString().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleSearch = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setSearchQuery(e.target.value);
   };
 
   return (
     <Box //Whole page box excluding the tast bar
-      h="100vh" 
-      bg="white">
+      h="100vh"
+      bg="white"
+    >
       <Box //Top of page space
-        h="5%" 
-        display="flex" 
-        alignItems="right">
-      </Box>
+        h="5%"
+        display="flex"
+        alignItems="right"
+      ></Box>
       <Box //Whole box that has subject name, time, table, and weeeks at the bottom
-        h="85%" 
-        m={5} 
-        bg="#ECECEC" 
-        borderRadius={30} 
-        border={"1px"} 
-        borderColor={"Black"}>
+        h="85%"
+        m={5}
+        bg="#ECECEC"
+        borderRadius={30}
+        border={"1px"}
+        borderColor={"Black"}
+      >
         <Box //Top part that has subject name and time
-            h="15%" 
-            display="flex" 
+          h="15%"
+          display="flex"
+          alignItems="center"
+          paddingLeft="2%"
+          borderRadius={10}
+        >
+          <Box //Box that has the Subject code and name
+            w="30%"
+            h="100%"
+            display="flex"
             alignItems="center"
-            paddingLeft="2%" 
-            borderRadius={10}>
-            <Box //Box that has the Subject code and name
-                w="30%" 
-                h="100%"
-                display="flex" 
-                alignItems="center"
-                borderRadius={10}>
-                <Text fontSize="2xl">CSCI203 Tuturial Attendance List</Text>
-            </Box>
-            <Box display="flex" alignItems="center" width='40%'>
-                <Input 
-                placeholder='Search' 
-                size='sm' 
-                variant='filled' 
-                bg='#F0F0F0' 
-                borderRadius={30} 
-                border={"1px"} 
-                borderColor={"Black"}
-                onChange={handleSearch} value={searchQuery}
-                />        
-            </Box>
-            <Box //Box that has filter button
-                w="4%" h="100%" display="flex" alignItems="center" justifyContent="center">
-                
-                <Popover 
-                placement='bottom'
-                >
-                    <PopoverTrigger>
-                        <IconButton 
-                            aria-label='Filter' 
-                            color="black" 
-                            size="sm"
-                            icon={<BsFilterLeft />} px={4} 
-                            fontSize='25px'
-                            variant={"ghost"}
-                            borderRadius={13}
-                            _hover={{
-                            bgColor: "#ECECEC",
-                            color: "#818589",
-                            }}
-                        />
-                    </PopoverTrigger>
-                    <Portal>
-                        <PopoverContent>
-                            <PopoverHeader border='0'>
-                                Filter By:
-                            </PopoverHeader>
-                            <PopoverArrow/>
-                            <PopoverCloseButton/>
-                            <PopoverBody>
-                                <CheckboxGroup>
-                                    <Checkbox 
-                                    isChecked={allChecked}
-                                    onChange={(e) => setCheckedItems([e.target.checked, e.target.checked, e.target.checked])}>
-                                        All
-                                    </Checkbox>
-                                    <Stack direction="column" mt={2}>
-                                        <Checkbox 
-                                        isChecked={checkedItems[0]}
-                                        onChange={(e) => setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2]])}>
-                                            Present
-                                        </Checkbox>
-                                        <Checkbox 
-                                        isChecked={checkedItems[1]}
-                                        onChange={(e) => setCheckedItems([checkedItems[0], e.target.checked, checkedItems[2]])}>
-                                            Absent
-                                        </Checkbox>
-                                        <Checkbox
-                                        isChecked={checkedItems[2]}
-                                        onChange={(e) => setCheckedItems([checkedItems[0], checkedItems[1], e.target.checked])}>
-                                            Excused
-                                        </Checkbox>
-                                    </Stack>
-                                </CheckboxGroup>
-                            </PopoverBody>
-                            <PopoverFooter>
-                                <Button>Search</Button>
-                            </PopoverFooter>
-                        </PopoverContent>
-                    </Portal>
-
-                </Popover>
-
-            </Box>
-            
-            <Spacer/>
-            <Box //Box that has day and time
-                w="30%" 
-                h="100%" 
-                display="flex" 
-                alignItems="center" 
-                justifyContent="center"
-                borderRadius={10}>
-                <Text fontSize="2xl">Thursday 13:30-15:30</Text>
-            </Box>
-        </Box>
-        <Box //Box that holds the table
-          h="77%" 
-          w="100%" 
-          maxHeight="100%" 
-          borderRadius={10} 
-          overflowY="auto" 
-          overflowX="auto"
-          sx={{
-            '&::-webkit-scrollbar': {
-              width: '16px',
-              borderRadius: '8px',
-              backgroundColor: `rgba(0, 0, 0, 0.10)`,
-          },
-            '&::-webkit-scrollbar-thumb': {
-              borderRadius: '8px',
-              backgroundColor: `rgba(0, 0, 0, 0.10)`,
-          },
-        }}>
-            <Box paddingLeft="2%" h="10%" display="flex" position='sticky' top={0} bg="#ECECEC" zIndex={1}>            
-                <Box w='10%' display="flex" alignItems="center">
-                    <Text>Student ID</Text>
-                </Box>
-                <Box w='13%' display="flex" alignItems="center">
-                    <Text>Student Name</Text>
-                </Box>
-                <Box w='7%' display="flex" alignItems="center">
-                    <Text>Week</Text>
-                </Box>
-                <Box w='8%' display="flex" alignItems="center">
-                    <Text>Date</Text>
-                </Box>
-                <Box w='15%' display="flex" alignItems="center">
-                    <Text>Attendance Percentage</Text>
-                </Box>
-                <Box w='15%' display="flex" alignItems="center">
-                    <Text>Attendance Status</Text>
-                </Box>
-                <Box w='15%' display="flex" alignItems="center">
-                    <Text>Unexcused Absences</Text>
-                </Box>
-            </Box>
-   
-                {filteredData.map(item => (
-            <Box paddingLeft="2%" h="13%" display="flex">  
-                    
-            <Box w='10%' display="flex" alignItems="center">
-                <Text>{item.student_id}</Text>
-            </Box>
-            <Box w='13%' display="flex" alignItems="center">
-                <Text>{item.student_name}</Text>
-            </Box>
-            <Box w='7%' display="flex" alignItems="center">
-                <Text>{item.week}</Text>
-            </Box>
-            <Box w='8%' display="flex" alignItems="center">
-                <Text>{item.date}</Text>
-            </Box>
-            <Box w='15%' display="flex" alignItems="center">
-                <Text>{item.attedance_percentage + "%"}</Text>
-            </Box>
-            <Box w='15%' display="flex" alignItems="center">
-                <Text>{item.status}</Text>
-            </Box>
-            <Box w='15%' display="flex" alignItems="center">
-                <Text>{item.unexcused_absences}</Text>
-            </Box>
-            </Box>
-            ))}
-
-        </Box>
-        <Box //Box under the table that has the weeks
-            h="8%" 
-            w="15%" 
-            display="flex" 
+            borderRadius={10}
+          >
+            <Text fontSize="2xl">CSCI203 Tuturial Attendance List</Text>
+          </Box>
+          <Box display="flex" alignItems="center" width="40%">
+            <Input
+              placeholder="Search"
+              size="sm"
+              variant="filled"
+              bg="#F0F0F0"
+              borderRadius={30}
+              border={"1px"}
+              borderColor={"Black"}
+              onChange={handleSearch}
+              value={searchQuery}
+            />
+          </Box>
+          <Box //Box that has filter button
+            w="4%"
+            h="100%"
+            display="flex"
             alignItems="center"
             justifyContent="center"
-            paddingBottom={1}
-            >
-            <IconButton 
-                aria-label='Go To Previous Week' 
-                backgroundColor="#818589" 
-                color="white" 
-                size='sm'
-                icon={<ArrowBackIcon />}
-                fontSize={'sm'} 
-                variant={"ghost"}
-                bgColor={"#818589"}
-                borderRadius={13}
-                onClick={() => {if (weekNumber > 1) setWeekNumber(weekNumber-1)}}
-                _hover={{
+          >
+            <Popover placement="bottom">
+              <PopoverTrigger>
+                <IconButton
+                  aria-label="Filter"
+                  color="black"
+                  size="sm"
+                  icon={<BsFilterLeft />}
+                  px={4}
+                  fontSize="25px"
+                  variant={"ghost"}
+                  borderRadius={13}
+                  _hover={{
                     bgColor: "#ECECEC",
                     color: "#818589",
-                }}
-            />
-            <>
-                {`Week ${weekNumber}`}
-            </>
-            <IconButton 
-                aria-label='Go To Next Week' 
-                backgroundColor="#818589" 
-                color="white" 
-                size='sm'
-                icon={<ArrowForwardIcon />}
-                fontSize={'sm'} 
-                variant={"ghost"}
-                bgColor={"#818589"}
-                borderRadius={13}
-                onClick={() => {if (weekNumber < 10) setWeekNumber(weekNumber+1)}}
-                _hover={{
-                    bgColor: "#ECECEC",
-                    color: "#818589",
-                }}
-            />
+                  }}
+                />
+              </PopoverTrigger>
+              <Portal>
+                <PopoverContent>
+                  <PopoverHeader border="0">Filter By:</PopoverHeader>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <PopoverBody>
+                    <CheckboxGroup>
+                      <Checkbox
+                        isChecked={allChecked}
+                        onChange={(e) =>
+                          setCheckedItems([
+                            e.target.checked,
+                            e.target.checked,
+                            e.target.checked,
+                          ])
+                        }
+                      >
+                        All
+                      </Checkbox>
+                      <Stack direction="column" mt={2}>
+                        <Checkbox
+                          isChecked={checkedItems[0]}
+                          onChange={(e) =>
+                            setCheckedItems([
+                              e.target.checked,
+                              checkedItems[1],
+                              checkedItems[2],
+                            ])
+                          }
+                        >
+                          Present
+                        </Checkbox>
+                        <Checkbox
+                          isChecked={checkedItems[1]}
+                          onChange={(e) =>
+                            setCheckedItems([
+                              checkedItems[0],
+                              e.target.checked,
+                              checkedItems[2],
+                            ])
+                          }
+                        >
+                          Absent
+                        </Checkbox>
+                        <Checkbox
+                          isChecked={checkedItems[2]}
+                          onChange={(e) =>
+                            setCheckedItems([
+                              checkedItems[0],
+                              checkedItems[1],
+                              e.target.checked,
+                            ])
+                          }
+                        >
+                          Excused
+                        </Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  </PopoverBody>
+                  <PopoverFooter>
+                    <Button>Search</Button>
+                  </PopoverFooter>
+                </PopoverContent>
+              </Portal>
+            </Popover>
+          </Box>
+
+          <Spacer />
+          <Box //Box that has day and time
+            w="30%"
+            h="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius={10}
+          >
+            <Text fontSize="2xl">Thursday 13:30-15:30</Text>
+          </Box>
+        </Box>
+        <Box //Box that holds the table
+          h="77%"
+          w="100%"
+          maxHeight="100%"
+          borderRadius={10}
+          overflowY="auto"
+          overflowX="auto"
+          sx={{
+            "&::-webkit-scrollbar": {
+              width: "16px",
+              borderRadius: "8px",
+              backgroundColor: `rgba(0, 0, 0, 0.10)`,
+            },
+            "&::-webkit-scrollbar-thumb": {
+              borderRadius: "8px",
+              backgroundColor: `rgba(0, 0, 0, 0.10)`,
+            },
+          }}
+        >
+          <Box
+            paddingLeft="2%"
+            h="10%"
+            display="flex"
+            position="sticky"
+            top={0}
+            bg="#ECECEC"
+            zIndex={1}
+          >
+            <Box w="10%" display="flex" alignItems="center">
+              <Text>Student ID</Text>
+            </Box>
+            <Box w="13%" display="flex" alignItems="center">
+              <Text>Student Name</Text>
+            </Box>
+            <Box w="7%" display="flex" alignItems="center">
+              <Text>Week</Text>
+            </Box>
+            <Box w="8%" display="flex" alignItems="center">
+              <Text>Date</Text>
+            </Box>
+            <Box w="15%" display="flex" alignItems="center">
+              <Text>Attendance Percentage</Text>
+            </Box>
+            <Box w="15%" display="flex" alignItems="center">
+              <Text>Attendance Status</Text>
+            </Box>
+            <Box w="15%" display="flex" alignItems="center">
+              <Text>Unexcused Absences</Text>
+            </Box>
+          </Box>
+
+          {filteredData.map((item) => (
+            <Box paddingLeft="2%" h="13%" display="flex">
+              <Box w="10%" display="flex" alignItems="center">
+                <Text>{item.student_id}</Text>
+              </Box>
+              <Box w="13%" display="flex" alignItems="center">
+                <Text>{item.student_name}</Text>
+              </Box>
+              <Box w="7%" display="flex" alignItems="center">
+                <Text>{item.week}</Text>
+              </Box>
+              <Box w="8%" display="flex" alignItems="center">
+                <Text>{item.date}</Text>
+              </Box>
+              <Box w="15%" display="flex" alignItems="center">
+                <Text>{item.attedance_percentage + "%"}</Text>
+              </Box>
+              <Box w="15%" display="flex" alignItems="center">
+                <Text>{item.status}</Text>
+              </Box>
+              <Box w="15%" display="flex" alignItems="center">
+                <Text>{item.unexcused_absences}</Text>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+        <Box //Box under the table that has the weeks
+          h="8%"
+          w="15%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          paddingBottom={1}
+        >
+          <IconButton
+            aria-label="Go To Previous Week"
+            backgroundColor="#818589"
+            color="white"
+            size="sm"
+            icon={<ArrowBackIcon />}
+            fontSize={"sm"}
+            variant={"ghost"}
+            bgColor={"#818589"}
+            borderRadius={13}
+            onClick={() => {
+              if (weekNumber > 1) setWeekNumber(weekNumber - 1);
+            }}
+            _hover={{
+              bgColor: "#ECECEC",
+              color: "#818589",
+            }}
+          />
+          <>{`Week ${weekNumber}`}</>
+          <IconButton
+            aria-label="Go To Next Week"
+            backgroundColor="#818589"
+            color="white"
+            size="sm"
+            icon={<ArrowForwardIcon />}
+            fontSize={"sm"}
+            variant={"ghost"}
+            bgColor={"#818589"}
+            borderRadius={13}
+            onClick={() => {
+              if (weekNumber < 10) setWeekNumber(weekNumber + 1);
+            }}
+            _hover={{
+              bgColor: "#ECECEC",
+              color: "#818589",
+            }}
+          />
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;
