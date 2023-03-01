@@ -26,6 +26,14 @@ const Hero = (props: Props) => {
     }>
   >([]);
 
+  const [teacherData, setTeacherData] = useState<
+    Array<{
+      department: string;
+      position: string;
+      teacher_name: string;
+    }>
+  >([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("http://127.0.0.1:5000/api/v1/classes", {
@@ -34,6 +42,17 @@ const Hero = (props: Props) => {
       setData(result.data);
     };
 
+    const fetchTeacherData = async () => {
+      const result = await axios.get(
+        "http://127.0.0.1:5000/api/v1/teacher-info",
+        {
+          withCredentials: true,
+        }
+      );
+      setTeacherData(result.data);
+    };
+
+    fetchTeacherData();
     fetchData();
   }, [weekNumber]);
 
@@ -46,7 +65,7 @@ const Hero = (props: Props) => {
     if (subject_codeLower === searchQueryLower) {
       return true;
     }
-    
+
     if (dayLower === searchQueryLower) {
       return true;
     }
@@ -94,34 +113,36 @@ const Hero = (props: Props) => {
           borderRadius={10}
         >
           <Box //Box thhat has the teachers name
-            w="80%"
+            w="25%"
             h="100%"
             display="flex"
             alignItems="center"
             borderRadius={10}
             paddingLeft="2%"
           >
-            <Text fontSize="2xl">Hammood Teacher</Text>
-            <Box //Box that has the filter button
-              w="50%"
-              h="100%"
-              display="flex"
-              alignItems="center"
-              marginLeft={"1%"}
-              borderRadius={10}
-            >
-              <Input
-                placeholder="Search"
-                size="sm"
-                variant="filled"
-                bg="#F0F0F0"
-                borderRadius={30}
-                border={"1px"}
-                borderColor={"Black"}
-                onChange={handleSearch}
-                value={searchQuery}
-              />
-            </Box>
+            {teacherData.map((item) => (
+              <Text fontSize="2xl">{item.teacher_name}</Text>
+            ))}
+          </Box>
+          <Box //Box that has the filter button
+            w="50%"
+            h="100%"
+            display="flex"
+            alignItems="center"
+            marginLeft={"1%"}
+            borderRadius={10}
+          >
+            <Input
+              placeholder="Search"
+              size="sm"
+              variant="filled"
+              bg="#F0F0F0"
+              borderRadius={30}
+              border={"1px"}
+              borderColor={"Black"}
+              onChange={handleSearch}
+              value={searchQuery}
+            />
           </Box>
         </Box>
         <Box //Box that holds the table
