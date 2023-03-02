@@ -3,8 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Datasets
+real_and_fake_face
+real_and_fake_face_detection
+
 # Directories
 saved_model
+test_samples
 
 # C extensions
 *.so
