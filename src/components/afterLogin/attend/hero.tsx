@@ -76,7 +76,7 @@ const Hero: React.FC = () => {
         <title>Start Attendance Page</title>
         <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </Head>
-      
+
       <VStack spacing={2} align="stretch" paddingTop={7}>
         <Box //Text Here
           h="7vh"
@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
             </Text>
 
             <Text fontFamily={"Open Sans"} fontWeight="bold" paddingLeft={103}>
-              Thursday 13:30-15:30
+              {`${day} ${startTime} - ${endTime}`}
             </Text>
           </HStack>
         </Box>
@@ -133,7 +133,7 @@ const Hero: React.FC = () => {
                 textAlign="center"
               >
                 <Text fontFamily={"Open Sans"} fontWeight="bold">
-                  CSCI203 tutorial attendance list
+                  {`${subjectCode} ${classType} Attendance List`}
                 </Text>
               </Box>
 

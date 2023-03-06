@@ -83,15 +83,15 @@ const Hero = (props: any) => {
   const filteredData = data.filter((item) => {
     const searchQueryLower = searchQuery.toLowerCase();
     const studentIdLower = item.student_id.toString().toLowerCase();
-  
+
     if (studentIdLower === searchQueryLower) {
       return true;
     }
-  
+
     if (studentIdLower.startsWith(searchQueryLower)) {
       return true;
     }
-  
+
     return item.student_name.toLowerCase().startsWith(searchQueryLower);
   });
 
@@ -138,7 +138,7 @@ const Hero = (props: any) => {
             alignItems="center"
             borderRadius={10}
           >
-            <Text fontSize="2xl">CSCI203 Tuturial Attendance List</Text>
+            <Text fontSize="2xl">{`${subjectCode} ${classType} Attendance List`}</Text>
           </Box>
           <Box display="flex" alignItems="center" width="40%">
             <Input
@@ -184,19 +184,18 @@ const Hero = (props: any) => {
                   <PopoverCloseButton />
                   <PopoverBody>
                     <CheckboxGroup>
-                    
                       <Stack direction="column" mt={2}>
-                      <Checkbox
-                        isChecked={checkedItems[0]}
-                        onChange={(e) => {
-                          const index = 0;
-                          setCheckedItems([
-                            e.target.checked,
-                            !e.target.checked && checkedItems[1], // Uncheck Absent checkbox
-                            !e.target.checked && checkedItems[2], // Uncheck Excused checkbox
-                          ])
-                        }}
-                      >
+                        <Checkbox
+                          isChecked={checkedItems[0]}
+                          onChange={(e) => {
+                            const index = 0;
+                            setCheckedItems([
+                              e.target.checked,
+                              !e.target.checked && checkedItems[1], // Uncheck Absent checkbox
+                              !e.target.checked && checkedItems[2], // Uncheck Excused checkbox
+                            ]);
+                          }}
+                        >
                           Present
                         </Checkbox>
                         <Checkbox
@@ -207,7 +206,7 @@ const Hero = (props: any) => {
                               !e.target.checked && checkedItems[0], // Uncheck Present checkbox
                               e.target.checked,
                               !e.target.checked && checkedItems[2], // Uncheck Excused checkbox
-                            ])
+                            ]);
                           }}
                         >
                           Absent
@@ -220,7 +219,7 @@ const Hero = (props: any) => {
                               !e.target.checked && checkedItems[0], // Uncheck Present checkbox
                               !e.target.checked && checkedItems[1], // Uncheck Absent checkbox
                               e.target.checked,
-                            ])
+                            ]);
                           }}
                         >
                           Excused
@@ -228,7 +227,6 @@ const Hero = (props: any) => {
                       </Stack>
                     </CheckboxGroup>
                   </PopoverBody>
-                  
                 </PopoverContent>
               </Portal>
             </Popover>
@@ -243,7 +241,7 @@ const Hero = (props: any) => {
             justifyContent="center"
             borderRadius={10}
           >
-            <Text fontSize="2xl">Thursday 13:30-15:30</Text>
+            <Text fontSize="2xl">{`${day} ${startTime} - ${endTime}`}</Text>
           </Box>
         </Box>
         <Box //Box that holds the table
@@ -297,49 +295,48 @@ const Hero = (props: any) => {
             </Box>
           </Box>
 
-                  {filteredData
-          .filter((item) => {
-            // Filter based on checkbox state
-            if (checkedItems[0]) {
-              return item.status.toLowerCase() === "present";
-            } 
+          {filteredData
+            .filter((item) => {
+              // Filter based on checkbox state
+              if (checkedItems[0]) {
+                return item.status.toLowerCase() === "present";
+              }
 
-            if (checkedItems[1]) {
-              return item.status.toLowerCase() === "absent";
-            }
+              if (checkedItems[1]) {
+                return item.status.toLowerCase() === "absent";
+              }
 
-            if (checkedItems[2]) {
-              return item.status.toLowerCase() === "excused";
-            }
-            else {
-              return true;
-            }
-          })
-          .map((item) => (
-            <Box paddingLeft="2%" h="13%" display="flex">
-              <Box w="10%" display="flex" alignItems="center">
-                <Text>{item.student_id}</Text>
+              if (checkedItems[2]) {
+                return item.status.toLowerCase() === "excused";
+              } else {
+                return true;
+              }
+            })
+            .map((item) => (
+              <Box paddingLeft="2%" h="13%" display="flex">
+                <Box w="10%" display="flex" alignItems="center">
+                  <Text>{item.student_id}</Text>
+                </Box>
+                <Box w="13%" display="flex" alignItems="center">
+                  <Text>{item.student_name}</Text>
+                </Box>
+                <Box w="7%" display="flex" alignItems="center">
+                  <Text>{item.week}</Text>
+                </Box>
+                <Box w="8%" display="flex" alignItems="center">
+                  <Text>{item.date}</Text>
+                </Box>
+                <Box w="15%" display="flex" alignItems="center">
+                  <Text>{item.attedance_percentage + "%"}</Text>
+                </Box>
+                <Box w="15%" display="flex" alignItems="center">
+                  <Text>{item.status}</Text>
+                </Box>
+                <Box w="15%" display="flex" alignItems="center">
+                  <Text>{item.unexcused_absences}</Text>
+                </Box>
               </Box>
-              <Box w="13%" display="flex" alignItems="center">
-                <Text>{item.student_name}</Text>
-              </Box>
-              <Box w="7%" display="flex" alignItems="center">
-                <Text>{item.week}</Text>
-              </Box>
-              <Box w="8%" display="flex" alignItems="center">
-                <Text>{item.date}</Text>
-              </Box>
-              <Box w="15%" display="flex" alignItems="center">
-                <Text>{item.attedance_percentage + "%"}</Text>
-              </Box>
-              <Box w="15%" display="flex" alignItems="center">
-                <Text>{item.status}</Text>
-              </Box>
-              <Box w="15%" display="flex" alignItems="center">
-                <Text>{item.unexcused_absences}</Text>
-              </Box>
-            </Box>
-          ))}
+            ))}
         </Box>
         <Box //Box under the table that has the weeks
           h="8%"
