@@ -6,9 +6,12 @@ __pycache__/
 # Datasets
 real_and_fake_face
 real_and_fake_face_detection
+My_dataset
+student_dataset
 
 # Directories
 saved_model
+students_model
 test_samples
 
 # C extensions

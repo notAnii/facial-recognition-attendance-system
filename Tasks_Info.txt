@@ -1,0 +1,24 @@
+WEBCAM -
+Integrate previous webcam mtcnn code to show info when detecting a face in terminal *DONE*
+Fix slow frame rate during live detection
+Live detection with webcam (check youtube videos) *DONE*
+Detect multiple faces during live detection *DONE*
+
+
+DATASET -
+Add data augmentation to training dataset?
+Add our faces to dataset and re-train model (save the model with different name) (~1718 pics of all 5 of us combined)
+Think of what to include in validation dataset
+
+Image Processing - 
+
+
+//Concerns//
+- run the saved model on every frame for 15 mins?
+- take pictures of every frame with or without bounding box and loop all those pictures to go through the saved model?
+
+
+*** Uninstall mediapipe if not using it
+*** Uninstall facenet_pytorch if not using it
+*** Uninstall torchaudio if not using it
+*** Uninstall deepface if not using it
