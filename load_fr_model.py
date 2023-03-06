@@ -60,7 +60,7 @@ def make_prediction():
     # class_names = train_ds.class_names
 
     # load model
-    fr_model = load_model("saved_model")
+    fr_model = load_model("students_model")
 
     # # making predictions
     # image=cv2.imread('test_samples/007_1f6f632a.jpg')
@@ -86,6 +86,9 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
 
     start = datetime.now()
 
+    print("Loading model...")
+    model = make_prediction()
+
     # Loop through all images in the directory
     for filename in os.listdir(dir_path):
         if filename.endswith('.jpg') or filename.endswith('.png'):
@@ -95,20 +98,18 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
             image_resized = cv2.resize(image, (img_height, img_width))
             image = np.expand_dims(image_resized, axis = 0)
 
-            print("Loading model...")
-            model = make_prediction()
-
-            print("Making prediction...")
+            print("\nMaking prediction on", filename, "...")
             pred = model.predict(image)
-            print(pred)
+            print(pred)              # to access specific class value, use pred[0, class_number] || ex: pred[0, 1] gets second class
+
 
     cv2.destroyAllWindows()
 
     duration = datetime.now() - start
-    print("Predictions completed in time: ", duration)
+    print("\nPredictions completed in time: ", duration)
 
 
-dir_path = 'Datasets/6698360/'
+dir_path = 'test_samples/'
 # make_prediction_on_images_in_dir(dir_path, 224, 224)
 
 
@@ -150,3 +151,65 @@ def making_prediction_on_preprocessed_frame():
     cv2.destroyAllWindows()
 
 # making_prediction_on_preprocessed_frame()
+
+
+def live_cropped_face_detection():
+
+    count = 0
+
+    # Load the saved ResNet50 model
+    model = make_prediction()
+
+    # Initialize MTCNN for face detection
+    mtcnn_detector = MTCNN()
+
+    # Initialize webcam
+    webcam = cv2.VideoCapture(0)
+
+    # Run loop for live face detection
+    while True:
+        # Capture frame from webcam
+        ret, frame = webcam.read()
+
+        # Detect faces using MTCNN
+        boxes, _ = mtcnn_detector.detect(frame)
+
+        # Draw bounding boxes around detected faces
+        if boxes is not None:
+            for box in boxes:
+                x1, y1, x2, y2 = box.astype('int')
+                face = frame[y1:y2, x1:x2]          # crops whatever bounding box picks up on
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+                if face.size > 0:
+                    
+                    count = 0
+                    # Preprocess the frame by resizing and normalizing
+                    img_resized = cv2.resize(face, (224, 224))
+                    img = np.expand_dims(img_resized, axis=0)
+                    img = img / 255.0                                   # gets different results with or without this line
+                    # cv2.imshow('Resized face', img)
+
+                    # Use the ResNet50 model to make a prediction on the preprocessed frame
+                    print("Making prediction...")
+                    pred = model.predict(img)
+                    # pred_class = np.argmax(pred)
+                    print(pred)
+
+        elif(count == 0):
+            count = 1
+            print("Looking for a face...")
+
+        # Show frame with bounding boxes
+        cv2.imshow('Live Face Detection', frame)
+
+        # Press 'q' to exit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release webcam and close window
+    webcam.release()
+    cv2.destroyAllWindows()
+
+live_cropped_face_detection()
+

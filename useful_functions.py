@@ -3,6 +3,9 @@ import os
 import time
 from facenet_pytorch import MTCNN
 import mtcnn
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.image
 
 def take_pics():
     webcam = cv2.VideoCapture(0)
@@ -57,6 +60,15 @@ def find_faces_in_directory(dir_path):
             face_roi = mtcnn_detector.detect_faces(image)
             print(face_roi)
 
+            # # extract the bounding box from the first face
+            # x1, y1, width, height = face_roi[0]['box']
+            # x2, y2 = x1 + width, y1 + height
+            # face = image[y1:y2, x1:x2]
+            # print(face.shape)
+
+            # mpl.pyplot.imshow(image)
+            # mpl.pyplot.show()
+
             # Display the image
             cv2.imshow('image', image)
             cv2.waitKey(0)
@@ -64,43 +76,5 @@ def find_faces_in_directory(dir_path):
     cv2.destroyAllWindows()
 
 # Path to directory containing images
-dir_path = 'Datasets/6698360/'
-# find_faces_in_directory(dir_path)
-
-# ------------------------------------------------------------------------------------------------------------------
-
-def live_face_detection():
-    # Initialize MTCNN for face detection
-    mtcnn_detector = MTCNN()
-
-    # Initialize webcam
-    webcam = cv2.VideoCapture(0)
-
-    # Run loop for live face detection
-    while True:
-        # Capture frame from webcam
-        ret, frame = webcam.read()
-
-        # Detect faces using MTCNN
-        boxes, _ = mtcnn_detector.detect(frame)
-
-        # Draw bounding boxes around detected faces
-        if boxes is not None:
-            for box in boxes:
-                x1, y1, x2, y2 = box.astype('int')
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
-        # Show frame with bounding boxes
-        cv2.imshow('Live Face Detection', frame)
-
-        # Press 'q' to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Release webcam and close window
-    webcam.release()
-    cv2.destroyAllWindows()
-
-# live_face_detection()
-
-
+dir_path = 'test_samples/'
+find_faces_in_directory(dir_path)
