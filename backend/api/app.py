@@ -315,6 +315,7 @@ def start_attendance():
 
     return "Success", 200
 
+
 # Run flask application
 if __name__ == '__main__':
     app.run(debug=True)
