@@ -302,9 +302,17 @@ def get_class_count():
 
 
 #starting the attendance 
-@app.route('/api/v1/start-recognition', methods = ['GET'])
+@app.route('/api/v1/start-attendance', methods = ['POST'])
 @jwt_required()
-def start_recognition():
+def start_attendance():
+    subject_code = request.json.get("subject_code", None)
+    session_number = int(request.json.get("session_number", None))
+    week = int(request.json.get("week", None))
+    
+    populate_attendance(subject_code, session_number, week)
+    # function to open the camera goes here too 
+    # function should have params of subject_code , session_number, week
+
     return "Success", 200
 
 

@@ -1,5 +1,5 @@
 from database.dbhelper import DBHelper
-from utility.utils import getTime
+from utility.utils import get_current_time, get_today_date, getTime
 
 #get all students
 def all_students():
@@ -120,3 +120,73 @@ def recent_session_attendance(subject_code, session_number, week):
     
     result = db.fetch(sql)
     return result
+
+#populates attendance with pending status
+def populate_attendance(subject_code, session_number, week):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT Enrolment.student_id, Enrolment.enrolment_id
+        FROM Enrolment
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s        
+        ''' % (subject_code, session_number)
+    students = db.fetch(fetch_sql)
+    student_ids = [r['student_id'] for r in students]
+    enrolment_ids =[r['enrolment_id'] for r in students]
+
+    check_sql = '''
+        SELECT COUNT(Attendance.attendance_id) as count
+        FROM Attendance
+        INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (subject_code, session_number, week)
+
+    if (db.fetchone(check_sql)['count'] == 0):
+        for enrolment in enrolment_ids:
+            insert_sql = '''
+                INSERT INTO Attendance (enrolment_id, week, date, clock_in, status) 
+                VALUES (%s, 'Week %s', %s, NULL, 'Pending')
+            '''
+            db.execute(insert_sql, (enrolment, week, str(get_today_date())))
+
+#sets attendance status to present    
+def set_present_status(student_id, subject_code, session_number, week):
+    db = DBHelper()
+    fetch_sql = '''
+    SELECT Attendance.attendance_id
+    FROM Attendance
+    INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+    INNER JOIN Session ON Enrolment.session_id = Session.session_id
+    WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (student_id, subject_code, session_number, week)
+    attendance_id = db.fetchone(fetch_sql)['attendance_id']
+
+    check_sql = '''
+        SELECT Attendance.status
+        FROM Attendance
+        INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (student_id, subject_code, session_number, week)
+
+    if(db.fetchone(check_sql)['status'] != 'Present' ):
+        update_sql = '''
+        UPDATE Attendance
+        SET status = 'Present', clock_in = %s
+        WHERE attendance_id = %s
+        '''
+        db.execute(update_sql, (str(get_current_time()),attendance_id))
+
+#check if student is in class
+def student_in_class(student_id, subject_code, session_number):
+    db = DBHelper()
+    sql  = '''
+        SELECT COUNT(Enrolment.student_id) as count
+        FROM Enrolment
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s AND Enrolment.student_id = %s   
+    ''' % (subject_code, session_number, student_id)
+    if (db.fetchone(sql)['count'] > 0):
+        return True
+    return False
