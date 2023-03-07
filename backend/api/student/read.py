@@ -1,5 +1,5 @@
 from database.dbhelper import DBHelper
-from utility.utils import getTime
+from utility.utils import get_current_time, get_today_date, getTime
 
 #get all students
 def all_students():
@@ -120,3 +120,24 @@ def recent_session_attendance(subject_code, session_number, week):
     
     result = db.fetch(sql)
     return result
+
+
+def populate_attendance(subject_code, session_number, week):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT Enrolment.student_id, Enrolment.enrolment_id
+        FROM Enrolment
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s        
+        ''' % (subject_code, session_number)
+    students = db.fetch(fetch_sql)
+    student_ids = [r['student_id'] for r in students]
+    enrolment_ids =[r['enrolment_id'] for r in students]
+
+    for enrolment in enrolment_ids:
+        insert_sql = '''
+            INSERT INTO Attendance (enrolment_id, week, date, clock_in, status) 
+            VALUES (%s, 'Week %s', %s, NULL, 'Pending')
+        '''
+        db.execute(insert_sql, (enrolment, week, str(get_today_date())))
+    
