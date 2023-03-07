@@ -54,13 +54,13 @@ def make_prediction():
     # img_height,img_width=224,224
 
     # train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    # 'celeb_faces_dataset',
+    # 'student_dataset',
     # )
 
     # class_names = train_ds.class_names
 
     # load model
-    fr_model = load_model("students_model")
+    fr_model = load_model("updated_model")
 
     # # making predictions
     # image=cv2.imread('test_samples/007_1f6f632a.jpg')
@@ -155,6 +155,12 @@ def making_prediction_on_preprocessed_frame():
 
 def live_cropped_face_detection():
 
+    # Get class names to print when making predictions
+    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    'student_dataset'
+    )
+    class_names = train_ds.class_names
+
     count = 0
 
     # Load the saved ResNet50 model
@@ -174,27 +180,36 @@ def live_cropped_face_detection():
         # Detect faces using MTCNN
         boxes, _ = mtcnn_detector.detect(frame)
 
+        # Create list to store detected faces
+        faces = []
+
         # Draw bounding boxes around detected faces
         if boxes is not None:
             for box in boxes:
                 x1, y1, x2, y2 = box.astype('int')
                 face = frame[y1:y2, x1:x2]          # crops whatever bounding box picks up on
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)        # displays bounding box around face
 
                 if face.size > 0:
-                    
-                    count = 0
                     # Preprocess the frame by resizing and normalizing
                     img_resized = cv2.resize(face, (224, 224))
                     img = np.expand_dims(img_resized, axis=0)
-                    img = img / 255.0                                   # gets different results with or without this line
+                    img = img / 255.0     # gets different results with or without this line
                     # cv2.imshow('Resized face', img)
+                    faces.append(img)
 
-                    # Use the ResNet50 model to make a prediction on the preprocessed frame
-                    print("Making prediction...")
-                    pred = model.predict(img)
-                    # pred_class = np.argmax(pred)
-                    print(pred)
+            if len(faces) > 0:
+                count = 0
+                # Concatenate the list of preprocessed faces into an array
+                faces_array = np.concatenate(faces, axis=0)
+
+                # Use the saved ResNet50 model to make a prediction on the preprocessed faces
+                pred = model.predict(faces_array)
+                # Get the predicted classes for each face
+                pred_classes = np.argmax(pred, axis=1)
+                for i, pred_class in enumerate(pred_classes):
+                    output_class = class_names[pred_class]
+                    print(f"Face {i}: {output_class}")
 
         elif(count == 0):
             count = 1

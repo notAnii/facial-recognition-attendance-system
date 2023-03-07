@@ -95,7 +95,7 @@ resnet_model.compile(optimizer=Adam(learning_rate=0.001),loss='sparse_categorica
 # Training model
 start = datetime.now()
 
-epochs=12                       # can experiment with (number of iterations through dataset)
+epochs=10                       # can experiment with (number of iterations through dataset)
 history = resnet_model.fit(
 #   train_generator,
 #   validation_data=validation_generator,
@@ -107,8 +107,7 @@ history = resnet_model.fit(
   epochs=epochs
 )
 
-resnet_model.save("students_model")
-fr_model = load_model("students_model")
+resnet_model.save("updated_model")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)
@@ -133,16 +132,3 @@ plt.ylabel('Loss')
 plt.xlabel('Epochs')
 plt.legend(['train', 'validation'])
 plt.show()
-
-# Making predictions
-image=cv2.imread('test_samples/Layton_5.jpg')
-image_resized= cv2.resize(image, (img_height,img_width))
-image=np.expand_dims(image_resized,axis=0)
-print(image.shape)
-
-pred=fr_model.predict(image)
-# pred = np.argmax(resnet_model.predict(image, 1, verbose = 0), axis = 1)
-print(pred)
-
-output_class=class_names[np.argmax(pred)]
-print("The predicted class is: ", output_class)

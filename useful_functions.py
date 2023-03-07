@@ -6,13 +6,14 @@ import mtcnn
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.image
+import numpy as np
 
 def take_pics():
     webcam = cv2.VideoCapture(0)
     img_counter = 0
     path = 'My_dataset/6698360' #directory to where photos are saved
     delay = 3 #delay between pictures
-    max_images = 100 #maximum number of images to capture
+    max_images = 250 #maximum number of images to capture
     last_capture_time = time.monotonic()
 
     while img_counter < max_images:

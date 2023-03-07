@@ -7,7 +7,7 @@ Detect multiple faces during live detection *DONE*
 
 DATASET -
 Add data augmentation to training dataset?
-Add our faces to dataset and re-train model (save the model with different name) (~1718 pics of all 5 of us combined)
+Add our faces to dataset and re-train model (save the model with different name) *DONE*
 Think of what to include in validation dataset
 Extract faces from images using mtcnn before training the model
 
@@ -20,6 +20,5 @@ Image Processing -
 
 
 *** Uninstall mediapipe if not using it
-*** Uninstall facenet_pytorch if not using it
 *** Uninstall torchaudio if not using it
 *** Uninstall deepface if not using it
