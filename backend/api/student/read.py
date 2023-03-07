@@ -168,3 +168,17 @@ def set_present_status(student_id, subject_code, session_number, week):
         WHERE attendance_id = %s
     '''
     db.execute(update_sql, (str(get_current_time()),attendance_id))
+
+#check if student is in class
+def student_in_class(student_id, subject_code, session_number):
+    db = DBHelper()
+    sql  = '''
+        SELECT COUNT(Enrolment.student_id) as count
+        FROM Enrolment
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s AND Enrolment.student_id = %s   
+    ''' % (subject_code, session_number, student_id)
+    if (db.fetchone(sql)['count'] > 0):
+        return True
+    else:
+        return False
