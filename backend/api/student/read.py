@@ -134,12 +134,21 @@ def populate_attendance(subject_code, session_number, week):
     student_ids = [r['student_id'] for r in students]
     enrolment_ids =[r['enrolment_id'] for r in students]
 
-    for enrolment in enrolment_ids:
-        insert_sql = '''
-            INSERT INTO Attendance (enrolment_id, week, date, clock_in, status) 
-            VALUES (%s, 'Week %s', %s, NULL, 'Pending')
-        '''
-        db.execute(insert_sql, (enrolment, week, str(get_today_date())))
+    check_sql = '''
+        SELECT COUNT(Attendance.attendance_id) as count
+        FROM Attendance
+        INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session ON Enrolment.session_id = Session.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (subject_code, session_number, week)
+
+    if (db.fetchone(check_sql)['count'] == 0):
+        for enrolment in enrolment_ids:
+            insert_sql = '''
+                INSERT INTO Attendance (enrolment_id, week, date, clock_in, status) 
+                VALUES (%s, 'Week %s', %s, NULL, 'Pending')
+            '''
+            db.execute(insert_sql, (enrolment, week, str(get_today_date())))
 
 #sets attendance status to present    
 def set_present_status(student_id, subject_code, session_number, week):
