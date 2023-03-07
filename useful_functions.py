@@ -46,6 +46,39 @@ def take_pics():
 # take_pics()
 # ------------------------------------------------------------------------------------------------------------------
 
+def rename_pics():
+    # Set the directory path containing the images
+    directory = "path/to/directory/"
+
+    # Set the prefix for the new filenames
+    prefix = "image_"
+
+    # Set the starting number for the new filenames
+    start_num = 1
+
+    # Get a list of all the files in the directory
+    files = os.listdir(directory)
+
+    # Loop through each file and rename it
+    for file in files:
+        # Check if the file is an image file
+        if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
+            # Get the file extension
+            ext = os.path.splitext(file)[1]
+
+            # Generate the new filename
+            new_name = prefix + str(start_num) + ext
+
+            # Rename the file
+            os.rename(os.path.join(directory, file), os.path.join(directory, new_name))
+
+            # Increment the start number
+            start_num += 1
+
+# rename_pics()
+
+# ------------------------------------------------------------------------------------------------------------------
+
 def find_faces_in_directory(dir_path):
     # Initialize MTCNN face detector
     mtcnn_detector = mtcnn.MTCNN()

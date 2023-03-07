@@ -18,7 +18,82 @@ from keras.models import load_model
 from datetime import datetime
 import cv2
 import sys
+import mtcnn
 
+# --------------------------------------------------------------------------------------------------------------
+
+def crop_faces():
+
+  start = datetime.now()
+
+  # Define the path to the parent folder of the dataset
+  dataset_path = 'student_dataset'
+
+  # Define the path for the folder to put extracted images
+  faces_folder_path = 'extracted_faces'
+
+  # Create the folder to put extracted images if it does not already exist
+  if not os.path.exists(faces_folder_path):
+      os.makedirs(faces_folder_path)
+
+  # Initialize the MTCNN detector
+  detector = mtcnn.MTCNN()
+
+  # Minimum confidence level for face detection
+  confidence_threshold = 0.85
+
+  # Loop through each directory in the dataset path
+  for dir_name in os.listdir(dataset_path):
+      
+      # Check if the current item is a directory
+      if os.path.isdir(os.path.join(dataset_path, dir_name)):
+          
+          # Define the path for the class faces folder
+          class_faces_folder_path = os.path.join(faces_folder_path, dir_name)
+          
+          # Create the class faces folder if it does not already exist
+          if not os.path.exists(class_faces_folder_path):
+              os.makedirs(class_faces_folder_path)
+          
+          # Loop through each file in the current directory
+          for filename in os.listdir(os.path.join(dataset_path, dir_name)):
+              
+              # Check if the file is a jpg or png image
+              if filename.endswith('.jpg') or filename.endswith('.png'):
+                  
+                  # Read the image file
+                  image=cv2.imread(os.path.join(dataset_path, dir_name, filename))
+
+                  # Detect faces in the image using MTCNN
+                  faces = detector.detect_faces(image)
+
+                  # Loop through each detected face
+                  for i, face in enumerate(faces):
+                      if face['confidence'] >= confidence_threshold:
+                          # Get the bounding box coordinates for the current face
+                          x1, y1, width, height = face['box']
+                          x2, y2 = x1 + width, y1 + height
+                          
+                          # Extract the face from the image using the bounding box coordinates
+                          extracted_face = image[y1:y2, x1:x2]
+
+                          # Scale the extracted face to a larger size using interpolation
+                          # factor = 2
+                          # new_width = int(extracted_face.shape[1] * factor)
+                          # new_height = int(extracted_face.shape[0] * factor)
+                          # extracted_face = cv2.resize(extracted_face, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
+                      
+                          # Save the extracted face as a new image file
+                          output_filename = os.path.join(class_faces_folder_path, f"{os.path.splitext(filename)[0]}_cropped{i+1}.jpg")
+                          cv2.imwrite(output_filename, extracted_face)
+
+  duration = datetime.now() - start
+  print("Extracting faces completed in time: ", duration)
+
+
+# crop_faces()
+
+# --------------------------------------------------------------------------------------------------------------
 
 # preparing data
 num_classes = 5                # value is the number of folders in dataset folder
@@ -47,7 +122,7 @@ batch_size=64                   # can experiment with
 
 # Loading data from directories
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(     # for data aug:  train_ds=train_datagen.flow_from_directory
-  'student_dataset',
+  'extracted_faces',
   validation_split=0.2,         # can experiment with
   subset="training",
   seed=123,
@@ -57,7 +132,7 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(     # for data a
   )
 
 val_ds = tf.keras.preprocessing.image_dataset_from_directory(       # for data aug:  val_ds=val_datagen.flow_from_directory
-  'student_dataset',
+  'extracted_faces',
   validation_split=0.2,         # can experiment with
   subset="validation",
   seed=123,
@@ -107,7 +182,7 @@ history = resnet_model.fit(
   epochs=epochs
 )
 
-resnet_model.save("updated_model")
+resnet_model.save("extracted_model")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)

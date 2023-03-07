@@ -6,10 +6,12 @@ __pycache__/
 # Datasets
 My_dataset
 student_dataset
+extracted_faces
 
 # Directories
 students_model
 updated_model
+extracted_model
 test_samples
 
 # C extensions

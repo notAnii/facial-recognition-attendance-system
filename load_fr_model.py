@@ -60,7 +60,7 @@ def make_prediction():
     # class_names = train_ds.class_names
 
     # load model
-    fr_model = load_model("updated_model")
+    fr_model = load_model("extracted_model")
 
     # # making predictions
     # image=cv2.imread('test_samples/007_1f6f632a.jpg')
