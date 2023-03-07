@@ -302,9 +302,12 @@ def get_class_count():
 
 
 #starting the attendance 
-@app.route('/api/v1/start-recognition', methods = ['GET'])
+@app.route('/api/v1/start-recognition', methods = ['POST'])
 @jwt_required()
 def start_recognition():
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+    week = request.json.get("week", None)
     return "Success", 200
 
 
