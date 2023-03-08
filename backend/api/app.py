@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from flask import Flask, jsonify, request, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, JWTManager , get_jwt, set_access_cookies, set_refresh_cookies, unset_jwt_cookies, get_jwt_header
 from flask_cors import CORS
@@ -7,6 +9,7 @@ from utility.bcrypt_utils import *
 from student.read import *
 from teacher.read import *
 from datetime import datetime
+from face_rec.load_fr_model import live_cropped_DETECT_face_detection
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
@@ -312,6 +315,7 @@ def start_attendance():
     populate_attendance(subject_code, session_number, week)
     # function to open the camera goes here too 
     # function should have params of subject_code , session_number, week
+    live_cropped_DETECT_face_detection()
 
     return "Success", 200
 
