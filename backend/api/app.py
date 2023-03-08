@@ -9,7 +9,8 @@ from utility.bcrypt_utils import *
 from student.read import *
 from teacher.read import *
 from datetime import datetime
-from face_rec.load_fr_model import live_cropped_DETECT_face_detection
+from face_rec.load_fr_model import start_live_attendance
+import threading
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
@@ -304,6 +305,9 @@ def get_class_count():
     return jsonify(result), 200
 
 
+def live_detection_thread(subject_code, session_number, week):
+    start_live_attendance(subject_code, session_number, week)
+
 #starting the attendance 
 @app.route('/api/v1/start-attendance', methods = ['POST'])
 @jwt_required()
@@ -314,8 +318,11 @@ def start_attendance():
     
     populate_attendance(subject_code, session_number, week)
     # function to open the camera goes here too 
-    # function should have params of subject_code , session_number, week
-    live_cropped_DETECT_face_detection()
+    # function should have
+    #  params of subject_code , session_number, week
+
+    t = threading.Thread(target=live_detection_thread, args=(subject_code, session_number, week))
+    t.start()
 
     return "Success", 200
 

@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -9,6 +11,7 @@ import cv2
 import os
 from datetime import datetime
 from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
+from api.student.read import set_present_status
 
 def webcam():   
     # webcam stuff
@@ -275,3 +278,87 @@ def live_cropped_DETECTFACE_face_detection():
 
 #live_cropped_DETECTFACE_face_detection()
 
+# -------------------------------------------------------------------------------------------------------------
+def start_live_attendance(subject_code, session_number, week):
+
+    # Get class names to print when making predictions
+    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    'extracted_faces'
+    )
+    class_names = train_ds.class_names
+
+    count = 0
+
+    start_time = datetime.now()
+    
+    # Load the saved ResNet50 model
+    model = load_fr_model()
+
+    # Initialize MTCNN for face detection
+    mtcnn_detector = MTCNN()
+
+    # Initialize webcam
+    webcam = cv2.VideoCapture(0)
+
+    # Run loop for live face detection
+    while True:
+        # Capture frame from webcam
+        ret, frame = webcam.read()
+
+        # Detect faces using MTCNN
+        boxes, _ = mtcnn_detector.detect(frame)
+
+        # Create list to store detected faces
+        faces = []
+
+        # Draw bounding boxes around detected faces
+        if boxes is not None:
+            for box in boxes:
+                x1, y1, x2, y2 = box.astype('int')
+                face = frame[y1:y2, x1:x2]          # crops whatever bounding box picks up on
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)        # displays bounding box around face
+
+                if face.size > 0:
+                    # Preprocess the frame by resizing and normalizing
+                    img_resized = cv2.resize(face, (224, 224))
+                    img = np.expand_dims(img_resized, axis=0)
+                    img = tf.keras.applications.resnet50.preprocess_input(img)
+                    # cv2.imshow('Resized face', img)
+                    faces.append(img)
+
+            if len(faces) > 0:
+                count = 0
+                # Concatenate the list of preprocessed faces into an array
+                faces_array = np.concatenate(faces, axis=0)
+
+                # Use the saved ResNet50 model to make a prediction on the preprocessed faces
+                pred = model.predict(faces_array)
+                # Get the predicted classes for each face
+                pred_classes = np.argmax(pred, axis=1)
+                for i, pred_class in enumerate(pred_classes):
+                    output_class = class_names[pred_class]
+                    output_prob = np.max(pred)
+                    if(output_prob >= 0.90):
+                        print(f"Face {i}: {output_class}")
+                        set_present_status(output_class, subject_code, session_number, week)
+                    else:
+                        print("Unknown Face")    
+
+        elif(count == 0):
+            count = 1
+            print("Looking for a face...")
+
+        # Show frame with bounding boxes
+        cv2.imshow('Live Face Detection', frame)
+        
+        elapsed_time = (datetime.now() - start_time).total_seconds() / 60.0
+        if elapsed_time >=60:
+            break
+
+        # Press 'q' to exit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release webcam and close window
+    webcam.release()
+    cv2.destroyAllWindows()
