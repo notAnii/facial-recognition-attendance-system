@@ -2,13 +2,13 @@ import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.image
-import mtcnn
+import mtcnn            # for using mtcnn.MTCNN() `detect_faces()`
 import numpy as np
 from keras.models import load_model
 import cv2
 import os
 from datetime import datetime
-from facenet_pytorch import MTCNN
+from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
 
 def webcam():   
     # webcam stuff
@@ -50,36 +50,17 @@ def webcam():
     mpl.pyplot.show()
 
 
-def make_prediction():
-    # img_height,img_width=224,224
+# webcam()
 
-    # train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    # 'student_dataset',
-    # )
-
-    # class_names = train_ds.class_names
-
-    # load model
+# -------------------------------------------------------------------------------------------------------------
+def load_fr_model():
+    # Load model
     fr_model = load_model("extracted_model")
-
-    # # making predictions
-    # image=cv2.imread('test_samples/007_1f6f632a.jpg')
-    # image_resized= cv2.resize(image, (img_height,img_width))
-    # image=np.expand_dims(image_resized,axis=0)
-    # print(image.shape)
-
-    # pred=fr_model.predict(image)
-    # # pred = np.argmax(resnet_model.predict(image, 1, verbose = 0), axis = 1)
-    # print(pred)
-
-    # output_class=class_names[np.argmax(pred)]
-    # print("The predicted class is: ", output_class)
 
     return fr_model
 
 
-# webcam()
-# make_prediction()
+# load_fr_model()
 
 # -------------------------------------------------------------------------------------------------------------
 def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
@@ -87,7 +68,7 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
     start = datetime.now()
 
     print("Loading model...")
-    model = make_prediction()
+    model = load_fr_model()
 
     # Loop through all images in the directory
     for filename in os.listdir(dir_path):
@@ -112,10 +93,10 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
 dir_path = 'test_samples/'
 # make_prediction_on_images_in_dir(dir_path, 224, 224)
 
-
-def making_prediction_on_preprocessed_frame():
+# -------------------------------------------------------------------------------------------------------------
+def make_prediction_on_preprocessed_frame():
     # Load the saved ResNet50 model
-    model = make_prediction()
+    model = load_fr_model()
 
     # Open a connection to the video stream
     cap = cv2.VideoCapture(0)
@@ -150,21 +131,22 @@ def making_prediction_on_preprocessed_frame():
     cap.release()
     cv2.destroyAllWindows()
 
-# making_prediction_on_preprocessed_frame()
 
+# make_prediction_on_preprocessed_frame()
 
-def live_cropped_face_detection():
+# -------------------------------------------------------------------------------------------------------------
+def live_cropped_DETECT_face_detection():
 
     # Get class names to print when making predictions
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'student_dataset'
+    'extracted_faces'
     )
     class_names = train_ds.class_names
 
     count = 0
 
     # Load the saved ResNet50 model
-    model = make_prediction()
+    model = load_fr_model()
 
     # Initialize MTCNN for face detection
     mtcnn_detector = MTCNN()
@@ -194,7 +176,7 @@ def live_cropped_face_detection():
                     # Preprocess the frame by resizing and normalizing
                     img_resized = cv2.resize(face, (224, 224))
                     img = np.expand_dims(img_resized, axis=0)
-                    img = img / 255.0     # gets different results with or without this line
+                    img = tf.keras.applications.resnet50.preprocess_input(img)
                     # cv2.imshow('Resized face', img)
                     faces.append(img)
 
@@ -226,5 +208,70 @@ def live_cropped_face_detection():
     webcam.release()
     cv2.destroyAllWindows()
 
-live_cropped_face_detection()
+
+# live_cropped_DETECT_face_detection()
+
+# -------------------------------------------------------------------------------------------------------------
+def live_cropped_DETECTFACE_face_detection():
+     # Get class names to print when making predictions
+    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    'extracted_faces'
+    )
+    class_names = train_ds.class_names
+    # with open('class_names', 'rb') as f:
+    #     class_names = pickle.load(f)
+
+    # Load the saved ResNet50 model
+    model = load_fr_model()
+
+    # Initialize MTCNN for face detection
+    face_detector = mtcnn.MTCNN()
+
+    # Initialize webcam
+    webcam = cv2.VideoCapture(0)
+
+    # Run loop for live face detection
+    while True:
+        # Capture frame from webcam
+        ret, frame = webcam.read()
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        faces = face_detector.detect_faces(rgb)
+
+        for face in faces:
+
+            # Get the bounding box coordinates of the face
+            x, y, w, h = face['box']
+
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+            # Extract the face ROI from the frame
+            face_roi = rgb[y:y+h, x:x+w]
+
+            # Resize the face ROI to the input size of the classification model
+            face_roi_resized = cv2.resize(face_roi, (224, 224))
+
+            # Preprocess the face ROI
+            face_roi_resized = np.expand_dims(face_roi_resized, axis=0)
+            face_roi_resized = tf.keras.applications.resnet50.preprocess_input(face_roi_resized)
+
+            pred = model.predict(face_roi_resized)
+            output_class = class_names[np.argmax(pred)]
+            print(output_class)
+            output_prob = np.max(pred)
+            print(output_prob*100)
+         
+        # Show frame with bounding boxes
+        cv2.imshow('Live Face Detection', frame)
+
+        # Press 'q' to exit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release webcam and close window
+    webcam.release()
+    cv2.destroyAllWindows()
+
+
+live_cropped_DETECTFACE_face_detection()
 

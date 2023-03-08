@@ -18,7 +18,6 @@ from keras.models import load_model
 from datetime import datetime
 import cv2
 import sys
-import mtcnn
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -41,6 +40,9 @@ def crop_faces():
 
   # Minimum confidence level for face detection
   confidence_threshold = 0.85
+
+  # Size of the extracted face images
+  face_size = (224, 224)
 
   # Loop through each directory in the dataset path
   for dir_name in os.listdir(dataset_path):
@@ -77,15 +79,12 @@ def crop_faces():
                           # Extract the face from the image using the bounding box coordinates
                           extracted_face = image[y1:y2, x1:x2]
 
-                          # Scale the extracted face to a larger size using interpolation
-                          # factor = 2
-                          # new_width = int(extracted_face.shape[1] * factor)
-                          # new_height = int(extracted_face.shape[0] * factor)
-                          # extracted_face = cv2.resize(extracted_face, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
+                          # Resize the extracted face to the specified size
+                          resized_face = cv2.resize(extracted_face, face_size, interpolation=cv2.INTER_CUBIC)
                       
                           # Save the extracted face as a new image file
                           output_filename = os.path.join(class_faces_folder_path, f"{os.path.splitext(filename)[0]}_cropped{i+1}.jpg")
-                          cv2.imwrite(output_filename, extracted_face)
+                          cv2.imwrite(output_filename, resized_face)
 
   duration = datetime.now() - start
   print("Extracting faces completed in time: ", duration)
@@ -120,7 +119,7 @@ batch_size=64                   # can experiment with
 #     validation_split=0.2
 # )
 
-# Loading data from directories
+# Loading data from directories                            # tf.keras.preprocessing.image_dataset_from_directory
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(     # for data aug:  train_ds=train_datagen.flow_from_directory
   'extracted_faces',
   validation_split=0.2,         # can experiment with
@@ -170,7 +169,7 @@ resnet_model.compile(optimizer=Adam(learning_rate=0.001),loss='sparse_categorica
 # Training model
 start = datetime.now()
 
-epochs=10                       # can experiment with (number of iterations through dataset)
+epochs=8                       # can experiment with (number of iterations through dataset)
 history = resnet_model.fit(
 #   train_generator,
 #   validation_data=validation_generator,
