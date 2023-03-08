@@ -288,9 +288,6 @@ def start_live_attendance(subject_code, session_number, week):
     class_names = train_ds.class_names
 
     count = 0
-
-    start_time = datetime.now()
-    
     # Load the saved ResNet50 model
     model = load_fr_model()
 
@@ -351,9 +348,6 @@ def start_live_attendance(subject_code, session_number, week):
         # Show frame with bounding boxes
         cv2.imshow('Live Face Detection', frame)
         
-        elapsed_time = (datetime.now() - start_time).total_seconds() / 60.0
-        if elapsed_time >=60:
-            break
 
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
