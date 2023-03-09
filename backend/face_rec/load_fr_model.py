@@ -11,7 +11,7 @@ import cv2
 import os
 from datetime import datetime
 from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
-from api.student.read import set_present_status
+from api.student.read import set_present_status, completed_attendance
 
 def webcam():   
     # webcam stuff
@@ -351,6 +351,7 @@ def start_live_attendance(subject_code, session_number, week):
 
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            completed_attendance(subject_code, session_number, week)
             break
 
     # Release webcam and close window
