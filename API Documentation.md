@@ -654,14 +654,174 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred while retrieving the class counts for teacher.
 
+</br>
+
+# ADMIN ENDPOINTS
+
+# Assign Teacher
+
+### URL: `PUT /api/v1/assign-teacher`
+
+#### **Description:**
+Assigns teacher to a specific session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "teacher_id" : "123",
+        "subject_code" : "CSCI369",
+        "session_number" : "1"
+      }
+  ```
+
+#### **Responses:**
+- **200 OK:** Success.
+
+</br>
+
+# Unassign Teacher
+
+### URL: `PUT /api/v1/assign-teacher`
+
+#### **Description:**
+Removes teacher from a specific session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "teacher_id" : "123",
+        "subject_code" : "CSCI369",
+        "session_number" : "1"
+      }
+  ```
+
+#### **Responses:**
+- **200 OK:** Success.
+
+</br>
+
+# Enrol Student
+
+### URL: `POST /api/v1/enrol-student`
+
+#### **Description:**
+Enrols student to a specific session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "student_id" : "6633249",
+        "subject_code" : "CSCI369",
+        "session_number" : "1"
+      }
+  ```
+
+#### **Responses:**
+- **200 OK:** Success.
+
+</br>
+
+# Student Classes
+
+### URL: `GET /api/v1/student-classes/<student_id>`
+
+#### **Description:**
+Enrols student to a specific session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Responses:**
+- **200 OK:** Success.
+ Body:
+  
+   ```json
+   [
+    {
+        "day": "Monday",
+        "enrolment_id": 86,
+        "subject_code": "CSCI369",
+        "timing": "13:30 - 15:30"
+    },
+  ```
+</br>
+
+# Edit Student Sessions
+
+### URL: `POST /api/v1/edit-student`
+
+#### **Description:**
+Edit session for a specific student
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "enrolment_id" : "85",
+        "subject_code" : "CSCI369",
+        "session_number" : "1"
+      }
+  ```
+
+#### **Responses:**
+- **200 OK:** Success.
+
+</br>
+
+# Unenrol Student
+### URL: `DELETE /api/v1/unenrol-student/<enrolment_id>`
+
+#### **Description:**
+Unenrols student from a specifi session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Responses:**
+- **200 OK:** Success.
+
+</br>
+
+# Update Student Attendance
+
+### URL: `PUT /api/v1/edit-student`
+
+#### **Description:**
+Updates student attendance for a specific session
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "student_id" : "6633249",
+        "subject_code" : "CSCI369",
+        "session_number" : "1",
+        "week" : "1",
+        "status" : "Excused"
+      }
+  ```
+
+#### **Responses:**
+- **200 OK:** Success.
 
 </br>
 </br>
 </br>
 </br>
+
 
 ![alt text](https://cdn.discordapp.com/attachments/913815506568507444/1074730004899954762/Makima_peek94.PNG "PAIN")
-</br>
->This thing will be much longer because we still have the admin page to do. So, for now, enjoy when it's still short :>
 
-![alt text](https://i.pinimg.com/originals/76/15/c9/7615c940b0ac4c8ca5f38611a4fafbb9.png "HI")
