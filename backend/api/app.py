@@ -353,7 +353,7 @@ def put_unassign_teacher():
     return "Success", 200
 
 
-#enrol student to class
+#post enrol student to class
 @app.route("/api/v1/enrol-student", methods=["POST"])
 @jwt_required()
 def post_enrol_student():
@@ -361,8 +361,7 @@ def post_enrol_student():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    # make function to get the session id from the subject code and session number
-    # Then you do the function that actually enrols
+    enrol_student(int(student_id), subject_code, int(session_number))
     
     return "Success", 200
 

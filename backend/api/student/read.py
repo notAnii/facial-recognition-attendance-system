@@ -211,3 +211,17 @@ def completed_attendance(subject_code, session_number, week):
         ''' 
         db.execute(sql, attendance)
 
+#enrol student to class
+def enrol_student(student_id, subject_code, session_number):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT session_id
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s;
+    ''' % (subject_code, session_number)
+    session_id = db.fetchone(fetch_sql)['session_id']
+
+    enrol_sql = '''
+        INSERT INTO Enrolment (student_id, session_id) VALUES (%s, %s);
+    '''
+    db.execute(enrol_sql, (student_id, session_id))
