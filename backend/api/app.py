@@ -326,6 +326,93 @@ def start_attendance():
 
     return "Success", 200
 
+# admin routes
+
+#post teacher class assignment
+@app.route("/api/v1/assign-teacher", methods=["POST"])
+@jwt_required()
+def post_assign_teacher():
+    teacher_id = request.json.get("teacher_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+    
+    return "Success", 200
+
+#put teacher class assignment
+@app.route("/api/v1/edit-teacher", methods=["PUT"])
+@jwt_required()
+def put_edit_teacher():
+    teacher_id = request.json.get("teacher_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+    
+    return "Success", 200
+
+#put teacher class assignment
+@app.route("/api/v1/unassign-teacher", methods=["PUT"])
+@jwt_required()
+def put_unassign_teacher():
+    teacher_id = request.json.get("teacher_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+
+    #This just changes the teacher id attr in the session to NONE
+    
+    return "Success", 200
+
+
+#enrol student to class
+@app.route("/api/v1/enrol-student", methods=["POST"])
+@jwt_required()
+def post_enrol_student():
+    student_id = request.json.get("student_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+
+    # make function to get the session id from the subject code and session number
+    # Then you do the function that actually enrols
+    
+    return "Success", 200
+
+#get all the classes for a student
+@app.route("/api/v1/student-classes", methods=["GET"])
+@jwt_required()
+def get_student_classes():
+    student_id = request.json.get("student_id", None)
+    
+    # return subjectcode, day, timings, enrolment id
+    return "Success", 200
+
+#edit student classes
+@app.route("/api/v1/edit-student", methods=["PUT"])
+@jwt_required()
+def put_edit_student():
+    student_id = request.json.get("student_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+
+    
+    return "Success", 200
+
+#delete student enrolment
+@app.route("/api/v1/unrol-student/<enrolment_id>", methods=["DELETE"])
+@jwt_required()
+def delete_unrol_student():
+
+    
+    return "Success", 200
+
+#update student attendance
+@app.route("/api/v1/update-attendance", methods=["PUT"])
+@jwt_required()
+def put_update_attendance():
+    student_id = request.json.get("student_id", None)
+    subject_code = request.json.get("subject_code", None)
+    session_number = request.json.get("session_number", None)
+    week  = request.json.get("week", None)
+    status = request.json.get("status", None)
+    
+    return "Success", 200
 
 # Run flask application
 if __name__ == '__main__':
