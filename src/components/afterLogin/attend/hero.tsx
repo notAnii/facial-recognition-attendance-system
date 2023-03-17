@@ -39,7 +39,15 @@ const Hero: React.FC = () => {
 
   const URL = `http://127.0.0.1:5000/api/v1/live-attendance/${subjectCode}/${sessionNumber}/${weekNumber}`;
 
+  let debounceTimeout;
+
   const [is404Error, setIs404Error] = useState(false);
+
+  const startAttendanceDate = {
+    subject_code: subjectCode,
+    session_number: sessionNumber,
+    week: weekNumber,
+  };
 
   const [data, setData] = useState<
     Array<{
@@ -54,13 +62,31 @@ const Hero: React.FC = () => {
   //to retrieve a list of posts. (this will allow table to automatically increment rows)
 
   useEffect(() => {
+    const startAttendanceThing = async () => {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/api/v1/start-attendance",
+        startAttendanceDate,
+        { withCredentials: true }
+      );
+    };
+
+    startAttendanceThing();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get(URL, { withCredentials: true });
       console.log(result.data);
-      setData(result.data);
+      setData(result.status == 200 ? result.data : []);
     };
 
     fetchData();
+
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 5000); // call every 30 seconds
+
+    return () => clearInterval(intervalId); // cleanup function
   }, []);
 
   return (
@@ -167,46 +193,19 @@ const Hero: React.FC = () => {
 
                     <Tbody //DATA INSIDE THE TABLE (it will auto increment)
                     >
-                      {data && Array.isArray(data) ? (
-                        data.map((item) => (
-                          <Tr key={item.student_id}>
-                            <Td>{item.student_id}</Td>
-                            <Td>{item.student_name}</Td>
-                            <Td>{item.program}</Td>
-                            <Td isNumeric>{item.clock_in}</Td>
-                          </Tr>
-                        ))
-                      ) : (
-                        <Box display={"flex"} w="100%">
-                          <Box
-                            justifyContent={"center"}
-                            w="100%"
-                            alignItems="center"
-                            textAlign={"center"}
-                          >
-                            <Text color="red">No Students</Text>
-                          </Box>
-                        </Box>
-                      )}
+                      {data.map((item) => (
+                        <Tr key={item.student_id}>
+                          <Td>{item.student_id}</Td>
+                          <Td>{item.student_name}</Td>
+                          <Td>{item.program}</Td>
+                          <Td isNumeric>{item.clock_in}</Td>
+                        </Tr>
+                      ))}
                     </Tbody>
                   </Table>
                 </TableContainer>
               </Box>
             </VStack>
-          </Box>
-
-          <Box //Camera
-            backgroundColor={"white"}
-            h="45vh"
-            maxW={"100%"}
-            marginTop={13.3}
-            borderRadius={10}
-            border="1px"
-            borderColor="black"
-            padding={3}
-            paddingTop={5}
-          >
-            <Webcam width={450} height={450} />
           </Box>
         </HStack>
       </VStack>

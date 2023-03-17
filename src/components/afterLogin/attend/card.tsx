@@ -42,90 +42,78 @@ const Hero: React.FC = () => {
     const fetchData = async () => {
       const result = await axios.get(URL, { withCredentials: true });
 
-      setData(result.data);
+      setData(result.status == 200 ? result.data : []);
     };
 
     fetchData();
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 5000); // call every 30 seconds
+
+    return () => clearInterval(intervalId); // cleanup function
   }, []);
 
   return (
     <>
-      {data && Array.isArray(data) ? (
-        data.map((item) => (
-          <Center py={3}>
-            <Box
-              w={"150px"}
-              bg={useColorModeValue("white", "gray.800")}
-              boxShadow={"2xl"}
-              rounded={"md"}
-              overflow={"hidden"}
-            >
-              <Image
-                h={"50px"}
-                w={"100%"}
-                src={"/cardBack.png"}
-                objectFit={"cover"}
+      {data.map((item) => (
+        <Center py={3}>
+          <Box
+            w={"150px"}
+            bg={useColorModeValue("white", "gray.800")}
+            boxShadow={"2xl"}
+            rounded={"md"}
+            overflow={"hidden"}
+          >
+            <Image
+              h={"50px"}
+              w={"100%"}
+              src={"/cardBack.png"}
+              objectFit={"cover"}
+            />
+            <Flex justify={"center"} mt={-12}>
+              <Avatar
+                size={"md"}
+                src={"/avatar.jpg"}
+                css={{
+                  border: "2px solid white",
+                }}
               />
-              <Flex justify={"center"} mt={-12}>
-                <Avatar
-                  size={"md"}
-                  src={"/avatar.jpg"}
-                  css={{
-                    border: "2px solid white",
-                  }}
-                />
-              </Flex>
+            </Flex>
 
-              <Box p={5}>
-                <Stack spacing={0} align={"center"} mb={1}>
-                  <Heading
-                    fontSize={"16px"}
-                    fontWeight={500}
-                    fontFamily={"body"}
+            <Box p={5}>
+              <Stack spacing={0} align={"center"} mb={1}>
+                <Heading fontSize={"16px"} fontWeight={500} fontFamily={"body"}>
+                  {item.student_name}
+                </Heading>
+              </Stack>
+
+              <Stack direction={"row"} justify={"center"} spacing={6}>
+                <Stack spacing={0} align={"center"}>
+                  <Text
+                    fontWeight={600}
+                    backgroundColor="#7ADEE4"
+                    padding={1}
+                    borderRadius={100}
                   >
-                    {item.student_name}
-                  </Heading>
+                    {item.attedance_percentage + "%"}
+                  </Text>
                 </Stack>
+              </Stack>
 
-                <Stack direction={"row"} justify={"center"} spacing={6}>
-                  <Stack spacing={0} align={"center"}>
-                    <Text
-                      fontWeight={600}
-                      backgroundColor="#7ADEE4"
-                      padding={1}
-                      borderRadius={100}
-                    >
-                      {item.attedance_percentage + "%"}
-                    </Text>
-                  </Stack>
-                </Stack>
-
-                <Box
-                  w={"full"}
-                  mt={4}
-                  color={"black"}
-                  borderColor={"black"}
-                  borderRadius={23}
-                  border="1px"
-                >
-                  <Text paddingLeft={35}>{item.clock_in}</Text>
-                </Box>
+              <Box
+                w={"full"}
+                mt={4}
+                color={"black"}
+                borderColor={"black"}
+                borderRadius={23}
+                border="1px"
+              >
+                <Text paddingLeft={35}>{item.clock_in}</Text>
               </Box>
             </Box>
-          </Center>
-        ))
-      ) : (
-        <Box display={"flex"} w="100%">
-          <Box
-            justifyContent={"center"}
-            w="100%"
-            alignItems="center"
-            textAlign={"center"}
-          >
-            <Text color="red">No Students</Text>
           </Box>
-        </Box>
-      )}
+        </Center>
+      ))}
     </>
   );
 };
