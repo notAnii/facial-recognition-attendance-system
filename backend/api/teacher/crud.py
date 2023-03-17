@@ -84,7 +84,6 @@ def class_counts(teacher_id):
     result = db.fetch(sql)
     return result
 
-
 #get teacher password
 def teacher_password(teacher_id):
     db = DBHelper()
@@ -104,3 +103,23 @@ def dummy_password(teacher_id, password):
         WHERE teacher_id = %s
         ''' 
     db.execute(sql, (password, teacher_id))
+
+#teacher class assignment
+def assign_teacher(teacher_id, subject_code, session_number):
+    db = DBHelper()
+    sql = '''
+        UPDATE Session
+        SET teacher_id = %s
+        WHERE subject_code = %s AND session_number = %s
+    '''
+    db.execute(sql, (teacher_id, subject_code, session_number))    
+
+#unassign teacher from class
+def unassign_teacher(teacher_id, subject_code, session_number):
+    db = DBHelper()
+    sql = '''
+        UPDATE Session
+        SET teacher_id = Null
+        WHERE teacher_id = %s AND subject_code = %s AND session_number = %s
+    '''
+    db.execute(sql, (teacher_id, subject_code, session_number))

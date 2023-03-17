@@ -211,3 +211,79 @@ def completed_attendance(subject_code, session_number, week):
         ''' 
         db.execute(sql, attendance)
 
+#enrol student to class
+def enrol_student(student_id, subject_code, session_number):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT session_id
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s;
+    ''' % (subject_code, session_number)
+    session_id = db.fetchone(fetch_sql)['session_id']
+
+    enrol_sql = '''
+        INSERT INTO Enrolment (student_id, session_id) VALUES (%s, %s);
+    '''
+    db.execute(enrol_sql, (student_id, session_id))
+
+#get student classes
+def student_classes(student_id):
+    db = DBHelper()
+    time_format = str("%H:%i")
+    sql = '''
+        SELECT Enrolment.enrolment_id, Session.subject_code, Session.day, CONCAT(CAST(time_format(Session.start_time,'%s') AS Char) , ' - ',CAST(time_format(Session.end_time,'%s') AS Char)) AS timing
+        FROM Enrolment
+        INNER JOIN Session
+        ON Enrolment.session_id = Session.session_id
+        WHERE Enrolment.student_id = %s;
+    ''' % (time_format, time_format, student_id)
+    result = db.fetch(sql)
+    return result
+
+#edit student class
+def edit_student_class(enrolment_id, subject_code, session_number):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT session_id
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s;
+    ''' % (subject_code, session_number)
+    session_id = db.fetchone(fetch_sql)['session_id']
+
+    edit_sql = '''
+        UPDATE Enrolment
+        SET session_id = %s
+        WHERE enrolment_id = %s
+    '''
+    db.execute(edit_sql, (session_id, enrolment_id))
+
+#delete student enrolment
+def unenrol_student(enrolment_id):
+    db = DBHelper()
+    sql = '''
+        DELETE FROM Enrolment
+        WHERE enrolment_id = %s;
+    '''
+    db.execute(sql, (enrolment_id))
+
+#update student attendance
+def update_attendance(student_id, subject_code, session_number, week, status):
+    db = DBHelper()
+    fetch_sql = '''
+    SELECT Attendance.attendance_id, Attendance.status
+    FROM Attendance
+    INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+    INNER JOIN Session ON Enrolment.session_id = Session.session_id
+    WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (student_id, subject_code, session_number, week)
+    result = db.fetchone(fetch_sql)
+    attendance_id = result['attendance_id']
+    previous_status = result['status']
+    
+    if not (previous_status == 'Present' and status == 'Present'):
+        update_sql = '''
+            UPDATE Attendance
+            SET status = %s, clock_in = NULL
+            WHERE attendance_id = %s
+        '''
+        db.execute(update_sql, (status, attendance_id))
