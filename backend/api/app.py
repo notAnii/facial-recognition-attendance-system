@@ -328,8 +328,8 @@ def start_attendance():
 
 # admin routes
 
-#post teacher class assignment
-@app.route("/api/v1/assign-teacher", methods=["POST"])
+#put teacher class assignment
+@app.route("/api/v1/assign-teacher", methods=["PUT"])
 @jwt_required()
 def post_assign_teacher():
     teacher_id = request.json.get("teacher_id", None)
