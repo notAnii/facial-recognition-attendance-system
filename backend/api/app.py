@@ -403,6 +403,8 @@ def put_update_attendance():
     week  = request.json.get("week", None)
     status = request.json.get("status", None)
     
+    update_attendance(int(student_id), subject_code, int(session_number), week, status)
+
     return "Success", 200
 
 # Run flask application

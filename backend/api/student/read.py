@@ -265,3 +265,25 @@ def unenrol_student(enrolment_id):
         WHERE enrolment_id = %s;
     '''
     db.execute(sql, (enrolment_id))
+
+#update student attendance
+def update_attendance(student_id, subject_code, session_number, week, status):
+    db = DBHelper()
+    fetch_sql = '''
+    SELECT Attendance.attendance_id, Attendance.status
+    FROM Attendance
+    INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+    INNER JOIN Session ON Enrolment.session_id = Session.session_id
+    WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+    ''' % (student_id, subject_code, session_number, week)
+    result = db.fetchone(fetch_sql)
+    attendance_id = result['attendance_id']
+    previous_status = result['status']
+    
+    if not (previous_status == 'Present' and status == 'Present'):
+        update_sql = '''
+            UPDATE Attendance
+            SET status = %s, clock_in = NULL
+            WHERE attendance_id = %s
+        '''
+        db.execute(update_sql, (status, attendance_id))
