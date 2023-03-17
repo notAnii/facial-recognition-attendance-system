@@ -37,12 +37,12 @@ const Hero = (props: Props) => {
 
         <Heading color='white' size="3xl">The Automated Attendance System </Heading>
          
-        <Text color='white' size="sm">The automated attendance system allows a students attendance to be recorded on a particular day. The student needs to go through facial recognition to mark the attendance. 
-        Once facial recognition is done, the details of ID number, date and in-time are saved in the database. 
-        The information will be stored in a cloud that forms a connection with the system and server through 
-        the internet. The system will consist of a GUI where additional information about the student will be
-         present. </Text>
-         
+        <Text color='white' size="sm">Kaisen is an automated attendance web app for educational institutions. 
+        It utilizes facial recognition technology to record student attendance seamlessly. 
+        Students just have to walk in front of the camera and their attendance is marked. 
+        Kaisen reduces workload for teachers and staff while improving accuracy. It's easy to integrate into existing school systems and 
+        offers a reliable and secure way of tracking attendance. Kaisen is a user-friendly solution that saves time and effort for both students and educators. 
+        Overall, Kaisen is an efficient and innovative attendance system for schools and universities. </Text>
         
         </VStack>
     </Container>

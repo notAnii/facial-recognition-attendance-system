@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { MouseEventHandler } from "react";
 
+
 import { Box, Text } from "@chakra-ui/react";
 
 //Task bar
 const links = [
   { title: "Home", path: "/" },
   { title: "Log-in", path: "/login" },
-  { title: "Sign-up", path: "/signup" },
+  { title: "Admin", path: "/admin/login" },
 ];
 
 interface Props {
