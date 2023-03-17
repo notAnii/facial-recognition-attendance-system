@@ -190,3 +190,24 @@ def student_in_class(student_id, subject_code, session_number):
     if (db.fetchone(sql)['count'] > 0):
         return True
     return False
+
+def completed_attendance(subject_code, session_number, week):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT Attendance.attendance_id
+        FROM Attendance
+        INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session ON Session.session_id = Enrolment.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s and Attendance.week = 'Week %s'
+        ''' % (subject_code, session_number, week)
+    students = db.fetch(fetch_sql)
+    attendance_ids =[r['attendance_id'] for r in students]
+
+    for attendance in attendance_ids:
+        sql = '''
+            UPDATE Attendance 
+            SET Attendance.status = 'Absent'
+            WHERE Attendance.status = 'Pending' and Attendance.attendance_id = %s
+        ''' 
+        db.execute(sql, attendance)
+
