@@ -11,7 +11,7 @@ import cv2
 import os
 from datetime import datetime
 from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
-from api.student.read import set_present_status, completed_attendance
+from api.student.crud import set_present_status, completed_attendance
 
 def webcam():   
     # webcam stuff

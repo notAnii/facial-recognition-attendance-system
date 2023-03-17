@@ -6,8 +6,9 @@ from flask_cors import CORS
 from datetime import timedelta
 from utility.error_handlers import *
 from utility.bcrypt_utils import *
-from student.read import *
-from teacher.read import *
+from student.crud import *
+from teacher.crud import *
+from admin.crud import *
 from datetime import datetime
 from face_rec.load_fr_model import start_live_attendance
 import threading
@@ -47,6 +48,7 @@ def refresh_expiring_jwt(response):
 # populate user 123 with dummy password
 dummy_password('123', hash_password("abshir"))
 dummy_password('456', hash_password("naruto"))
+admin_dummy_password('112233', hash_password("admin"))
 
 #login route to create a jwt token for user
 @app.route("/api/v1/login", methods=["POST"])
@@ -74,6 +76,31 @@ def login():
     response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True, secure=True, samesite='None')
     return response
 
+#login route to create a jwt token for user
+@app.route("/api/v1/admin-login", methods=["POST"])
+def admin_login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    try:
+        hashed_password = admin_password(int(username))
+        if hashed_password is None:
+            return error_response("Username does not exist", 401)
+        #comapre user password with password in database
+        if not compare_passwords(password, hashed_password['password']):
+            return make_response(jsonify({"error": "Incorrect password"}), 401)
+    except ValueError as e:
+        return error_response("Invalid username format", 400)
+    except Exception as e:
+        print(e)
+        return error_response("Unexpected server error", 500)
+
+    access_token = create_access_token(identity=username)
+    refresh_token = create_refresh_token(identity=username)
+    response = make_response(jsonify({"message": "Login Successful"}), 200)
+    response.set_cookie('access_token_cookie', value=access_token, httponly=True, secure=True, samesite='None')
+    response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True, secure=True, samesite='None')
+    return response
 
 #logout route to revoke jwt access
 blacklist = set()

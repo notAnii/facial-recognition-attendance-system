@@ -53,7 +53,6 @@ CREATE TABLE `Enrolment` (
 	`student_id` INT,
 	`session_id` INT,
 	PRIMARY KEY (`enrolment_id`),
-	UNIQUE KEY `unique_enrolment` (`student	_id`, `session_id`),
 	FOREIGN KEY (`student_id`) REFERENCES Student(student_id) ON DELETE CASCADE,
 	FOREIGN KEY (`session_id`) REFERENCES Session(session_id) ON DELETE CASCADE
 );
@@ -70,6 +69,13 @@ CREATE TABLE `Attendance` (
 	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id) ON DELETE CASCADE
 );
 
+CREATE TABLE `Admin` (
+	`admin_id` INT,
+	`password` BINARY(60),
+	PRIMARY KEY (`admin_id`)
+);
+#inserting admin
+INSERT INTO Admin VALUES(112233, NULL);
 
 #inserting students
 INSERT INTO Student VALUES (6633249, 'Abshir', 'BCS');
