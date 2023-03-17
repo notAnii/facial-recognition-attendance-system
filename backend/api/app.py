@@ -378,11 +378,11 @@ def get_student_classes(student_id):
 @app.route("/api/v1/edit-student", methods=["PUT"])
 @jwt_required()
 def put_edit_student():
-    student_id = request.json.get("student_id", None)
+    enrolment_id = request.json.get("enrolment_id", None)
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    edit_student_class(int(student_id), subject_code, int(session_number))
+    edit_student_class(int(enrolment_id), subject_code, int(session_number))
 
     return "Success", 200
 

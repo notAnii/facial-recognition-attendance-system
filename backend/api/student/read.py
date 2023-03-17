@@ -241,7 +241,7 @@ def student_classes(student_id):
     return result
 
 #edit student class
-def edit_student_class(student_id, subject_code, session_number):
+def edit_student_class(enrolment_id, subject_code, session_number):
     db = DBHelper()
     fetch_sql = '''
         SELECT session_id
@@ -253,6 +253,6 @@ def edit_student_class(student_id, subject_code, session_number):
     edit_sql = '''
         UPDATE Enrolment
         SET session_id = %s
-        WHERE student_id = %s
+        WHERE enrolment_id = %s
     '''
-    db.execute(edit_sql, (session_id, student_id))
+    db.execute(edit_sql, (session_id, enrolment_id))
