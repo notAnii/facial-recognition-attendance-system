@@ -6,6 +6,7 @@
 # Login User
 
 ### URL: `POST /api/v1/login`
+### URL: `POST /api/v1/admin-login`
 
 #### **Description:**
 Logins in user through the creation of a JSON Web Token (JWT).
