@@ -339,7 +339,7 @@ def start_live_attendance(subject_code, session_number, week):
                         print(f"Face {i}: {output_class}")
                         set_present_status(output_class, subject_code, session_number, week)
                     else:
-                        print("Unknown Face")    
+                        print(f"Closest: {output_class}, {output_prob}")    
 
         elif(count == 0):
             count = 1
