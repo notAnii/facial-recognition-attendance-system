@@ -239,3 +239,20 @@ def student_classes(student_id):
     ''' % (time_format, time_format, student_id)
     result = db.fetch(sql)
     return result
+
+#edit student class
+def edit_student_class(student_id, subject_code, session_number):
+    db = DBHelper()
+    fetch_sql = '''
+        SELECT session_id
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s;
+    ''' % (subject_code, session_number)
+    session_id = db.fetchone(fetch_sql)['session_id']
+
+    edit_sql = '''
+        UPDATE Enrolment
+        SET session_id = %s
+        WHERE student_id = %s
+    '''
+    db.execute(edit_sql, (session_id, student_id))

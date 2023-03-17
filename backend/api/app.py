@@ -374,7 +374,7 @@ def get_student_classes(student_id):
 
     return jsonify(result), 200
 
-#edit student classes
+#put edit student class
 @app.route("/api/v1/edit-student", methods=["PUT"])
 @jwt_required()
 def put_edit_student():
@@ -382,7 +382,8 @@ def put_edit_student():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    
+    edit_student_class(int(student_id), subject_code, int(session_number))
+
     return "Success", 200
 
 #delete student enrolment
