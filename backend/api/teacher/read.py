@@ -112,4 +112,14 @@ def assign_teacher(teacher_id, subject_code, session_number):
         SET teacher_id = %s
         WHERE subject_code = %s AND session_number = %s
     '''
+    db.execute(sql, (teacher_id, subject_code, session_number))    
+
+#unassign teacher from class
+def unassign_teacher(teacher_id, subject_code, session_number):
+    db = DBHelper()
+    sql = '''
+        UPDATE Session
+        SET teacher_id = Null
+        WHERE teacher_id = %s AND subject_code = %s AND session_number = %s
+    '''
     db.execute(sql, (teacher_id, subject_code, session_number))

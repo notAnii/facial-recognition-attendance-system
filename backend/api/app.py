@@ -340,17 +340,7 @@ def post_assign_teacher():
     
     return "Success", 200
 
-#put teacher class assignment
-@app.route("/api/v1/edit-teacher", methods=["PUT"])
-@jwt_required()
-def put_edit_teacher():
-    teacher_id = request.json.get("teacher_id", None)
-    subject_code = request.json.get("subject_code", None)
-    session_number = request.json.get("session_number", None)
-    
-    return "Success", 200
-
-#put teacher class assignment
+#put unassign teacher from class
 @app.route("/api/v1/unassign-teacher", methods=["PUT"])
 @jwt_required()
 def put_unassign_teacher():
@@ -358,7 +348,7 @@ def put_unassign_teacher():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    #This just changes the teacher id attr in the session to NONE
+    unassign_teacher(int(teacher_id), subject_code, int(session_number))
     
     return "Success", 200
 
