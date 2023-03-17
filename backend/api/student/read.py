@@ -256,3 +256,12 @@ def edit_student_class(enrolment_id, subject_code, session_number):
         WHERE enrolment_id = %s
     '''
     db.execute(edit_sql, (session_id, enrolment_id))
+
+#delete student enrolment
+def unenrol_student(enrolment_id):
+    db = DBHelper()
+    sql = '''
+        DELETE FROM Enrolment
+        WHERE enrolment_id = %s;
+    '''
+    db.execute(sql, (enrolment_id))

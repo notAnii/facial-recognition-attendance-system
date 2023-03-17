@@ -43,7 +43,7 @@ CREATE TABLE `Session` (
 	`class_type` VARCHAR(20),
 	`teacher_id` INT,
 	PRIMARY KEY (`session_id`),
-	FOREIGN KEY (`subject_code`) REFERENCES Subject(subject_code),
+	FOREIGN KEY (`subject_code`) REFERENCES Subject(subject_code) ON DELETE CASCADE,
 	FOREIGN KEY (`teacher_id`) REFERENCES Teacher(teacher_id)	
 );
 
@@ -53,9 +53,9 @@ CREATE TABLE `Enrolment` (
 	`student_id` INT,
 	`session_id` INT,
 	PRIMARY KEY (`enrolment_id`),
-	UNIQUE KEY `unique_enrolment` (`student_id`, `session_id`),
-	FOREIGN KEY (`student_id`) REFERENCES Student(student_id),
-	FOREIGN KEY (`session_id`) REFERENCES Session(session_id),
+	UNIQUE KEY `unique_enrolment` (`student	_id`, `session_id`),
+	FOREIGN KEY (`student_id`) REFERENCES Student(student_id) ON DELETE CASCADE,
+	FOREIGN KEY (`session_id`) REFERENCES Session(session_id) ON DELETE CASCADE
 );
 
 
@@ -67,7 +67,7 @@ CREATE TABLE `Attendance` (
 	`clock_in` TIME,
 	`status` VARCHAR(20),
 	PRIMARY KEY (`attendance_id`),
-	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id)
+	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id) ON DELETE CASCADE
 );
 
 

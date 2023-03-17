@@ -387,11 +387,10 @@ def put_edit_student():
     return "Success", 200
 
 #delete student enrolment
-@app.route("/api/v1/unrol-student/<enrolment_id>", methods=["DELETE"])
+@app.route("/api/v1/unenrol-student/<enrolment_id>", methods=["DELETE"])
 @jwt_required()
-def delete_unrol_student():
-
-    
+def delete_unrol_student(enrolment_id):
+    unenrol_student(int(enrolment_id))
     return "Success", 200
 
 #update student attendance
