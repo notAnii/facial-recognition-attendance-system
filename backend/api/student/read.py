@@ -225,3 +225,17 @@ def enrol_student(student_id, subject_code, session_number):
         INSERT INTO Enrolment (student_id, session_id) VALUES (%s, %s);
     '''
     db.execute(enrol_sql, (student_id, session_id))
+
+#get student classes
+def student_classes(student_id):
+    db = DBHelper()
+    time_format = str("%H:%i")
+    sql = '''
+        SELECT Enrolment.enrolment_id, Session.subject_code, Session.day, CONCAT(CAST(time_format(Session.start_time,'%s') AS Char) , ' - ',CAST(time_format(Session.end_time,'%s') AS Char)) AS timing
+        FROM Enrolment
+        INNER JOIN Session
+        ON Enrolment.session_id = Session.session_id
+        WHERE Enrolment.student_id = %s;
+    ''' % (time_format, time_format, student_id)
+    result = db.fetch(sql)
+    return result

@@ -366,13 +366,13 @@ def post_enrol_student():
     return "Success", 200
 
 #get all the classes for a student
-@app.route("/api/v1/student-classes", methods=["GET"])
+@app.route("/api/v1/student-classes/<student_id>", methods=["GET"])
 @jwt_required()
-def get_student_classes():
-    student_id = request.json.get("student_id", None)
+def get_student_classes(student_id):
     
-    # return subjectcode, day, timings, enrolment id
-    return "Success", 200
+    result = student_classes(int(student_id))
+
+    return jsonify(result), 200
 
 #edit student classes
 @app.route("/api/v1/edit-student", methods=["PUT"])
