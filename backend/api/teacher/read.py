@@ -104,12 +104,12 @@ def dummy_password(teacher_id, password):
         ''' 
     db.execute(sql, (password, teacher_id))
 
-    
+#teacher class assignment
 def assign_teacher(teacher_id, subject_code, session_number):
     db = DBHelper()
     sql = '''
         UPDATE Session
         SET teacher_id = %s
-        WHERE subject_code = '%s' AND session_number = %s
+        WHERE subject_code = %s AND session_number = %s
     '''
     db.execute(sql, (teacher_id, subject_code, session_number))

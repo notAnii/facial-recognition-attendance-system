@@ -335,6 +335,8 @@ def post_assign_teacher():
     teacher_id = request.json.get("teacher_id", None)
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
+
+    assign_teacher(int(teacher_id), subject_code, int(session_number))
     
     return "Success", 200
 
