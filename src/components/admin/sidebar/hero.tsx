@@ -42,7 +42,6 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 import "@fontsource/open-sans";
 import Link from "next/link";
-import axios from "axios";
 
 interface LinkItemProps {
   name: string;
@@ -107,27 +106,6 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const [teacherData, setTeacherData] = useState<
-    Array<{
-      department: string;
-      position: string;
-      teacher_name: string;
-    }>
-  >([]);
-
-  useEffect(() => {
-    const fetchTeacherData = async () => {
-      const result = await axios.get(
-        "http://127.0.0.1:5000/api/v1/teacher-info",
-        {
-          withCredentials: true,
-        }
-      );
-      setTeacherData(result.data);
-    };
-
-    fetchTeacherData();
-  }, []);
 
   return (
     <Box
@@ -180,28 +158,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           ))}
         </Link>
 
-        <Link //LINK FOR FIFTH BUTTON
-          href="/admin/teacher"
-          style={{ textDecoration: "none" }}
-        >
-          {FifthLink.map((link) => (
-            <NavItem textColor={"white"} key={link.name} icon={link.icon}>
-              {link.name}
-            </NavItem>
-          ))}
-        </Link>
-
-        <Link //LINK FOR SEVENTH BUTTON
-          href="/admin/student"
-          style={{ textDecoration: "none" }}
-        >
-          {SeventhLink.map((link) => (
-            <NavItem textColor={"white"} key={link.name} icon={link.icon}>
-              {link.name}
-            </NavItem>
-          ))}
-        </Link>
-
       </Box>
 
       <Popover>
@@ -222,11 +178,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                   height={50}
                   marginLeft={1}
                 />
-                {teacherData.map((item) => (
+                
                   <Text textAlign="left" fontSize="15px" color={"white"}>
-                    {item.teacher_name}
+                    Admin
                   </Text>
-                ))}
+                
                 <CloseButton
                   mr={1.5}
                   color={"white"}
