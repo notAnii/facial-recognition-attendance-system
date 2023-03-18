@@ -659,6 +659,66 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 # ADMIN ENDPOINTS
 
+# Teacher's Classes
+
+### URL: `GET /api/v1/teacher-classes/<teacher_id>`
+
+#### **Description:**
+Returns the classes for a specific teacher 
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Path parameters:**
+- `teacher_id (id)` - The teacher id for the classes that needs to be retrieved.
+
+#### **Responses:**
+- **200 OK:** The classes for teacher was successfully retrieved.
+  Body:
+  
+   ```json
+   [
+    {
+        "class_type": "Tutorial",
+        "day": "Tuesday",
+        "end_time": "15:30",
+        "room": "5.11",
+        "session_number": 1,
+        "start_time": "13:30",
+        "subject_code": "CSIT111",
+        "subject_name": "Programming"
+    },
+    {
+        "class_type": "Lab",
+        "day": "Tuesday",
+        "end_time": "10:30",
+        "room": "3.43",
+        "session_number": 1,
+        "start_time": "09:30",
+        "subject_code": "MATH221",
+        "subject_name": "Mathematics"
+    },
+  ```
+  
+- **204 No Content:** No classes data was found for this teacher.
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred while retrieving the classes.
+
+</br>
+
 # Assign Teacher
 
 ### URL: `PUT /api/v1/assign-teacher`
@@ -739,7 +799,10 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 Enrols student to a specific session
 
 #### **Authorization:**
-This endpoint requires a JSON Web Token (JWT) for authentication.
+This endpoint requires a JSON Web Token (JWT) for authentication.\
+
+#### **Path parameters:**
+- `student_id (int)` - The student id for classes that need to retrieved.
 
 #### **Responses:**
 - **200 OK:** Success.
@@ -788,6 +851,9 @@ Unenrols student from a specifi session
 
 #### **Authorization:**
 This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Path parameters:**
+- `enrolment_id (int)` - The enrolment id for the one that needs to removed.
 
 #### **Responses:**
 - **200 OK:** Success.
