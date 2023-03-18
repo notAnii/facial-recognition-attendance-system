@@ -55,7 +55,7 @@ def webcam():
 # -------------------------------------------------------------------------------------------------------------
 def load_fr_model():
     # Load model
-    fr_model = load_model("extracted_model")
+    fr_model = load_model("extracted_uni_model")
 
     return fr_model
 
@@ -143,7 +143,11 @@ def live_cropped_DETECT_face_detection():
     )
     class_names = train_ds.class_names
 
+    # Count for managing print statements for when a face is not detected
     count = 0
+
+    # Confidence threshold
+    confidence_threshold = 0.80
 
     # Load the saved ResNet50 model
     model = load_fr_model()
@@ -191,7 +195,11 @@ def live_cropped_DETECT_face_detection():
                 pred_classes = np.argmax(pred, axis=1)
                 for i, pred_class in enumerate(pred_classes):
                     output_class = class_names[pred_class]
-                    print(f"Face {i}: {output_class}")
+                    output_prob = pred[i][pred_class]
+                    
+                    if output_prob >= confidence_threshold:
+                        print(f"Face {i}: {output_class}, Probability: {output_prob:.2f}")
+                        # print(pred[i])
 
         elif(count == 0):
             count = 1
@@ -209,7 +217,7 @@ def live_cropped_DETECT_face_detection():
     cv2.destroyAllWindows()
 
 
-# live_cropped_DETECT_face_detection()
+live_cropped_DETECT_face_detection()
 
 # -------------------------------------------------------------------------------------------------------------
 def live_cropped_DETECTFACE_face_detection():
@@ -220,6 +228,9 @@ def live_cropped_DETECTFACE_face_detection():
     class_names = train_ds.class_names
     # with open('class_names', 'rb') as f:
     #     class_names = pickle.load(f)
+
+    # Confidence threshold
+    confidence_threshold = 0.80
 
     # Load the saved ResNet50 model
     model = load_fr_model()
@@ -257,9 +268,10 @@ def live_cropped_DETECTFACE_face_detection():
 
             pred = model.predict(face_roi_resized)
             output_class = class_names[np.argmax(pred)]
-            print(output_class)
             output_prob = np.max(pred)
-            print(output_prob*100)
+
+            if output_prob >= confidence_threshold:
+                print(f"{output_class}, Probability: {output_prob:.2f}")
          
         # Show frame with bounding boxes
         cv2.imshow('Live Face Detection', frame)
@@ -273,5 +285,5 @@ def live_cropped_DETECTFACE_face_detection():
     cv2.destroyAllWindows()
 
 
-live_cropped_DETECTFACE_face_detection()
+# live_cropped_DETECTFACE_face_detection()
 

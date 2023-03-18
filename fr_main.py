@@ -18,6 +18,8 @@ from keras.models import load_model
 from datetime import datetime
 import cv2
 import sys
+from keras.optimizers import RMSprop
+
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -103,41 +105,40 @@ batch_size=64                   # can experiment with
 
 # # defining data generators with augmentation        ||  if using data aug: remove validation_split from train_ds and val_ds
 # train_datagen = ImageDataGenerator(
-#     rescale = 1./255,
-#     rotation_range = 20,
-#     zoom_range = 0.15,
-#     width_shift_range = 0.2,
-#     height_shift_range = 0.2,
-#     shear_range = 0.15,
-#     horizontal_flip = True,
-#     fill_mode = 'nearest',
+#     horizontal_flip=True,
+#     rotation_range=20,
+#     brightness_range=[0.7, 1.3],
+#     width_shift_range=0.1,
+#     height_shift_range=0.1,
+#     zoom_range=0.1,
+#     fill_mode='nearest',
 #     validation_split=0.2
 # )
 
 # val_datagen = ImageDataGenerator(
-#     rescale = 1./255,
+#     # rescale = 1./255,
 #     validation_split=0.2
 # )
 
 # Loading data from directories                            # tf.keras.preprocessing.image_dataset_from_directory
-train_ds = tf.keras.preprocessing.image_dataset_from_directory(     # for data aug:  train_ds=train_datagen.flow_from_directory
-  'extracted_faces',
-  validation_split=0.2,         # can experiment with
+train_ds=tf.keras.preprocessing.image_dataset_from_directory(     # for data aug:  train_ds=train_datagen.flow_from_directory
+  'extracted_faces_uni',
+  validation_split=0.4,         # can experiment with
   subset="training",
   seed=123,
   image_size=(img_height, img_width),       # change to target_size from image_size if using data augmentation above
   batch_size=batch_size,
-  # class_mode='sparse'
+#   class_mode='sparse'           # 'categorical'
   )
 
-val_ds = tf.keras.preprocessing.image_dataset_from_directory(       # for data aug:  val_ds=val_datagen.flow_from_directory
-  'extracted_faces',
-  validation_split=0.2,         # can experiment with
+val_ds=tf.keras.preprocessing.image_dataset_from_directory(       # for data aug:  val_ds=val_datagen.flow_from_directory
+  'extracted_faces_uni',
+  validation_split=0.4,         # can experiment with
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),       # change to target_size from image_size if using data augmentation above
   batch_size=batch_size,
-  # class_mode='sparse'
+#   class_mode='sparse'           # 'categorical'
   )
 
 # Printing names of folders (students) in dataset
@@ -162,26 +163,26 @@ resnet_model.add(Dense(num_classes, activation='softmax'))
 resnet_model.summary()
 
 # Compiling model
-# can experiment with learning_rate
+# can experiment with learning_rate and optimizer (Adam and RMSprop)
 # if using data aug: change "loss" variable to 'categorical_crossentropy'
-resnet_model.compile(optimizer=Adam(learning_rate=0.001),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+resnet_model.compile(optimizer=RMSprop(learning_rate=0.001),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
 
 # Training model
 start = datetime.now()
 
-epochs=8                       # can experiment with (number of iterations through dataset)
+epochs=10                       # can experiment with (number of iterations through dataset)
 history = resnet_model.fit(
 #   train_generator,
 #   validation_data=validation_generator,
   train_ds,
   validation_data=val_ds,
 #   validation_split=0.2,
-  # steps_per_epoch=23,
-  # validation_steps=23,
+#   steps_per_epoch=train_ds.n // train_ds.batch_size,
+#   validation_steps=val_ds.n // val_ds.batch_size,
   epochs=epochs
 )
 
-resnet_model.save("extracted_model")
+resnet_model.save("extracted_uni_model")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)
