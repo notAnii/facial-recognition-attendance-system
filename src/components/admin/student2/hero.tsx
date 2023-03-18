@@ -62,10 +62,10 @@ const Hero = (props: Props) => {
             fontSize={"27px"}
             fontWeight="bold"
           >
-            Add Student To Class
+            Edit Student Attendance
           </Text>
 
-          <Box paddingLeft={9} paddingTop={8}>
+          <Box paddingLeft={9} paddingTop={5}>
 
           <Box>
             <Text
@@ -78,7 +78,7 @@ const Hero = (props: Props) => {
               width={"lg"}
             />
           </Box>
-          <Box paddingTop={10}>
+          <Box paddingTop={3}>
           <Text
             fontFamily={"Open Sans"}
             fontSize={"20px"}
@@ -89,7 +89,7 @@ const Hero = (props: Props) => {
               width={"lg"}
             />
           </Box>
-          <Box paddingTop={10}>
+          <Box paddingTop={3}>
           <Text
             fontFamily={"Open Sans"}
             fontSize={"20px"}
@@ -105,8 +105,50 @@ const Hero = (props: Props) => {
             <option value="option3">Option 3</option>
           </Select>
           </Box>
+
+          <Box paddingTop={3}>
+          <Text
+            fontFamily={"Open Sans"}
+            fontSize={"20px"}
+            >Week</Text>
+            <Select
+            border={"2px solid black"}
+            borderRadius={"xl"}
+            width={"lg"}
+            height={"52px"}
+          >
+            <option value="option1">Week 1</option>
+            <option value="option2">Week 2</option>
+            <option value="option3">Week 3</option>
+            <option value="option1">Week 4</option>
+            <option value="option2">Week 5</option>
+            <option value="option3">Week 6</option>
+            <option value="option1">Week 7</option>
+            <option value="option2">Week 8</option>
+            <option value="option3">Week 9</option>
+            <option value="option1">Week 10</option>
+           
+          </Select>
           </Box>
-          <Box paddingLeft={"80%"} paddingTop={"10%"} paddingBottom={"4%"}>
+
+          <Box paddingTop={3}>
+          <Text
+            fontFamily={"Open Sans"}
+            fontSize={"20px"}
+            >Status</Text>
+            <Select
+            border={"2px solid black"}
+            borderRadius={"xl"}
+            width={"lg"}
+            height={"52px"}
+          >
+            <option value="option1">Present</option>
+            <option value="option2">Absent</option>
+            <option value="option3">Excused</option>
+          </Select>
+          </Box>
+          </Box>
+          <Box paddingLeft={"80%"} paddingBottom={"4%"}>
           <Button
            fontSize={"lg"}
            borderRadius={14}
