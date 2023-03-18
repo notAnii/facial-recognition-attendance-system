@@ -367,6 +367,20 @@ def post_assign_teacher():
     
     return "Success", 200
 
+#get all classes for a teacher
+@app.route("/api/v1/teacher-classes/<teacher_id>", methods=["GET"])
+@jwt_required()
+def get_teacher_classes(teacher_id):
+    try:
+        result = all_classes(teacher_id)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred while retrieving classes", 500, f"Error occurred while retrieving classes. Exception: {e}")
+    
+    if not result:
+        return log_and_return_error("No classes found for the teacher", 204, f"No classes found for the teacher: {get_jwt_identity()}")
+        
+    return jsonify(result), 200
+
 #put unassign teacher from class
 @app.route("/api/v1/unassign-teacher", methods=["PUT"])
 @jwt_required()
