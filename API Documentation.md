@@ -897,6 +897,43 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 - **200 OK:** Success.
 
 </br>
+
+# Subject sessions
+
+### URL: `GET /api/v1/subject-sessions/<subject_code>`
+
+#### **Description:**
+Returns sessions for the specified subject code.
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+
+#### **Responses:**
+- **200 OK:** Success.
+  Body:
+  ```json
+     [
+       {
+           "day": "Monday",
+           "end_time": "15:30",
+           "session_number": 1,
+           "start_time": "13:30"
+       },
+       {
+           "day": "Tuesday",
+           "end_time": "15:30",
+           "session_number": 2,
+           "start_time": "13:30"
+       },
+       {
+           "day": "Friday",
+           "end_time": "10:30",
+           "session_number": 3,
+           "start_time": "08:30"
+       },
+  ```
+</br>
 </br>
 </br>
 </br>
