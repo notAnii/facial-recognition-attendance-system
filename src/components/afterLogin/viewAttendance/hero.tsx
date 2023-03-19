@@ -273,25 +273,25 @@ const Hero = (props: any) => {
             zIndex={1}
           >
             <Box w="10%" display="flex" alignItems="center">
-              <Text>Student ID</Text>
+              <Text fontWeight={"bold"}>Student ID</Text>
             </Box>
             <Box w="13%" display="flex" alignItems="center">
-              <Text>Student Name</Text>
+              <Text fontWeight={"bold"}>Student Name</Text>
             </Box>
             <Box w="7%" display="flex" alignItems="center">
-              <Text>Week</Text>
+              <Text fontWeight={"bold"}>Week</Text>
             </Box>
             <Box w="8%" display="flex" alignItems="center">
-              <Text>Date</Text>
+              <Text fontWeight={"bold"}>Date</Text>
             </Box>
             <Box w="15%" display="flex" alignItems="center">
-              <Text>Attendance Percentage</Text>
+              <Text fontWeight={"bold"}>Attendance %</Text>
             </Box>
             <Box w="15%" display="flex" alignItems="center">
-              <Text>Attendance Status</Text>
+              <Text fontWeight={"bold"}>Attendance Status</Text>
             </Box>
             <Box w="15%" display="flex" alignItems="center">
-              <Text>Unexcused Absences</Text>
+              <Text fontWeight={"bold"}>Unexcused Absences</Text>
             </Box>
           </Box>
 

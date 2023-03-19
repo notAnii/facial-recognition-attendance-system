@@ -178,25 +178,25 @@ const Hero = (props: Props) => {
             zIndex={1}
           >
             <Box w="10%" display="flex" alignItems="center">
-              <Text>Subject Code</Text>
+              <Text fontWeight={"bold"}>Subject Code</Text>
             </Box>
             <Box w="15%" display="flex" alignItems="center">
-              <Text>Subject Name</Text>
+              <Text fontWeight={"bold"}>Subject Name</Text>
             </Box>
             <Box w="9%" display="flex" alignItems="center">
-              <Text>Day</Text>
+              <Text fontWeight={"bold"}>Day</Text>
             </Box>
             <Box w="8%" display="flex" alignItems="center">
-              <Text>Start Time</Text>
+              <Text fontWeight={"bold"}>Start Time</Text>
             </Box>
             <Box w="8%" display="flex" alignItems="center">
-              <Text>End Time</Text>
+              <Text fontWeight={"bold"}>End Time</Text>
             </Box>
             <Box w="5%" display="flex" alignItems="center">
-              <Text>Room</Text>
+              <Text fontWeight={"bold"}>Room</Text>
             </Box>
             <Box w="10%" display="flex" alignItems="center">
-              <Text>Class Type</Text>
+              <Text fontWeight={"bold"}>Class Type</Text>
             </Box>
             <Box w="13%" display="flex" alignItems="center" />
             <Box w="13%" display="flex" alignItems="center" />
