@@ -231,10 +231,14 @@ def student_classes(student_id):
     db = DBHelper()
     time_format = str("%H:%i")
     sql = '''
-        SELECT Enrolment.enrolment_id, Session.subject_code, Session.day, CONCAT(CAST(time_format(Session.start_time,'%s') AS Char) , ' - ',CAST(time_format(Session.end_time,'%s') AS Char)) AS timing
+        SELECT Enrolment.enrolment_id, Session.subject_code, Subject.subject_name, Session.day, Session.session_number, 
+        CAST(time_format(Session.start_time,'%s') AS Char) AS start_time, 
+        CAST(time_format(Session.end_time,'%s') AS Char) AS end_time
         FROM Enrolment
         INNER JOIN Session
         ON Enrolment.session_id = Session.session_id
+        INNER JOIN Subject
+        ON Session.subject_code = Subject.subject_code
         WHERE Enrolment.student_id = %s;
     ''' % (time_format, time_format, student_id)
     result = db.fetch(sql)
