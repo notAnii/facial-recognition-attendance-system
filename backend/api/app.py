@@ -448,6 +448,16 @@ def put_update_attendance():
 
     return "Success", 200
 
+#get sessions from subject
+@app.route("/api/v1/subject-sessions/<subject_code>", methods=["GET"])
+@jwt_required()
+def get_subject_sessions(subject_code):
+    
+    result = subject_sessions(subject_code)
+
+    return jsonify(result), 200
+
+
 # Run flask application
 if __name__ == '__main__':
     app.run(debug=True)

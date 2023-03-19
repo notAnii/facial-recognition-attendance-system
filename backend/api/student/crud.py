@@ -291,3 +291,17 @@ def update_attendance(student_id, subject_code, session_number, week, status):
             WHERE attendance_id = %s
         '''
         db.execute(update_sql, (status, attendance_id))
+
+def subject_sessions(subject_code):
+    db = DBHelper()
+    time_format = str("%H:%i")
+    sql = '''
+        SELECT session_number, day, 
+        CAST(time_format(Session.start_time,'%s') AS Char) AS start_time, 
+        CAST(time_format(Session.end_time,'%s') AS Char) AS end_time
+        FROM Session
+        WHERE Session.subject_code = '%s'
+    ''' % (time_format, time_format, subject_code)
+
+    result = db.fetch(sql)
+    return result
