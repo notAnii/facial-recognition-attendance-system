@@ -34,7 +34,6 @@ type Props = {};
 
 const Hero = (props: Props) => {
   const { weekNumber, setWeekNumber } = useContext(WeekContext);
-
   const [searchQuery, setSearchQuery] = useState("");
 
   const [data, setData] = useState<
@@ -111,6 +110,8 @@ const Hero = (props: Props) => {
   }) => {
     setSearchQuery(e.target.value);
   };
+
+
 
   return (
     <Container
