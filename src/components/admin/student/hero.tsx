@@ -38,7 +38,7 @@ const Hero = (props: Props) => {
       justifyContent={"center"}
     >
       <Head>
-        <title>Home</title>
+        <title>Add Student To Class</title>
         <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </Head>
       

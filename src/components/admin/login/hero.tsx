@@ -34,7 +34,7 @@ const Hero = (props: Props) => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/v1/login",
+        "http://127.0.0.1:5000/api/v1/admin-login",
         data,
         { withCredentials: true }
       );
