@@ -812,9 +812,21 @@ This endpoint requires a JSON Web Token (JWT) for authentication.\
    [
     {
         "day": "Monday",
-        "enrolment_id": 86,
+        "end_time": "15:30",
+        "enrolment_id": 1,
+        "session_number": 1,
+        "start_time": "13:30",
         "subject_code": "CSCI369",
-        "timing": "13:30 - 15:30"
+        "subject_name": "Ethical Hacking"
+    },
+    {
+        "day": "Wednesday",
+        "end_time": "10:30",
+        "enrolment_id": 43,
+        "session_number": 1,
+        "start_time": "08:30",
+        "subject_code": "MATH221",
+        "subject_name": "Mathematics"
     },
   ```
 </br>
@@ -862,7 +874,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 # Update Student Attendance
 
-### URL: `PUT /api/v1/edit-student`
+### URL: `PUT /api/v1/update-attendance`
 
 #### **Description:**
 Updates student attendance for a specific session
