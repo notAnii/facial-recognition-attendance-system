@@ -2,33 +2,64 @@ import {
   Box,
   Container,
   Text,
-  Stack,
   VStack,
-  Avatar,
-  HStack,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Heading,
-  Center,
   Input,
   Button,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import "@fontsource/open-sans";
 import Head from "next/head";
-import Link from "next/link";
+import axios from "axios";
 
 type Props = {};
 
 const Hero = (props: Props) => {
+
+  const [TeacherID, setTeacherID] = useState("");
+  const [SubjectCode, setSubjectCode] = useState("");
+  const [Session, setSession] = useState("");
+  const [selectedSession, setSelectedSession] = useState("");
+
+  const [data, setData] = useState<
+  Array<{
+    day: string;
+    end_time: string;
+    session_number: number;
+    start_time: string;
+  }>
+>([]);
+
+  const handleSubmit = async () => {
+
+      const response = await axios.put(
+        "http://127.0.0.1:5000/api/v1/assign-teacher",
+        {
+          teacher_id: TeacherID,
+          subject_code: SubjectCode,
+          session_number: 3
+          
+        },{ withCredentials: true }
+      );
+      console.log(response.data);
+        
+
+  };
+
+  useEffect(() => {
+    async function fetchSessions() {
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/api/v1/subject-sessions/${SubjectCode}`, { withCredentials: true });
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchSessions();
+  }, [SubjectCode]);
 
   return (
     <Container
@@ -76,6 +107,8 @@ const Hero = (props: Props) => {
               border={"2px solid black"}
               borderRadius={"xl"}
               width={"lg"}
+              value={TeacherID}
+              onChange={(e) => setTeacherID(e.target.value)}
             />
           </Box>
           <Box paddingTop={10}>
@@ -87,6 +120,8 @@ const Hero = (props: Props) => {
               border={"2px solid black"}
               borderRadius={"xl"}
               width={"lg"}
+              value={SubjectCode}
+              onChange={(e) => setSubjectCode(e.target.value)}
             />
           </Box>
           <Box paddingTop={10}>
@@ -94,16 +129,19 @@ const Hero = (props: Props) => {
             fontFamily={"Open Sans"}
             fontSize={"20px"}
             >Session</Text>
-            <Select
-            border={"2px solid black"}
-            borderRadius={"xl"}
-            width={"lg"}
-            height={"52px"}
-          >
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
+               <Select
+                border={"2px solid black"}
+                borderRadius={"xl"}
+                width={"lg"}
+                height={"52px"}
+                onChange={(e) => setSelectedSession(e.target.value)}
+              >
+                {data.map((session: any) => (
+                  <option key={session.id} value={session.id}>
+                    {session.day} {session.start_time}-{session.end_time}
+                  </option>
+                ))}
+              </Select>
           </Box>
           </Box>
           <Box paddingLeft={"80%"} paddingTop={"10%"} paddingBottom={"4%"}>
@@ -118,6 +156,8 @@ const Hero = (props: Props) => {
            bgColor: "white",
            color: "#818589",
            }}
+           onClick={handleSubmit}
+          // isLoading={isLoading}
            >
            Submit
            </Button>
