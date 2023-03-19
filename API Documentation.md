@@ -874,7 +874,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 # Update Student Attendance
 
-### URL: `PUT /api/v1/edit-student`
+### URL: `PUT /api/v1/update-attendance`
 
 #### **Description:**
 Updates student attendance for a specific session
