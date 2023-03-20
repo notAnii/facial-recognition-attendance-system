@@ -25,10 +25,62 @@ import React, { useEffect, useState } from "react";
 import "@fontsource/open-sans";
 import Head from "next/head";
 import Link from "next/link";
+import axios from "axios";
+import { status } from "nprogress";
 
 type Props = {};
 
 const Hero = (props: Props) => {
+
+  const [StudentID, setStudentID] = useState("");
+  const [SubjectCode, setSubjectCode] = useState("");
+  const [Week, setWeek] = useState("");
+  const [Status, setStatus] = useState("");
+
+  const [Session, setSession] = useState("");
+  const [selectedSession, setSelectedSession] = useState("");
+
+  const [data, setData] = useState<
+  Array<{
+    student_id: string;
+    subject_code: string;
+    session_number: string;
+    week: string;
+    status: string;
+  }>
+>([]);
+
+  const handleSubmit = async () => {
+
+      const response = await axios.put(
+        "http://127.0.0.1:5000/api/v1/update-attendance",
+        {
+          student_id: StudentID, //Working
+          subject_code: SubjectCode, //Working
+          session_number: "1", //Not 
+          week: Week, //Working
+          status: Status //Working
+          
+        },{ withCredentials: true }
+      );
+      console.log(response.data);
+        
+
+  };
+
+  useEffect(() => {
+    async function fetchSessions() {
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/api/v1/subject-sessions/${SubjectCode}`, { withCredentials: true });
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchSessions();
+  }, [SubjectCode]);
 
   return (
     <Container
@@ -76,6 +128,8 @@ const Hero = (props: Props) => {
               border={"2px solid black"}
               borderRadius={"xl"}
               width={"lg"}
+              value={StudentID}
+              onChange={(e) => setStudentID(e.target.value)}
             />
           </Box>
           <Box paddingTop={3}>
@@ -87,6 +141,8 @@ const Hero = (props: Props) => {
               border={"2px solid black"}
               borderRadius={"xl"}
               width={"lg"}
+              value={SubjectCode}
+              onChange={(e) => setSubjectCode(e.target.value)}
             />
           </Box>
           <Box paddingTop={3}>
@@ -95,15 +151,20 @@ const Hero = (props: Props) => {
             fontSize={"20px"}
             >Session</Text>
             <Select
-            border={"2px solid black"}
-            borderRadius={"xl"}
-            width={"lg"}
-            height={"52px"}
-          >
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
+                border={"2px solid black"}
+                borderRadius={"xl"}
+                width={"lg"}
+                height={"52px"}
+              
+                onChange={(e) => setSelectedSession(e.target.value)}
+              >
+                {data.map((session: any) => (
+                  <option key={session.id} value={session.id}>
+                    {session.day} {session.start_time}-{session.end_time} ({session.session_number})
+                  </option>
+                 
+                ))}
+              </Select>
           </Box>
 
           <Box paddingTop={3}>
@@ -116,17 +177,20 @@ const Hero = (props: Props) => {
             borderRadius={"xl"}
             width={"lg"}
             height={"52px"}
+            value={Week}
+            onChange={(e) => setWeek(e.target.value)}
           >
-            <option value="option1">Week 1</option>
-            <option value="option2">Week 2</option>
-            <option value="option3">Week 3</option>
-            <option value="option1">Week 4</option>
-            <option value="option2">Week 5</option>
-            <option value="option3">Week 6</option>
-            <option value="option1">Week 7</option>
-            <option value="option2">Week 8</option>
-            <option value="option3">Week 9</option>
-            <option value="option1">Week 10</option>
+            <option value="0">Choose an option</option>
+            <option value="1">Week 1</option>
+            <option value="2">Week 2</option>
+            <option value="3">Week 3</option>
+            <option value="4">Week 4</option>
+            <option value="5">Week 5</option>
+            <option value="6">Week 6</option>
+            <option value="7">Week 7</option>
+            <option value="8">Week 8</option>
+            <option value="9">Week 9</option>
+            <option value="10">Week 10</option>
            
           </Select>
           </Box>
@@ -141,10 +205,13 @@ const Hero = (props: Props) => {
             borderRadius={"xl"}
             width={"lg"}
             height={"52px"}
+            value={Status}
+            onChange={(e) => setStatus(e.target.value)}
           >
-            <option value="option1">Present</option>
-            <option value="option2">Absent</option>
-            <option value="option3">Excused</option>
+            <option value="0">Choose an option</option>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+            <option value="Excused">Excused</option>
           </Select>
           </Box>
           </Box>
@@ -160,6 +227,7 @@ const Hero = (props: Props) => {
            bgColor: "white",
            color: "#818589",
            }}
+           onClick={handleSubmit}
            >
            Submit
            </Button>

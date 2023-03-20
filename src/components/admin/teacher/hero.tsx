@@ -157,7 +157,6 @@ const Hero = (props: Props) => {
            color: "#818589",
            }}
            onClick={handleSubmit}
-          // isLoading={isLoading}
            >
            Submit
            </Button>
