@@ -6,6 +6,7 @@ DROP TABLE Session;
 DROP TABLE Teacher;
 DROP TABLE Subject;
 DROP TABLE Student;
+DROP TABLE Admin;
 
 CREATE TABLE `Student` (
 	`student_id` INT,
@@ -43,6 +44,7 @@ CREATE TABLE `Session` (
 	`class_type` VARCHAR(20),
 	`teacher_id` INT,
 	PRIMARY KEY (`session_id`),
+	UNIQUE (`subject_code`, `session_number`),
 	FOREIGN KEY (`subject_code`) REFERENCES Subject(subject_code) ON DELETE CASCADE,
 	FOREIGN KEY (`teacher_id`) REFERENCES Teacher(teacher_id)	
 );
@@ -53,6 +55,7 @@ CREATE TABLE `Enrolment` (
 	`student_id` INT,
 	`session_id` INT,
 	PRIMARY KEY (`enrolment_id`),
+	UNIQUE (`student_id`, `session_id`),
 	FOREIGN KEY (`student_id`) REFERENCES Student(student_id) ON DELETE CASCADE,
 	FOREIGN KEY (`session_id`) REFERENCES Session(session_id) ON DELETE CASCADE
 );
