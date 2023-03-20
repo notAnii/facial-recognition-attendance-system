@@ -221,10 +221,22 @@ def enrol_student(student_id, subject_code, session_number):
     ''' % (subject_code, session_number)
     session_id = db.fetchone(fetch_sql)['session_id']
 
-    enrol_sql = '''
-        INSERT INTO Enrolment (student_id, session_id) VALUES (%s, %s);
-    '''
-    db.execute(enrol_sql, (student_id, session_id))
+    check_sql = '''
+        SELECT count(Enrolment.enrolment_id) as count
+        FROM Enrolment
+        INNER JOIN Session
+        ON Enrolment.session_id = Session.session_id
+        WHERE Enrolment.student_id = %s AND Session.session_id = %s;
+    ''' % (student_id, session_id)
+    
+    if(db.fetchone(check_sql)['count'] == 0):
+        enrol_sql = '''
+            INSERT INTO Enrolment (student_id, session_id) VALUES (%s, %s);
+        '''
+        db.execute(enrol_sql, (student_id, session_id))
+        return True
+    else:
+        return False
 
 #get student classes
 def student_classes(student_id):
