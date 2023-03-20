@@ -364,8 +364,8 @@ def post_assign_teacher():
     session_number = request.json.get("session_number", None)
 
     assign_teacher(int(teacher_id), subject_code, int(session_number))
-    
-    return "Success", 200
+    response = make_response(jsonify({"message": "Teacher assignment successful"}), 201)
+    return response
 
 #get all classes for a teacher
 @app.route("/api/v1/teacher-classes/<teacher_id>", methods=["GET"])
@@ -390,8 +390,8 @@ def put_unassign_teacher():
     session_number = request.json.get("session_number", None)
 
     unassign_teacher(int(teacher_id), subject_code, int(session_number))
-    
-    return "Success", 200
+    response = make_response(jsonify({"message": "Teacher unassignment successful"}), 200)
+    return response
 
 
 #post enrol student to class
@@ -402,9 +402,12 @@ def post_enrol_student():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    enrol_student(int(student_id), subject_code, int(session_number))
-    
-    return "Success", 200
+    result = enrol_student(int(student_id), subject_code, int(session_number)) 
+    if result:
+        response = make_response(jsonify({"message": "Enrolment successful"}), 201)
+    else:
+        response = make_response(jsonify({"message": "Student already enrolled"}), 409)
+    return response
 
 #get all the classes for a student
 @app.route("/api/v1/student-classes/<student_id>", methods=["GET"])
@@ -424,15 +427,16 @@ def put_edit_student():
     session_number = request.json.get("session_number", None)
 
     edit_student_class(int(enrolment_id), subject_code, int(session_number))
-
-    return "Success", 200
+    response = make_response(jsonify({"message": "Student edit successful"}), 201)
+    return response
 
 #delete student enrolment
 @app.route("/api/v1/unenrol-student/<enrolment_id>", methods=["DELETE"])
 @jwt_required()
 def delete_unrol_student(enrolment_id):
     unenrol_student(int(enrolment_id))
-    return "Success", 200
+    response = make_response(jsonify({"message": "Unenrolment successful"}), 200)
+    return response
 
 #update student attendance
 @app.route("/api/v1/update-attendance", methods=["PUT"])
@@ -445,8 +449,9 @@ def put_update_attendance():
     status = request.json.get("status", None)
     
     update_attendance(int(student_id), subject_code, int(session_number), week, status)
+    response = make_response(jsonify({"message": "Attendance update successful"}), 200)
 
-    return "Success", 200
+    return response
 
 #get sessions from subject
 @app.route("/api/v1/subject-sessions/<subject_code>", methods=["GET"])
