@@ -363,8 +363,11 @@ def post_assign_teacher():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    assign_teacher(int(teacher_id), subject_code, int(session_number))
-    response = make_response(jsonify({"message": "Teacher assignment successful"}), 201)
+    result = assign_teacher(int(teacher_id), subject_code, int(session_number))
+    if result:
+        response = make_response(jsonify({"message": "Teacher assignment successful"}), 201)
+    else:
+        response = make_response(jsonify({"message": "Teacher already assigned"}), 409)
     return response
 
 #get all classes for a teacher

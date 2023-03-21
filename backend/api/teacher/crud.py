@@ -107,12 +107,22 @@ def dummy_password(teacher_id, password):
 #teacher class assignment
 def assign_teacher(teacher_id, subject_code, session_number):
     db = DBHelper()
-    sql = '''
-        UPDATE Session
-        SET teacher_id = %s
-        WHERE subject_code = %s AND session_number = %s
-    '''
-    db.execute(sql, (teacher_id, subject_code, session_number))    
+    check_sql = '''
+        SELECT count(teacher_id) as count
+        FROM Session
+        WHERE teacher_id = %s AND subject_code = '%s' AND session_number = %s 
+    ''' % (teacher_id, subject_code, session_number)
+
+    if (db.fetchone(check_sql)['count'] == 0):
+        sql = '''
+            UPDATE Session
+            SET teacher_id = %s
+            WHERE subject_code = %s AND session_number = %s
+        '''
+        db.execute(sql, (teacher_id, subject_code, session_number))  
+        return True
+    else:
+        return False  
 
 #unassign teacher from class
 def unassign_teacher(teacher_id, subject_code, session_number):

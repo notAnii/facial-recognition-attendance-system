@@ -760,6 +760,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
    }
   ```
 - **404 Not Found:** The requested data was not found.
+- **409 Conflict:** Student already enrolled.
+  Body:
+  ```json
+    {
+      "message": "`Teacher` already assigned"
+    }
+  ```
 - **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
