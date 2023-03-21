@@ -6,6 +6,7 @@ import {
   Input,
   Button,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import "@fontsource/open-sans";
@@ -20,6 +21,7 @@ const Hero = (props: Props) => {
   const [SubjectCode, setSubjectCode] = useState("");
   const [Session, setSession] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
+  const toast = useToast();
 
   const [data, setData] = useState<
   Array<{
@@ -32,17 +34,72 @@ const Hero = (props: Props) => {
 
   const handleSubmit = async () => {
 
+    const selectedOption = document.getElementById("session-select") as HTMLSelectElement;
+    const selectedIndex = selectedOption.selectedIndex;
+    const selectedSession = data[selectedIndex];
+
+
+    try {
       const response = await axios.post(
         "http://127.0.0.1:5000/api/v1/enrol-student",
         {
           student_id: StudentID,
           subject_code: SubjectCode,
-          session_number: "1"
+          session_number:  selectedSession.session_number, 
           
         },{ withCredentials: true }
       );
       console.log(response.data);
-        
+
+      if (response.status === 201) {
+        console.log(response.data);
+
+        toast({
+          title: "Successfully Assigned Student To Class",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+    } catch (error: any) {
+
+      if (error && error.response && error.response.status === 409) {
+        toast({
+          title: "Error",
+          description: `Student Already Enrolled`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+
+      } else {
+
+        console.error(error);
+
+        if (StudentID === "") {
+          toast({
+            title: "Error",
+            description: "Student ID field is required",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        }
+  
+          if (SubjectCode === "") {
+            toast({
+              title: "Error",
+              description: "Subject Code field is required",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+      }
+    }
 
   };
 
@@ -129,6 +186,7 @@ const Hero = (props: Props) => {
             fontSize={"20px"}
             >Session</Text>
             <Select
+                id="session-select"
                 border={"2px solid black"}
                 borderRadius={"xl"}
                 width={"lg"}

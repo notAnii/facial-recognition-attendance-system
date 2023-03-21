@@ -2,24 +2,11 @@ import {
   Box,
   Container,
   Text,
-  Stack,
   VStack,
-  Avatar,
-  HStack,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Heading,
-  Center,
   Input,
   Button,
   Select,
+  useToast, 
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import "@fontsource/open-sans";
@@ -39,6 +26,7 @@ const Hero = (props: Props) => {
 
   const [Session, setSession] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
+  const toast = useToast();
 
   const [data, setData] = useState<
   Array<{
@@ -56,21 +44,92 @@ const Hero = (props: Props) => {
     const selectedIndex = selectedOption.selectedIndex;
     const selectedSession = data[selectedIndex];
 
+    try {
       const response = await axios.put(
         "http://127.0.0.1:5000/api/v1/update-attendance",
         {
-          student_id: StudentID, //Working
-          subject_code: SubjectCode, //Working
-          session_number:  selectedSession.session_number, //Not 
-          week: Week, //Working
-          status: Status //Working
+          student_id: StudentID, 
+          subject_code: SubjectCode, 
+          session_number:  selectedSession.session_number, 
+          week: Week, 
+          status: Status 
           
         },{ withCredentials: true }
       );
-      console.log(response.data);
-        
 
-  };
+      console.log(response.data);
+
+      if (Status === "" || Status ==='0') {
+        toast({
+          title: "Error",
+          description: "Please select a status",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+
+      } else if (response.status === 200) {
+        console.log(response.data);
+
+        toast({
+          title: "Successfully Edited Student Attendance.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+    //Error Handling
+    } catch (error: any) {
+
+      if (error && error.response && error.response.status === 404) {
+        toast({
+          title: "Error",
+          description: `Please fill all the fields`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+
+        console.error(error);
+
+        if (StudentID === "") {
+          toast({
+            title: "Error",
+            description: "Student ID field is required",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        }
+  
+          if (SubjectCode === "") {
+            toast({
+              title: "Error",
+              description: "Subject Code field is required",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+  
+          if (Week === "" || Week==='0') {
+            toast({
+              title: "Error",
+              description: "Please select a week",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+      }
+    }
+};
 
   useEffect(() => {
     async function fetchSessions() {
