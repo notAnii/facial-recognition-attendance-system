@@ -880,6 +880,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.\
         "subject_name": "Mathematics"
     },
   ```
+- **204 No Content:** No classes data was found for this student.
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred.
 </br>
@@ -1010,6 +1011,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
            "start_time": "08:30"
        },
   ```
+- **204 No Content:** No session data found.
 - **404 Not Found:** The requested data was not found.
 - **500 Internal Server Error:** An unexpected error occurred.
 </br>

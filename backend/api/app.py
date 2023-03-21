@@ -363,12 +363,16 @@ def post_assign_teacher():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    result = assign_teacher(int(teacher_id), subject_code, int(session_number))
-    if result:
-        response = make_response(jsonify({"message": "Teacher assignment successful"}), 201)
-    else:
-        response = make_response(jsonify({"message": "Teacher already assigned"}), 409)
-    return response
+    try:
+        result = assign_teacher(int(teacher_id), subject_code, int(session_number))
+        if result:
+            response = make_response(jsonify({"message": "Teacher assignment successful"}), 201)
+        else:
+            response = make_response(jsonify({"message": "Teacher already assigned"}), 409)
+        return response
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
+
 
 #get all classes for a teacher
 @app.route("/api/v1/teacher-classes/<teacher_id>", methods=["GET"])
@@ -391,11 +395,13 @@ def put_unassign_teacher():
     teacher_id = request.json.get("teacher_id", None)
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
+    try:
+        unassign_teacher(int(teacher_id), subject_code, int(session_number))
+        response = make_response(jsonify({"message": "Teacher unassignment successful"}), 200)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
 
-    unassign_teacher(int(teacher_id), subject_code, int(session_number))
-    response = make_response(jsonify({"message": "Teacher unassignment successful"}), 200)
     return response
-
 
 #post enrol student to class
 @app.route("/api/v1/enrol-student", methods=["POST"])
@@ -405,19 +411,28 @@ def post_enrol_student():
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
 
-    result = enrol_student(int(student_id), subject_code, int(session_number)) 
-    if result:
-        response = make_response(jsonify({"message": "Enrolment successful"}), 201)
-    else:
-        response = make_response(jsonify({"message": "Student already enrolled"}), 409)
-    return response
+    try:
+        result = enrol_student(int(student_id), subject_code, int(session_number)) 
+        if result:
+            response = make_response(jsonify({"message": "Enrolment successful"}), 201)
+        else:
+            response = make_response(jsonify({"message": "Student already enrolled"}), 409)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
+
+    return response    
 
 #get all the classes for a student
 @app.route("/api/v1/student-classes/<student_id>", methods=["GET"])
 @jwt_required()
 def get_student_classes(student_id):
     
-    result = student_classes(int(student_id))
+    try:
+        result = student_classes(int(student_id))
+        if not result:
+            return log_and_return_error("No classes found", 204, f"No classes found for student_id: {student_id}")
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")  
 
     return jsonify(result), 200
 
@@ -428,17 +443,25 @@ def put_edit_student():
     enrolment_id = request.json.get("enrolment_id", None)
     subject_code = request.json.get("subject_code", None)
     session_number = request.json.get("session_number", None)
-
-    edit_student_class(int(enrolment_id), subject_code, int(session_number))
-    response = make_response(jsonify({"message": "Student edit successful"}), 201)
+    
+    try:
+        edit_student_class(int(enrolment_id), subject_code, int(session_number))
+        response = make_response(jsonify({"message": "Student edit successful"}), 201)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
+    
     return response
 
 #delete student enrolment
 @app.route("/api/v1/unenrol-student/<enrolment_id>", methods=["DELETE"])
 @jwt_required()
 def delete_unrol_student(enrolment_id):
-    unenrol_student(int(enrolment_id))
-    response = make_response(jsonify({"message": "Unenrolment successful"}), 200)
+    try:
+        unenrol_student(int(enrolment_id))
+        response = make_response(jsonify({"message": "Unenrolment successful"}), 200)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")  
+    
     return response
 
 #update student attendance
@@ -451,20 +474,26 @@ def put_update_attendance():
     week  = request.json.get("week", None)
     status = request.json.get("status", None)
     
-    update_attendance(int(student_id), subject_code, int(session_number), week, status)
-    response = make_response(jsonify({"message": "Attendance update successful"}), 200)
-
+    try:
+        update_attendance(int(student_id), subject_code, int(session_number), week, status)
+        response = make_response(jsonify({"message": "Attendance update successful"}), 200)
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")  
+    
     return response
 
 #get sessions from subject
 @app.route("/api/v1/subject-sessions/<subject_code>", methods=["GET"])
 @jwt_required()
 def get_subject_sessions(subject_code):
+    try:
+        result = subject_sessions(subject_code)
+        if not result:
+            return log_and_return_error("No session data found", 204, f"No session data found for subject_code: {subject_code}")
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")  
     
-    result = subject_sessions(subject_code)
-
     return jsonify(result), 200
-
 
 # Run flask application
 if __name__ == '__main__':
