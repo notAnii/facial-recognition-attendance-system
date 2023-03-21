@@ -52,12 +52,16 @@ const Hero = (props: Props) => {
 
   const handleSubmit = async () => {
 
+    const selectedOption = document.getElementById("session-select") as HTMLSelectElement;
+    const selectedIndex = selectedOption.selectedIndex;
+    const selectedSession = data[selectedIndex];
+
       const response = await axios.put(
         "http://127.0.0.1:5000/api/v1/update-attendance",
         {
           student_id: StudentID, //Working
           subject_code: SubjectCode, //Working
-          session_number: "1", //Not 
+          session_number:  selectedSession.session_number, //Not 
           week: Week, //Working
           status: Status //Working
           
@@ -151,18 +155,16 @@ const Hero = (props: Props) => {
             fontSize={"20px"}
             >Session</Text>
             <Select
+                id="session-select"
                 border={"2px solid black"}
                 borderRadius={"xl"}
                 width={"lg"}
                 height={"52px"}
-              
-                onChange={(e) => setSelectedSession(e.target.value)}
               >
                 {data.map((session: any) => (
                   <option key={session.id} value={session.id}>
                     {session.day} {session.start_time}-{session.end_time} ({session.session_number})
                   </option>
-                 
                 ))}
               </Select>
           </Box>
