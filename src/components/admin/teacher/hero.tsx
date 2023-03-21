@@ -21,6 +21,7 @@ const Hero = (props: Props) => {
   const [SubjectCode, setSubjectCode] = useState("");
   const [Session, setSession] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
+  const toast = useToast();
 
   const [data, setData] = useState<
   Array<{
@@ -33,18 +34,70 @@ const Hero = (props: Props) => {
 
   const handleSubmit = async () => {
 
+    const selectedOption = document.getElementById("session-select") as HTMLSelectElement;
+    const selectedIndex = selectedOption.selectedIndex;
+    const selectedSession = data[selectedIndex];
+
+    try {
       const response = await axios.put(
         "http://127.0.0.1:5000/api/v1/assign-teacher",
         {
           teacher_id: TeacherID,
           subject_code: SubjectCode,
-          session_number: 3
+          session_number:  selectedSession.session_number, 
           
         },{ withCredentials: true }
       );
       console.log(response.data);
-        
 
+      if (response.status === 201) {
+        console.log(response.data);
+
+        toast({
+          title: "Successfully Assigned Teacher To Class",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+    } catch (error: any) {
+
+      if (error && error.response && error.response.status !== 404) {
+        toast({
+          title: "Error",
+          description: `Please fill all the fields`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+
+        console.error(error);
+
+        if (TeacherID === "") {
+          toast({
+            title: "Error",
+            description: "Teacher ID field is required",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          return;
+        }
+  
+          if (SubjectCode === "") {
+            toast({
+              title: "Error",
+              description: "Subject Code field is required",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+      }
+    }
   };
 
   useEffect(() => {
@@ -130,6 +183,7 @@ const Hero = (props: Props) => {
             fontSize={"20px"}
             >Session</Text>
                <Select
+                id="session-select"
                 border={"2px solid black"}
                 borderRadius={"xl"}
                 width={"lg"}
@@ -138,7 +192,7 @@ const Hero = (props: Props) => {
               >
                 {data.map((session: any) => (
                   <option key={session.id} value={session.id}>
-                    {session.day} {session.start_time}-{session.end_time}
+                     {session.day} {session.start_time}-{session.end_time} ({session.session_number})
                   </option>
                 ))}
               </Select>
