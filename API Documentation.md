@@ -803,6 +803,53 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 
 </br>
 
+# Edit Teacher
+
+### URL: `PUT /api/v1/edit-teacher`
+
+#### **Description:**
+Edits sessions for specific teacher
+
+#### **Authorization:**
+This endpoint requires a JSON Web Token (JWT) for authentication.
+
+#### **Body:**
+  ```json
+      {
+        "teacher_id" : "123",
+        "new_subject_code" : "CSCI369",
+        "new_session_number" : "1",
+        "old_subject_code" : "CSCI369",
+        "old_session_number" : "2",
+      }
+  ```
+
+#### **Responses:**
+- **201 Created:** Teacher assignment successful.
+  Body:
+  ```json
+    {
+      "message": "Teacher edit successful"
+    }
+  ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
+
+</br>
+
 # Enrol Student
 
 ### URL: `POST /api/v1/enrol-student`
