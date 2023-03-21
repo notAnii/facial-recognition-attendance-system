@@ -133,3 +133,43 @@ def unassign_teacher(teacher_id, subject_code, session_number):
         WHERE teacher_id = %s AND subject_code = %s AND session_number = %s
     '''
     db.execute(sql, (teacher_id, subject_code, session_number))
+
+#edit teacher session
+def edit_teacher(teacher_id, new_subject_code, new_session_number, old_subject_code, old_session_number):
+    db = DBHelper()
+    check_sql = '''
+        SELECT count(teacher_id) as count
+        FROM Session
+        WHERE teacher_id = %s AND subject_code = '%s' AND session_number = %s 
+    ''' % (teacher_id, new_subject_code, new_session_number)
+
+    old_class_exists = '''
+        SELECT count(session_id) as count
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s 
+    ''' % (old_subject_code, old_session_number)
+
+    new_class_exists = '''
+        SELECT count(session_id) as count
+        FROM Session
+        WHERE subject_code = '%s' AND session_number = %s 
+    ''' % (new_subject_code, new_session_number)
+    if(old_subject_code == new_subject_code and old_session_number == new_session_number):
+        return False
+    else:
+        if (db.fetchone(old_class_exists)['count'] == 1 and db.fetchone(new_class_exists)['count'] == 1):
+            if (db.fetchone(check_sql)['count'] == 0):
+                sql = '''
+                    UPDATE Session
+                    SET teacher_id = %s
+                    WHERE subject_code = %s AND session_number = %s
+                '''
+                db.execute(sql, (teacher_id, new_subject_code, new_session_number)) 
+                if (db.fetchone(check_sql)['count'] == 1):
+                    unassign_teacher(teacher_id, old_subject_code, old_session_number)
+                    return True
+                else:
+                    return False
+            else:
+                return False
+            

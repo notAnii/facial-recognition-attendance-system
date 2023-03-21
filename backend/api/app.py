@@ -388,6 +388,29 @@ def get_teacher_classes(teacher_id):
         
     return jsonify(result), 200
 
+
+#get all classes for a teacher
+@app.route("/api/v1/edit-teacher", methods=["PUT"])
+@jwt_required()
+def put_edit_teacher():
+    teacher_id = request.json.get("teacher_id", None)
+    new_subject_code = request.json.get("new_subject_code", None)
+    new_session_number = request.json.get("new_session_number", None)
+    old_subject_code = request.json.get("old_subject_code", None)
+    old_session_number = request.json.get("old_session_number", None)
+
+    try:
+        result = edit_teacher(teacher_id, new_subject_code, new_session_number, old_subject_code, old_session_number)
+        if result:
+            response = make_response(jsonify({"message": "Teacher edit successful"}), 201)
+        else:
+            return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
+    except Exception as e:
+        return log_and_return_error("An unexpected error occurred.", 500, f"Error occurred. Exception: {e}")
+    
+    return response
+
+
 #put unassign teacher from class
 @app.route("/api/v1/unassign-teacher", methods=["PUT"])
 @jwt_required()
