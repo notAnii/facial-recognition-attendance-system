@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Random Files
+bbox_image.jpg
+
 # Datasets
 My_dataset
 student_dataset

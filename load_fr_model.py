@@ -10,48 +10,6 @@ import os
 from datetime import datetime
 from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
 
-def webcam():   
-    # webcam stuff
-    cap = cv2.VideoCapture(0)
-
-    # check if the webcam is opened correctly
-    if not cap.isOpened():
-        raise IOError("Cannot open webcam.")
-
-    while True:
-        ret, frame = cap.read()
-        frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
-        cv2.imshow('Input', frame)
-
-        cv2.imwrite('test_samples/webcam_capture.jpg', frame)
-
-        c = cv2.waitKey(1)
-        if c == 27:
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-    # load image from file
-    photo = mpl.image.imread('test_samples/webcam_capture.jpg')
-    photo.shape
-
-    face_detector = mtcnn.MTCNN()
-    face_roi = face_detector.detect_faces(photo)
-    print(face_roi)
-
-    # extract the bounding box from the first face
-    x1, y1, width, height = face_roi[0]['box']
-    x2, y2 = x1 + width, y1 + height
-    face = photo[y1:y2, x1:x2]
-    print(face.shape)
-
-    mpl.pyplot.imshow(photo)
-    mpl.pyplot.show()
-
-
-# webcam()
-
 # -------------------------------------------------------------------------------------------------------------
 def load_fr_model():
     # Load model
@@ -59,87 +17,113 @@ def load_fr_model():
 
     return fr_model
 
+# -------------------------------------------------------------------------------------------------------------
+def image_processing_1(image):
+    
+    #load the image
+    img = cv2.imread(image)
 
-# load_fr_model()
+    #pre-process the image
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = np.array(img, dtype=np.float32) / 255.0
+    img = np.expand_dims(img, axis=0)
+
+    #create the model
+    model = tf.keras.Sequential([
+        tf.keras.layers.Input(shape=(None, None, 3)),
+        tf.keras.layers.Lambda(lambda x: tf.image.adjust_brightness(x, delta=0.5))
+    ])
+
+    #apply the model to the image
+    new_img = model(img)[0].numpy()
+
+    #post-process the image
+    new_img = np.clip(new_img, 0.0, 1.0)
+    new_img = np.uint8(new_img * 255.0)
+    new_img = cv2.cvtColor(new_img, cv2.COLOR_RGB2BGR)
+
+    return new_img
 
 # -------------------------------------------------------------------------------------------------------------
-def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
+def image_processing_2(image):
 
-    start = datetime.now()
+    img = cv2.imread(image)
+    gamma_value = 0.5
 
-    print("Loading model...")
-    model = load_fr_model()
+    gamma_table=[np.power(x/255.0, gamma_value)*255.0 for x in range(256)]
+    gamma_table = np.round(np.array(gamma_table)).astype(np.uint8)
 
-    # Loop through all images in the directory
-    for filename in os.listdir(dir_path):
-        if filename.endswith('.jpg') or filename.endswith('.png'):
-            # Read image
-            image_path = os.path.join(dir_path, filename)
-            image = cv2.imread(image_path)
-            image_resized = cv2.resize(image, (img_height, img_width))
-            image = np.expand_dims(image_resized, axis = 0)
-
-            print("\nMaking prediction on", filename, "...")
-            pred = model.predict(image)
-            print(pred)              # to access specific class value, use pred[0, class_number] || ex: pred[0, 1] gets second class
-
-
-    cv2.destroyAllWindows()
-
-    duration = datetime.now() - start
-    print("\nPredictions completed in time: ", duration)
-
-
-dir_path = 'test_samples/'
-# make_prediction_on_images_in_dir(dir_path, 224, 224)
+    new_img = cv2.LUT(img, gamma_table)
+    return new_img
 
 # -------------------------------------------------------------------------------------------------------------
-def make_prediction_on_preprocessed_frame():
-    # Load the saved ResNet50 model
-    model = load_fr_model()
+def image_processing_3(image):
 
-    # Open a connection to the video stream
-    cap = cv2.VideoCapture(0)
+    gamma = 0.4
 
-    # Continuously read frames from the video stream
-    while True:
-        # Read a frame from the video stream
-        ret, frame = cap.read()
+    #load the image
+    img = cv2.imread(image)
 
-        if not ret:
-            break
-        
-        # Preprocess the frame by resizing and normalizing
-        img_resized = cv2.resize(frame, (224, 224))
-        img = np.expand_dims(img_resized, axis=0)
-        img = img / 255.0
-        
-        # Use the ResNet50 model to make a prediction on the preprocessed frame
-        print("Making prediction...")
-        pred = model.predict(img)
-        # pred_class = np.argmax(pred)
-        print(pred)
-        
-        # Display the result in a window
-        cv2.imshow('Video', frame)
-        
-        # Exit the loop if the 'q' key is pressed
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+    gamma_table=[np.power(x/255.0,gamma)*255.0 for x in range(256)]
+    gamma_table=np.round(np.array(gamma_table)).astype(np.uint8)
+    img = cv2.LUT(img,gamma_table)
 
-    # Release the video stream and close the window
-    cap.release()
-    cv2.destroyAllWindows()
+    # Preprocess the image
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = np.array(img, dtype=np.float32) / 255.0
+    img = np.expand_dims(img, axis=0)
 
 
-# make_prediction_on_preprocessed_frame()
+    # Create the model
+    model = tf.keras.Sequential([
+        tf.keras.layers.Input(shape=(None, None, 3)),
+        tf.keras.layers.Lambda(lambda x: tf.image.adjust_brightness(x, delta=0.4))
+    ])
+
+    # Apply the model to the image
+    exposed_img = model(img)[0].numpy()
+
+    # Postprocess the image
+    exposed_img = np.clip(exposed_img, 0.0, 1.0)
+    exposed_img = np.uint8(exposed_img * 255.0)
+    exposed_img = cv2.cvtColor(exposed_img, cv2.COLOR_RGB2BGR)
+
+    return exposed_img
+
+# -------------------------------------------------------------------------------------------------------------
+def check_if_img_is_dark(image):
+    # Load the image
+    img = cv2.imread(image)
+
+    # Convert the image to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Calculate the histogram of the image
+    hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
+
+    # Calculate the total number of pixels in the image
+    total_pixels = gray.shape[0] * gray.shape[1]
+
+    # Calculate the percentage of pixels that are in the darkest and brightest 5% of the histogram
+    darkest_pixels = sum(hist[:13])
+    brightest_pixels = sum(hist[242:])
+    darkest_percent = darkest_pixels / total_pixels * 100
+    brightest_percent = brightest_pixels / total_pixels * 100
+
+    # Check if the image is poorly exposed
+    if darkest_percent > 5 or brightest_percent > 5:
+        #True if it is poorly exposed
+        return True
+    else:
+        #False if it is well exposed
+        return False
 
 # -------------------------------------------------------------------------------------------------------------
 def live_cropped_DETECT_face_detection():
 
     # Get class names to print when making predictions
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'extracted_faces'
+    'extracted_faces_uni'
     )
     class_names = train_ds.class_names
 
@@ -177,11 +161,23 @@ def live_cropped_DETECT_face_detection():
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)        # displays bounding box around face
 
                 if face.size > 0:
-                    # Preprocess the frame by resizing and normalizing
-                    img_resized = cv2.resize(face, (224, 224))
+                    # save cropped frame as an image
+                    cv2.imwrite('bbox_image.jpg', face)
+                    bbox_img = 'bbox_image.jpg'
+                    result = check_if_img_is_dark(bbox_img)         # checks if image is dark enough for processing   
+                    print(result)
+
+                    if result:
+                        processed_img = image_processing_3(bbox_img)         # image goes into a processing function to alter brightness
+                        # resize processed image
+                        img_resized = cv2.resize(processed_img, (224, 224))
+                    else:
+                        # resize cropped frame
+                        img_resized = cv2.resize(face, (224, 224))
+
+                    # normalize image
                     img = np.expand_dims(img_resized, axis=0)
                     img = tf.keras.applications.resnet50.preprocess_input(img)
-                    # cv2.imshow('Resized face', img)
                     faces.append(img)
 
             if len(faces) > 0:
@@ -197,9 +193,10 @@ def live_cropped_DETECT_face_detection():
                     output_class = class_names[pred_class]
                     output_prob = pred[i][pred_class]
                     
-                    if output_prob >= confidence_threshold:
+                    # Second 'if condition' to eliminate processing of anything other than a face (might not be fullproof)
+                    if ((output_prob >= confidence_threshold) and (output_prob <= 0.99)):
                         print(f"Face {i}: {output_class}, Probability: {output_prob:.2f}")
-                        # print(pred[i])
+                        # print(pred[i])        # Prints output_prob of all classes
 
         elif(count == 0):
             count = 1
@@ -223,7 +220,7 @@ live_cropped_DETECT_face_detection()
 def live_cropped_DETECTFACE_face_detection():
      # Get class names to print when making predictions
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'extracted_faces'
+    'extracted_faces_uni'
     )
     class_names = train_ds.class_names
     # with open('class_names', 'rb') as f:
@@ -283,7 +280,6 @@ def live_cropped_DETECTFACE_face_detection():
     # Release webcam and close window
     webcam.release()
     cv2.destroyAllWindows()
-
 
 # live_cropped_DETECTFACE_face_detection()
 

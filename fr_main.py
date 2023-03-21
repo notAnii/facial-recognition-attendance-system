@@ -10,7 +10,7 @@ import pathlib
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers
-from tensorflow.python.keras.layers import Dense, Flatten
+from tensorflow.python.keras.layers import Dense, Flatten, Dropout
 from keras.models import Sequential
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, EarlyStopping
@@ -106,18 +106,18 @@ batch_size=64                   # can experiment with
 # # defining data generators with augmentation        ||  if using data aug: remove validation_split from train_ds and val_ds
 # train_datagen = ImageDataGenerator(
 #     horizontal_flip=True,
-#     rotation_range=20,
+#     rotation_range=10,
 #     brightness_range=[0.7, 1.3],
-#     width_shift_range=0.1,
-#     height_shift_range=0.1,
-#     zoom_range=0.1,
+#     # width_shift_range=0.1,
+#     # height_shift_range=0.1,
+#     # zoom_range=0.1,
 #     fill_mode='nearest',
-#     validation_split=0.2
+#     validation_split=0.4
 # )
 
 # val_datagen = ImageDataGenerator(
 #     # rescale = 1./255,
-#     validation_split=0.2
+#     validation_split=0.4
 # )
 
 # Loading data from directories                            # tf.keras.preprocessing.image_dataset_from_directory
@@ -126,6 +126,7 @@ train_ds=tf.keras.preprocessing.image_dataset_from_directory(     # for data aug
   validation_split=0.4,         # can experiment with
   subset="training",
   seed=123,
+  shuffle=True,       # shuffle order of data during training to prevent memorization and learn general patterns in data better
   image_size=(img_height, img_width),       # change to target_size from image_size if using data augmentation above
   batch_size=batch_size,
 #   class_mode='sparse'           # 'categorical'
@@ -136,6 +137,7 @@ val_ds=tf.keras.preprocessing.image_dataset_from_directory(       # for data aug
   validation_split=0.4,         # can experiment with
   subset="validation",
   seed=123,
+  shuffle=False,
   image_size=(img_height, img_width),       # change to target_size from image_size if using data augmentation above
   batch_size=batch_size,
 #   class_mode='sparse'           # 'categorical'
@@ -157,6 +159,7 @@ for layer in pretrained_model.layers:
 
 resnet_model.add(pretrained_model)
 resnet_model.add(Flatten())
+resnet_model.add(Dropout(0.8))  # add dropout layer with a rate to prevent overfitting
 resnet_model.add(Dense(512, activation='relu'))                 # can add more layers if adding more data to model
 resnet_model.add(Dense(num_classes, activation='softmax'))
 
@@ -182,7 +185,7 @@ history = resnet_model.fit(
   epochs=epochs
 )
 
-resnet_model.save("extracted_uni_model")
+resnet_model.save("extracted_uni_model_updated")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)
