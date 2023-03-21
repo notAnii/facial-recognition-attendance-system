@@ -739,13 +739,34 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
 
 #### **Responses:**
-- **200 OK:** Success.
+- **201 Created:** Teacher assignment successful.
+  Body:
+  ```json
+    {
+      "message": "Teacher assignment successful"
+    }
+  ```
+- **401 Unauthorized:** Bad username or password/ Invalid token.
+
+  Body:
+  ```json
+   {
+      "msg": "Token expired"
+   }
+  ```
+  ```json
+   {
+      "msg": "Token revoked"
+   }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
 # Unassign Teacher
 
-### URL: `PUT /api/v1/assign-teacher`
+### URL: `PUT /api/v1/unassign-teacher`
 
 #### **Description:**
 Removes teacher from a specific session
@@ -763,7 +784,15 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
 
 #### **Responses:**
-- **200 OK:** Success.
+- **200 OK:** Teacher unassignment successful.
+  Body:
+  ```json
+    {
+      "message": "Teacher unassignment successful"
+    }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
@@ -787,7 +816,22 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
 
 #### **Responses:**
-- **200 OK:** Success.
+- **201 Created:** Enrolment successful.
+  Body:
+  ```json
+    {
+      "message": "Enrolment successful"
+    }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **409 Conflict:** Student already enrolled.
+  Body:
+  ```json
+    {
+      "message": "Student already enrolled"
+    }
+  ```
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
@@ -829,11 +873,13 @@ This endpoint requires a JSON Web Token (JWT) for authentication.\
         "subject_name": "Mathematics"
     },
   ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 </br>
 
 # Edit Student Sessions
 
-### URL: `POST /api/v1/edit-student`
+### URL: `PUT /api/v1/edit-student`
 
 #### **Description:**
 Edit session for a specific student
@@ -851,7 +897,15 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
 
 #### **Responses:**
-- **200 OK:** Success.
+- **201 Created:** Student edit successful.
+  Body:
+  ```json
+    {
+      "message": "Student edit successful"
+    }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
@@ -868,7 +922,15 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
 - `enrolment_id (int)` - The enrolment id for the one that needs to removed.
 
 #### **Responses:**
-- **200 OK:** Success.
+- **200 OK:** Unenrolment successful.
+  Body:
+  ```json
+    {
+      "message": "Unenrolment successful"
+    }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
@@ -894,7 +956,15 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   ```
 
 #### **Responses:**
-- **200 OK:** Success.
+- **200 OK:** Attendance update successful.
+  Body:
+  ```json
+    {
+      "message": "Attendance update successful"
+    }
+  ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 
 </br>
 
@@ -933,6 +1003,8 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
            "start_time": "08:30"
        },
   ```
+- **404 Not Found:** The requested data was not found.
+- **500 Internal Server Error:** An unexpected error occurred.
 </br>
 </br>
 </br>
