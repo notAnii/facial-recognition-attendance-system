@@ -764,7 +764,7 @@ This endpoint requires a JSON Web Token (JWT) for authentication.
   Body:
   ```json
     {
-      "message": "`Teacher` already assigned"
+      "message": "`Teacher already assigned"
     }
   ```
 - **500 Internal Server Error:** An unexpected error occurred.
