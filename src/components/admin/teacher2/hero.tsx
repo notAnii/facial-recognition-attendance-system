@@ -1,4 +1,12 @@
-import { Box, Container, Text, VStack, Input, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Text,
+  VStack,
+  Input,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import "@fontsource/open-sans";
 
@@ -9,9 +17,10 @@ import Head from "next/head";
 type Props = {};
 
 const Hero = (props: Props) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [teacherID, setTeacherID] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [flag, setFlag] = useState(false);
+  const toast = useToast();
 
   const [data, setData] = useState<
     Array<{
@@ -30,12 +39,12 @@ const Hero = (props: Props) => {
     if (flag) {
       const fetchData = async () => {
         const result = await axios.get(
-          `http://127.0.0.1:5000/api/v1/teacher-classes/${searchQuery}`,
+          `http://127.0.0.1:5000/api/v1/teacher-classes/${teacherID}`,
           {
             withCredentials: true,
           }
         );
-        setData(result.data);
+        setData(result.status == 200 ? result.data : []);
       };
 
       fetchData();
@@ -45,12 +54,37 @@ const Hero = (props: Props) => {
   const handleSearch = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setSearchQuery(e.target.value);
+    setTeacherID(e.target.value);
   };
 
   const handleClick = () => {
     setIsActive(!isActive);
     setFlag(true);
+  };
+
+  const handleDelete = async (subjectCode: string, sessionNumber: string) => {
+    const response = await axios.put(
+      "http://127.0.0.1:5000/api/v1/unassign-teacher",
+      {
+        teacher_id: teacherID,
+        subject_code: subjectCode,
+        session_number: sessionNumber,
+      },
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      console.log(response.data);
+
+      toast({
+        title: "Successfully Deleted Class",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    setIsActive(!isActive);
   };
 
   return (
@@ -98,7 +132,7 @@ const Hero = (props: Props) => {
               borderRadius={"xl"}
               width={"lg"}
               onChange={handleSearch}
-              value={searchQuery}
+              value={teacherID}
             />
             <Button
               fontSize={"lg"}
@@ -209,6 +243,7 @@ const Hero = (props: Props) => {
                               startTime: item.start_time,
                               endTime: item.end_time,
                               classType: item.class_type,
+                              teacherID: teacherID,
                             },
                           }}
                         >
@@ -243,6 +278,12 @@ const Hero = (props: Props) => {
                           variant={"ghost"}
                           bgColor={"#818589"}
                           color="white"
+                          onClick={() =>
+                            handleDelete(
+                              item.subject_code,
+                              item.session_number.toString()
+                            )
+                          }
                           _hover={{
                             bgColor: "white",
                             color: "#818589",

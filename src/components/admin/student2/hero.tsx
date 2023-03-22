@@ -1,4 +1,12 @@
-import { Box, Container, Text, VStack, Input, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Text,
+  VStack,
+  Input,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import "@fontsource/open-sans";
 import axios from "axios";
@@ -8,20 +16,20 @@ import Head from "next/head";
 type Props = {};
 
 const Hero = (props: Props) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [studentID, setStudentID] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [flag, setFlag] = useState(false);
+  const toast = useToast();
 
   const [data, setData] = useState<
     Array<{
-      class_type: string;
       day: string;
       end_time: string;
-      room: string;
+      enrolment_id: number;
+      session_number: number;
       start_time: string;
       subject_code: string;
       subject_name: string;
-      session_number: number;
     }>
   >([]);
 
@@ -29,12 +37,12 @@ const Hero = (props: Props) => {
     if (flag) {
       const fetchData = async () => {
         const result = await axios.get(
-          `http://127.0.0.1:5000/api/v1/student-classes/${searchQuery}`,
+          `http://127.0.0.1:5000/api/v1/student-classes/${studentID}`,
           {
             withCredentials: true,
           }
         );
-        setData(result.data);
+        setData(result.status == 200 ? result.data : []);
       };
 
       fetchData();
@@ -44,12 +52,32 @@ const Hero = (props: Props) => {
   const handleSearch = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setSearchQuery(e.target.value);
+    setStudentID(e.target.value);
   };
 
   const handleClick = () => {
     setIsActive(!isActive);
     setFlag(true);
+  };
+
+  const handleDelete = async (enrolmentID: number) => {
+    const response = await axios.delete(
+      `http://127.0.0.1:5000/api/v1/unenrol-student/${enrolmentID}`,
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      console.log(response.data);
+
+      toast({
+        title: "Successfully Deleted Class",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    setIsActive(!isActive);
   };
 
   return (
@@ -97,7 +125,7 @@ const Hero = (props: Props) => {
               borderRadius={"xl"}
               width={"lg"}
               onChange={handleSearch}
-              value={searchQuery}
+              value={studentID}
             />
             <Button
               fontSize={"lg"}
@@ -207,7 +235,8 @@ const Hero = (props: Props) => {
                               day: item.day,
                               startTime: item.start_time,
                               endTime: item.end_time,
-                              classType: item.class_type,
+                              enrolmentID: item.enrolment_id,
+                              studentID: studentID,
                             },
                           }}
                         >
@@ -242,6 +271,7 @@ const Hero = (props: Props) => {
                           variant={"ghost"}
                           bgColor={"#818589"}
                           color="white"
+                          onClick={() => handleDelete(item.enrolment_id)}
                           _hover={{
                             bgColor: "white",
                             color: "#818589",
