@@ -62,16 +62,27 @@ const Hero = (props: Props) => {
       }
 
     } catch (error: any) {
-
-      if (error && error.response && error.response.status !== 404) {
+      
+      if (error && error.response && error.response.status === 409) {
         toast({
           title: "Error",
-          description: `Please fill all the fields`,
+          description: `Teacher already assigned`,
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-      } else {
+      }
+      else if (error && error.response && error.response.status === 500) {
+        toast({
+          title: "Error",
+          description: `Incorrect Teacher ID`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+
+      else {
 
         console.error(error);
 

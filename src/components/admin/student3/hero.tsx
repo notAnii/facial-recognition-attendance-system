@@ -91,7 +91,30 @@ const Hero = (props: Props) => {
           duration: 5000,
           isClosable: true,
         });
-      } else {
+      }
+      
+      else if (Week === "" || Week==='0') {
+        toast({
+          title: "Error",
+          description: "Please select a week",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      else if (error && error.response && error.response.status === 500) {
+        toast({
+          title: "Error",
+          description: `Incorrect Student ID`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+      
+      else {
 
         console.error(error);
 
@@ -117,16 +140,7 @@ const Hero = (props: Props) => {
             return;
           }
   
-          if (Week === "" || Week==='0') {
-            toast({
-              title: "Error",
-              description: "Please select a week",
-              status: "error",
-              duration: 5000,
-              isClosable: true,
-            });
-            return;
-          }
+          
       }
     }
 };

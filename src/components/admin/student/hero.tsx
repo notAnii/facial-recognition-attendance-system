@@ -73,7 +73,19 @@ const Hero = (props: Props) => {
           isClosable: true,
         });
 
-      } else {
+      } 
+      
+      else if (error && error.response && error.response.status === 500) {
+        toast({
+          title: "Error",
+          description: `Incorrect Student ID`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+      
+      else {
 
         console.error(error);
 
