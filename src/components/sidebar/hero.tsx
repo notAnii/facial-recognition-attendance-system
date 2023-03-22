@@ -165,8 +165,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Link>
 
         <Link
-          href="https://outlook.office.com/mail/"
-          style={{ textDecoration: "none" }}
+            href="https://outlook.office.com/mail/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
         >
           {FourthLink.map((link) => (
             <NavItem textColor={"white"} key={link.name} icon={link.icon}>
