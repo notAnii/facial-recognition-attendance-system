@@ -18,7 +18,9 @@
 - Where and how to apply image processing
 
 
-
+*** Uninstall retina-face if not using it
+*** Uninstall cmake if not using it
+*** Uninstall face_recognition if not using it
 *** Uninstall mediapipe if not using it
 *** Uninstall torchaudio if not using it
 *** Uninstall deepface if not using it

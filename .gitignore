@@ -7,16 +7,15 @@ __pycache__/
 bbox_image.jpg
 
 # Datasets
-My_dataset
-student_dataset
-extracted_faces
 extracted_faces_uni
+student_dataset_extracted_sp
+student_dataset_extracted_sp_ar_nofar
 
 # Directories
-students_model
-updated_model
-extracted_model
 extracted_uni_model
+extracted_uni_model_dropout
+efficientnet_model
+efficientnet_model_2
 test_samples
 
 # C extensions
