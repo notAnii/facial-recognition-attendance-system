@@ -7,11 +7,13 @@ DROP TABLE Teacher;
 DROP TABLE Subject;
 DROP TABLE Student;
 DROP TABLE Admin;
+DROP TABLE Technical_Fail;
 
 CREATE TABLE `Student` (
 	`student_id` INT,
 	`student_name` VARCHAR(50),
 	`program` VARCHAR(50),
+	`student_email` VARCHAR(50),
 	PRIMARY KEY (`student_id`)
 );
 
@@ -29,6 +31,7 @@ CREATE TABLE `Teacher` (
 	`department` VARCHAR(20),
 	`position` VARCHAR(50),
 	`password` BINARY(60),
+	`teacher_email` VARCHAR(50),
 	PRIMARY KEY (`teacher_id`)
 );
 
@@ -72,6 +75,12 @@ CREATE TABLE `Attendance` (
 	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id) ON DELETE CASCADE
 );
 
+CREATE TABLE `Technical_Fail` (
+	`enrolment_id` INT,
+	PRIMARY KEY (`enrolment_id`),
+	FOREIGN KEY (`enrolment_id`) REFERENCES Enrolment(enrolment_id) ON DELETE CASCADE
+);
+
 CREATE TABLE `Admin` (
 	`admin_id` INT,
 	`password` BINARY(60),
@@ -81,48 +90,50 @@ CREATE TABLE `Admin` (
 INSERT INTO Admin VALUES(112233, NULL);
 
 #inserting students
-INSERT INTO Student VALUES (6633249, 'Abshir', 'BCS');
-INSERT INTO Student VALUES (6536177, 'Ismail', 'BCS');
-INSERT INTO Student VALUES (6616781, 'Aeron', 'BCS');
-INSERT INTO Student VALUES (6698360, 'Layton', 'BCS');
-INSERT INTO Student VALUES (6683113, 'Yassin', 'BCS');
-INSERT INTO Student VALUES (7654321, 'Cat', 'BBIS');
-INSERT INTO Student VALUES (272489, 'Avery', 'BCS');
-INSERT INTO Student VALUES (687192, 'Jordan', 'BCS');
-INSERT INTO Student VALUES (318790, 'Morgan', 'BCS');
-INSERT INTO Student VALUES (405971, 'Casey', 'BCS');
-INSERT INTO Student VALUES (956245, 'Skylar', 'BCS');
-INSERT INTO Student VALUES (937267, 'Cameron', 'BCS');
-INSERT INTO Student VALUES (348606, 'Taylor', 'BCS');
-INSERT INTO Student VALUES (686671, 'Payton', 'BCS');
-INSERT INTO Student VALUES (685842, 'Dakota', 'BCS');
-INSERT INTO Student VALUES (821260, 'Hayden', 'BCS');
-INSERT INTO Student VALUES (550846, 'Riley', 'BCS');
-INSERT INTO Student VALUES (519633, 'Parker', 'BCS');
-INSERT INTO Student VALUES (496417, 'Logan', 'BCS');
-INSERT INTO Student VALUES (793256, 'Alex', 'BCS');
-INSERT INTO Student VALUES (191010, 'Quinn', 'BCS');
-INSERT INTO Student VALUES (995491, 'Drew', 'BCS');
-INSERT INTO Student VALUES (410448, 'Jamie', 'BCS');
-INSERT INTO Student VALUES (974408, 'Charlie', 'BCS');
-INSERT INTO Student VALUES (349199, 'Kai', 'BCS');
-INSERT INTO Student VALUES (426532, 'Addison', 'BCS');
-INSERT INTO Student VALUES (565815, 'Reese', 'BCS');
-INSERT INTO Student VALUES (882659, 'Spencer', 'BCS');
-INSERT INTO Student VALUES (311932, 'Morgan', 'BCS');
-INSERT INTO Student VALUES (367748, 'Elliott', 'BCS');
-INSERT INTO Student VALUES (395607, 'Lane', 'BCS');
-INSERT INTO Student VALUES (571798, 'Hayden', 'BCS');
-INSERT INTO Student VALUES (644785, 'Jules', 'BCS');
-INSERT INTO Student VALUES (950927, 'Sage', 'BCS');
-INSERT INTO Student VALUES (578211, 'River', 'BCS');
-INSERT INTO Student VALUES (897207, 'Phoenix', 'BCS');
-INSERT INTO Student VALUES (632776, 'Dakota', 'BCS');
-INSERT INTO Student VALUES (518962, 'Aspen', 'BCS');
-INSERT INTO Student VALUES (938317, 'Rowan', 'BCS');
-INSERT INTO Student VALUES (822986, 'Parker', 'BCS');
-INSERT INTO Student VALUES (627120, 'Blake', 'BCS');
-INSERT INTO Student VALUES (769520, 'Reese', 'BCS');
+INSERT INTO Student VALUES (6633249, 'Abshir', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (6536177, 'Ismail', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (6616781, 'Aeron', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (6698360, 'Layton', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (6683113, 'Yassin', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (7654321, 'Cat', 'BBIS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (272489, 'Avery', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (687192, 'Jordan', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (318790, 'Morgan', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (405971, 'Casey', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (956245, 'Skylar', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (937267, 'Cameron', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (348606, 'Taylor', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (686671, 'Payton', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (685842, 'Dakota', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (821260, 'Hayden', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (550846, 'Riley', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (519633, 'Parker', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (496417, 'Logan', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (793256, 'Alex', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (191010, 'Quinn', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (995491, 'Drew', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (410448, 'Jamie', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (974408, 'Charlie', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (349199, 'Kai', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (426532, 'Addison', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (565815, 'Reese', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (882659, 'Spencer', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (311932, 'Morgan', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (367748, 'Elliott', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (395607, 'Lane', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (571798, 'Hayden', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (644785, 'Jules', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (950927, 'Sage', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (578211, 'River', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (897207, 'Phoenix', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (632776, 'Dakota', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (518962, 'Aspen', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (938317, 'Rowan', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (822986, 'Parker', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (627120, 'Blake', 'BCS', 'example-student.kaisen@outlook.com');
+INSERT INTO Student VALUES (769520, 'Reese', 'BCS', 'example-student.kaisen@outlook.com');
+
+
 
 
 #inserting subjects
@@ -135,9 +146,9 @@ INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
 
 
 #inserting teachers
-INSERT INTO Teacher VALUES (123, 'Hamood', 'FEIS', 'Tutor', NULL);
-INSERT INTO Teacher VALUES (456, 'Sultan', 'FEIS', 'Tutor', NULL);
-INSERT INTO Teacher VALUES (789, 'Jafar', 'FEIS', 'Lecturer', NULL);
+INSERT INTO Teacher VALUES (123, 'Hamood', 'FEIS', 'Tutor', NULL, 'example-teacher.kaisen@outlook.com');
+INSERT INTO Teacher VALUES (456, 'Sultan', 'FEIS', 'Tutor', NULL, 'example-teacher.kaisen@outlook.com');
+INSERT INTO Teacher VALUES (789, 'Jafar', 'FEIS', 'Lecturer', NULL, 'example-teacher.kaisen@outlook.com');
 
 
 
