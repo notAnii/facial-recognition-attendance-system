@@ -153,25 +153,25 @@ def populate_attendance(subject_code, session_number, week):
 
 #sets attendance status to present    
 def set_present_status(student_id, subject_code, session_number, week):
-    db = DBHelper()
-    fetch_sql = '''
-    SELECT Attendance.attendance_id
-    FROM Attendance
-    INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
-    INNER JOIN Session ON Enrolment.session_id = Session.session_id
-    WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
-    ''' % (student_id, subject_code, session_number, week)
-    attendance_id = db.fetchone(fetch_sql)['attendance_id']
-
-    check_sql = '''
-        SELECT Attendance.status
+    if student_in_class(student_id, subject_code, session_number):
+        db = DBHelper()
+        fetch_sql = '''
+        SELECT Attendance.attendance_id
         FROM Attendance
         INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
         INNER JOIN Session ON Enrolment.session_id = Session.session_id
         WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
-    ''' % (student_id, subject_code, session_number, week)
+        ''' % (student_id, subject_code, session_number, week)
+        attendance_id = db.fetchone(fetch_sql)['attendance_id']
 
-    if student_in_class(student_id, subject_code, session_number):
+        check_sql = '''
+            SELECT Attendance.status
+            FROM Attendance
+            INNER JOIN Enrolment ON Enrolment.enrolment_id = Attendance.enrolment_id
+            INNER JOIN Session ON Enrolment.session_id = Session.session_id
+            WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
+        ''' % (student_id, subject_code, session_number, week)
+
         if(db.fetchone(check_sql)['status'] != 'Present' ):
             update_sql = '''
             UPDATE Attendance
