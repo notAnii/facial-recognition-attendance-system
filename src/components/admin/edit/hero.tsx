@@ -77,27 +77,14 @@ const Hero = (props: Props) => {
         });
       }
     } catch (error: any) {
-      if (error && error.response && error.response.status !== 404) {
+      if (error && error.response && error.response.status === 500) {
         toast({
           title: "Error",
-          description: `Please fill all the fields`,
+          description: `Invalid Entry`,
           status: "error",
           duration: 5000,
           isClosable: true,
         });
-      } else {
-        console.error(error);
-
-        if (subjectCode === "") {
-          toast({
-            title: "Error",
-            description: "Subject Code field is required",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-          return;
-        }
       }
     }
   };
