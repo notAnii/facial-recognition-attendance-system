@@ -1,5 +1,6 @@
 from database.dbhelper import DBHelper
 from utility.utils import get_current_time, get_today_date, getTime
+from utility.email_utils import send_email
 
 #get all students
 def all_students():
@@ -210,6 +211,43 @@ def completed_attendance(subject_code, session_number, week):
             WHERE Attendance.status = 'Pending' and Attendance.attendance_id = %s
         ''' 
         db.execute(sql, attendance)
+
+    failed_sql = '''
+        SELECT Enrolment.enrolment_id, Student.student_email
+        FROM Attendance
+        INNER JOIN Enrolment 
+        ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session 
+        ON Session.session_id = Enrolment.session_id
+        INNER JOIN Student
+        ON Student.student_id = Enrolment.student_id
+        WHERE Attendance.status = 'Absent' AND Session.session_number = %s AND Session.subject_code = '%s'
+        GROUP BY Attendance.enrolment_id
+        HAVING count(Attendance.enrolment_id) > 3;
+    ''' % (session_number, subject_code)
+
+    failed_result = db.fetch(failed_sql)
+
+    for students in failed_result:
+        sender_email = "no-reply.kaisen@outlook.com"
+        receiver_email = students['student_email']
+        password = "TeamKaisen@123"
+        subject = "Technical Fail"
+        message = f"Dear Student,\n\nThis is to inform you that you have technically failed {subject_code}.\nFor further details, please contact us.\n\nRegards,\nKaisen"
+
+        check_fail = '''
+            SELECT count(enrolment_id) as count
+            FROM Technical_Fail
+            WHERE enrolment_id = %s
+        ''' % (students['enrolment_id'])
+        if db.fetchone(check_fail)['count'] == 0:
+            send_email(sender_email, receiver_email, password, subject, message)
+            insert_fail = '''
+                	INSERT INTO Technical_fail VALUES (%s)
+            '''
+            db.execute(insert_fail, students['enrolment_id'])
+
+        
 
 #enrol student to class
 def enrol_student(student_id, subject_code, session_number):
