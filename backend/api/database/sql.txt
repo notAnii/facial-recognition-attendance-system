@@ -1,13 +1,13 @@
 #backup for sql
 
 DROP TABLE Attendance;
+DROP TABLE Technical_Fail;
 DROP TABLE Enrolment;
 DROP TABLE Session;
 DROP TABLE Teacher;
 DROP TABLE Subject;
 DROP TABLE Student;
 DROP TABLE Admin;
-DROP TABLE Technical_Fail;
 
 CREATE TABLE `Student` (
 	`student_id` INT,

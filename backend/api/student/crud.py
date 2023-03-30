@@ -171,13 +171,14 @@ def set_present_status(student_id, subject_code, session_number, week):
         WHERE Enrolment.student_id = %s AND Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s'
     ''' % (student_id, subject_code, session_number, week)
 
-    if(db.fetchone(check_sql)['status'] != 'Present' ):
-        update_sql = '''
-        UPDATE Attendance
-        SET status = 'Present', clock_in = %s
-        WHERE attendance_id = %s
-        '''
-        db.execute(update_sql, (str(get_current_time()),attendance_id))
+    if student_in_class(student_id, subject_code, session_number):
+        if(db.fetchone(check_sql)['status'] != 'Present' ):
+            update_sql = '''
+            UPDATE Attendance
+            SET status = 'Present', clock_in = %s
+            WHERE attendance_id = %s
+            '''
+            db.execute(update_sql, (str(get_current_time()),attendance_id))
 
 #check if student is in class
 def student_in_class(student_id, subject_code, session_number):

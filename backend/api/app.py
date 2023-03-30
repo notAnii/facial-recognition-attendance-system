@@ -10,7 +10,7 @@ from student.crud import *
 from teacher.crud import *
 from admin.crud import *
 from datetime import datetime
-from face_rec.load_fr_model import start_live_attendance
+from face_rec.load_fr_model import facial_recognition
 import threading
 
 app = Flask(__name__)
@@ -333,7 +333,7 @@ def get_class_count():
 
 
 def live_detection_thread(subject_code, session_number, week):
-    start_live_attendance(subject_code, session_number, week)
+    facial_recognition(subject_code, session_number, week)
 
 #starting the attendance 
 @app.route('/api/v1/start-attendance', methods = ['POST'])

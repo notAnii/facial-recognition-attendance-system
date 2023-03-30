@@ -4,6 +4,9 @@ student_dataset
 extracted_faces
 
 # Directories
+vgg19_model
+efficientnet_model
+efficientnet_model_2
 students_model
 updated_model
 extracted_model
