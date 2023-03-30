@@ -186,22 +186,23 @@ def facial_recognition(subject_code, session_number, week):
                     # # normalize image
                     # img = np.expand_dims(img_resized, axis=0)
                     # img = tf.keras.applications.resnet50.preprocess_input(img)
-
-                    h, w, _ = face.shape
-                    scale = max(h, w) / 224
-                    new_h = int(h / scale)
-                    new_w = int(w / scale)
-                    top = (224 - new_h) // 2
-                    bottom = 224 - new_h - top
-                    left = (224 - new_w) // 2
-                    right = 224 - new_w - left
-                    img_resized = cv2.resize(face, (new_w, new_h))
-                    img_resized = cv2.copyMakeBorder(img_resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
-                    #cv2.imshow('img_resized', img_resized)
-                    img = tf.keras.preprocessing.image.img_to_array(img_resized)
-                    img = np.expand_dims(img, axis=0)
-                    img = tf.cast(img, dtype=tf.float32)
-
+                    try:
+                        h, w, _ = face.shape
+                        scale = max(h, w) / 224
+                        new_h = int(h / scale)
+                        new_w = int(w / scale)
+                        top = (224 - new_h) // 2
+                        bottom = 224 - new_h - top
+                        left = (224 - new_w) // 2
+                        right = 224 - new_w - left
+                        img_resized = cv2.resize(face, (new_w, new_h))
+                        img_resized = cv2.copyMakeBorder(img_resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+                        #cv2.imshow('img_resized', img_resized)
+                        img = tf.keras.preprocessing.image.img_to_array(img_resized)
+                        img = np.expand_dims(img, axis=0)
+                        img = tf.cast(img, dtype=tf.float32)
+                    except Exception as e:
+                        print(e)
                     faces.append(img)
             
             if len(faces) > 0:
