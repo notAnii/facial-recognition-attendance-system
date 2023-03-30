@@ -214,7 +214,7 @@ def completed_attendance(subject_code, session_number, week):
         db.execute(sql, attendance)
 
     failed_sql = '''
-        SELECT Enrolment.enrolment_id, Student.student_email
+        SELECT Student.student_id, Student.student_name, Enrolment.enrolment_id, Student.student_email
         FROM Attendance
         INNER JOIN Enrolment 
         ON Enrolment.enrolment_id = Attendance.enrolment_id
@@ -234,7 +234,7 @@ def completed_attendance(subject_code, session_number, week):
         receiver_email = students['student_email']
         password = "TeamKaisen@123"
         subject = "Technical Fail"
-        message = f"Dear Student,\n\nThis is to inform you that you have technically failed {subject_code}.\nFor further details, please contact us.\n\nRegards,\nKaisen"
+        message = f"Dear {students['student_name']} ({students['student_id']}),\n\nThis is to inform you that you have technically failed {subject_code}.\nFor further details, please contact us.\n\nRegards,\nKaisen"
 
         check_fail = '''
             SELECT count(enrolment_id) as count
