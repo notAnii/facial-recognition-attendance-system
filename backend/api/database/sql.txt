@@ -142,7 +142,7 @@ INSERT INTO Subject VALUES ('CSIT111', 'Programming', 'Simpple programming.');
 INSERT INTO Subject VALUES ('CSIT214', 'Project Management', 'Teaches how to manage projects.');
 INSERT INTO Subject VALUES ('CSCI369', 'Ethical Hacking', 'Teaches how to hack.');
 INSERT INTO Subject VALUES ('MATH221', 'Mathematics', 'Teaches how to math.');
-INSERT INTO Subject VALUES ('CSCT127', 'Networks and Communications', 'Teaches how to network.');
+INSERT INTO Subject VALUES ('CSIT127', 'Networks and Communications', 'Teaches how to network.');
 INSERT INTO Subject VALUES ('CSIT115', 'Database Fundamentals', 'Teaches database.');
 INSERT INTO Subject VALUES ('CSCI203', 'Data Structures and Algorithms', 'Teacches datastructures.');
 INSERT INTO Subject VALUES ('CSCI370', 'Special Topics in Computer Science A', 'Teaches special topics in CS.');
@@ -167,7 +167,7 @@ INSERT INTO Session (subject_code, session_number, day, start_time, end_time, ro
 INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('CSIT127', 1, 'Friday', '10:30', '12:30', '4.42', "Lab", 123);
 INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('CSCI203', 1, 'Friday', '12:30', '14:30', '3.41', "Lab", 123);
 INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('CSCI370', 1, 'Friday', '14:30', '16:30', '5.11', "Lecture", 123);
-INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('CSCT115', 1, 'Friday', '16:30', '18:30', '5.11', "Lecture", 123);
+INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('CSIT115', 1, 'Friday', '16:30', '18:30', '5.11', "Lecture", 123);
 
 #teacher456 (has no one enrolled in them)
 INSERT INTO Session (subject_code, session_number, day, start_time, end_time, room, class_type, teacher_id) VALUES ('MATH221', 2, 'Friday', '08:30', '10:30', '3.43', "Lab", 456);
