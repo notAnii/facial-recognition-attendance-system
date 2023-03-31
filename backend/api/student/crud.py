@@ -356,3 +356,22 @@ def subject_sessions(subject_code):
 
     result = db.fetch(sql)
     return result
+
+def check_class_status(subject_code, session_number, week):
+    db = DBHelper()
+    check_sql = '''
+        SELECT COUNT(Attendance.attendance_id) as count
+        FROM Attendance
+        INNER JOIN Enrolment 
+        ON Enrolment.enrolment_id = Attendance.enrolment_id
+        INNER JOIN Session
+        ON Session.session_id = Enrolment.session_id
+        WHERE Session.subject_code = '%s' AND Session.session_number = %S AND Attendance.week = 'Week %s' AND  Attendance.status != 'Pending'
+    ''' ( subject_code, session_number, week)
+
+    result = db.fetchone(check_sql)
+
+    if result['count'] > 0:
+        return False
+    
+    return True;

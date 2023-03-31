@@ -343,15 +343,18 @@ def start_attendance():
     session_number = int(request.json.get("session_number", None))
     week = int(request.json.get("week", None))
     
-    populate_attendance(subject_code, session_number, week)
-    # function to open the camera goes here too 
-    # function should have
-    #  params of subject_code , session_number, week
+    if check_class_status(subject_code, session_number, week):
+        populate_attendance(subject_code, session_number, week)
+        # function to open the camera goes here too 
+        # function should have
+        #  params of subject_code , session_number, week
 
-    t = threading.Thread(target=live_detection_thread, args=(subject_code, session_number, week))
-    t.start()
+        t = threading.Thread(target=live_detection_thread, args=(subject_code, session_number, week))
+        t.start()
 
-    return "Success", 200
+        return "Success", 200
+    else:
+        return "Class already finished", 200
 
 # admin routes
 
