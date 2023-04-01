@@ -2,12 +2,6 @@
 
 <div align="center">
 
-<a href="https://cna-chakra-ui-template.vercel.app/">View Demo</a>
-·
-<a href="https://github.com/imadatyatalah/cna-chakra-ui-template/issues">Report Bug</a>
-·
-<a href="https://github.com/imadatyatalah/cna-chakra-ui-template/issues">Request Feature</a>
-
 </div>
 
 <div align="center">
@@ -24,19 +18,10 @@
 - [Next.js](https://nextjs.org/)
 - [Chakra UI](https://chakra-ui.com/)
 
-### Features
-
-- ESLint ready.
-- Dark Mode ready.
-- SEO friendly.
 
 ### Screenshot
 
 ![Screenshot](./image.png)
-
-## Deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fvladiusftw%2Fchakra-next-template&showOptionalTeamCreation=false)
 
 ## Getting Started
 
