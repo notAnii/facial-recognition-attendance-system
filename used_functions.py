@@ -6,7 +6,7 @@ import mtcnn
 from keras.models import load_model
 from datetime import datetime
 
-# ------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
 
 def take_pics():
     
@@ -49,11 +49,13 @@ def take_pics():
     cv2.destroyAllWindows()
 
 
-# ------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
 
 def rename_pics():
 
     # This function was used to rename all the pictures in the student_dataset
+
+    print("Renaming pictures...")
 
     # Set the directory path containing the images
     directory = "path/to/directory/"
@@ -83,8 +85,10 @@ def rename_pics():
             # Increment the start number
             start_num += 1
 
+    print("Pictures have been renamed.")
 
-# -------------------------------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------------------------------
 
 def find_faces_in_directory(dir_path):
 
@@ -111,7 +115,7 @@ def find_faces_in_directory(dir_path):
     cv2.destroyAllWindows()
 
 
-# -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
 
 def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
 
@@ -142,82 +146,84 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
     print("\nPredictions completed in time: ", duration)
 
 
-# -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
 
 def crop_faces():
 
-  start = datetime.now()
+    # This function crops all faces found in a directory and saves those cropped faces in a different directory
 
-  # Define the path to the parent folder of the dataset that you want to crop faces from
-  dataset_path = 'student_dataset'
+    start = datetime.now()
 
-  # Define the path for the folder to put extracted images
-  faces_folder_path = 'extracted_faces'
+    # Define the path to the parent folder of the dataset that you want to crop faces from
+    dataset_path = 'test_samples'
 
-  # Create the folder to put extracted images if it does not already exist
-  if not os.path.exists(faces_folder_path):
-      os.makedirs(faces_folder_path)
+    # Define the path for the folder to put extracted images
+    faces_folder_path = 'extracted_faces'
 
-  # Initialize the MTCNN detector
-  detector = mtcnn.MTCNN()
+    # Create the folder to put extracted images if it does not already exist
+    if not os.path.exists(faces_folder_path):
+        os.makedirs(faces_folder_path)
 
-  # Minimum confidence level for face detection
-  confidence_threshold = 0.85
+    # Initialize the MTCNN detector
+    detector = mtcnn.MTCNN()
 
-  # Size of the extracted face images
-  face_size = (224, 224)
+    # Minimum confidence level for face detection
+    confidence_threshold = 0.85
 
-  # Loop through each directory in the dataset path
-  for dir_name in os.listdir(dataset_path):
-      
-      # Check if the current item is a directory
-      if os.path.isdir(os.path.join(dataset_path, dir_name)):
-          
-          # Define the path for the class faces folder
-          class_faces_folder_path = os.path.join(faces_folder_path, dir_name)
-          
-          # Create the class faces folder if it does not already exist
-          if not os.path.exists(class_faces_folder_path):
-              os.makedirs(class_faces_folder_path)
-          
-          # Loop through each file in the current directory
-          for filename in os.listdir(os.path.join(dataset_path, dir_name)):
-              
-              # Check if the file is a jpg or png image
-              if filename.endswith('.jpg') or filename.endswith('.png'):
-                  
-                  # Read the image file
-                  image=cv2.imread(os.path.join(dataset_path, dir_name, filename))
+    # Size of the extracted face images
+    face_size = (224, 224)
 
-                  # Detect faces in the image using MTCNN
-                  faces = detector.detect_faces(image)
+    # Loop through each directory in the dataset path
+    for dir_name in os.listdir(dataset_path):
+        
+        # Check if the current item is a directory
+        if os.path.isdir(os.path.join(dataset_path, dir_name)):
+            
+            # Define the path for the class faces folder
+            class_faces_folder_path = os.path.join(faces_folder_path, dir_name)
+            
+            # Create the class faces folder if it does not already exist
+            if not os.path.exists(class_faces_folder_path):
+                os.makedirs(class_faces_folder_path)
 
-                  # Loop through each detected face
-                  for i, face in enumerate(faces):
-                      if face['confidence'] >= confidence_threshold:
-                          # Get the bounding box coordinates for the current face
-                          x1, y1, width, height = face['box']
-                          x2, y2 = x1 + width, y1 + height
-                          
-                          # Extract the face from the image using the bounding box coordinates
-                          extracted_face = image[y1:y2, x1:x2]
+            # Loop through each file in the current directory
+            for filename in os.listdir(os.path.join(dataset_path, dir_name)):
+                
+                # Check if the file is a jpg or png image
+                if filename.lower().endswith('.jpg') or filename.lower().endswith('.png'):
+                    
+                    # Read the image file
+                    image=cv2.imread(os.path.join(dataset_path, dir_name, filename))
 
-                          # Resize the extracted face to the specified size
-                          resized_face = cv2.resize(extracted_face, face_size, interpolation=cv2.INTER_CUBIC)
-                      
-                          # Save the extracted face as a new image file
-                          output_filename = os.path.join(class_faces_folder_path, f"{os.path.splitext(filename)[0]}_cropped{i+1}.jpg")
-                          cv2.imwrite(output_filename, resized_face)
+                    # Detect faces in the image using MTCNN
+                    faces = detector.detect_faces(image)
 
-  duration = datetime.now() - start
-  print("Extracting faces completed in time: ", duration)
+                    # Loop through each detected face
+                    for i, face in enumerate(faces):
+                        if face['confidence'] >= confidence_threshold:
+                            # Get the bounding box coordinates for the current face
+                            x1, y1, width, height = face['box']
+                            x2, y2 = x1 + width, y1 + height
+                            
+                            # Extract the face from the image using the bounding box coordinates
+                            extracted_face = image[y1:y2, x1:x2]
+
+                            # Resize the extracted face to the specified size
+                            resized_face = cv2.resize(extracted_face, face_size, interpolation=cv2.INTER_CUBIC)
+                        
+                            # Save the extracted face as a new image file
+                            output_filename = os.path.join(class_faces_folder_path, f"{os.path.splitext(filename)[0]}_cropped{i+1}.jpg")
+                            cv2.imwrite(output_filename, resized_face)
+
+    duration = datetime.now() - start
+    print("Extracting faces completed in time: ", duration)
 
 
-# -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
 
 # Function calls
 # take_pics()
 # rename_pics()
 # find_faces_in_directory("path/to/directory/")
-# make_prediction_on_images_in_dir("dir_path", "img_height", "img_width")
+# make_prediction_on_images_in_dir("dir_path", 224, 224)
 # crop_faces()

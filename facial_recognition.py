@@ -31,55 +31,9 @@ def image_processing_1(image):
 
     return new_img
 
-# -------------------------------------------------------------------------------------------------------------
-def image_processing_2(image):
-
-    img = cv2.imread(image)
-    gamma_value = 0.5
-
-    gamma_table=[np.power(x/255.0, gamma_value)*255.0 for x in range(256)]
-    gamma_table = np.round(np.array(gamma_table)).astype(np.uint8)
-
-    new_img = cv2.LUT(img, gamma_table)
-    return new_img
 
 # -------------------------------------------------------------------------------------------------------------
-def image_processing_3(image):
-
-    gamma = 0.4
-
-    # Load the image
-    img = cv2.imread(image)
-
-    gamma_table=[np.power(x/255.0,gamma)*255.0 for x in range(256)]
-    gamma_table=np.round(np.array(gamma_table)).astype(np.uint8)
-    img = cv2.LUT(img,gamma_table)
-
-    # Preprocess the image
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = np.array(img, dtype=np.float32) / 255.0
-    img = np.expand_dims(img, axis=0)
-
-
-    # Create the model
-    model = tf.keras.Sequential([
-        tf.keras.layers.Input(shape=(None, None, 3)),
-        tf.keras.layers.Lambda(lambda x: tf.image.adjust_brightness(x, delta=0.4))
-    ])
-
-    # Apply the model to the image
-    exposed_img = model(img)[0].numpy()
-
-    # Postprocess the image
-    exposed_img = np.clip(exposed_img, 0.0, 1.0)
-    exposed_img = np.uint8(exposed_img * 255.0)
-    exposed_img = cv2.cvtColor(exposed_img, cv2.COLOR_RGB2BGR)
-
-    return exposed_img
-
-
-# -------------------------------------------------------------------------------------------------------------
-def check_if_img_is_dark(image):
+def check_img_darkness(image):
 
     # Load the image
     img = cv2.imread(image)
@@ -107,7 +61,9 @@ def check_if_img_is_dark(image):
         # False if it is well exposed
         return False
 
+
 # -------------------------------------------------------------------------------------------------------------
+
 def facial_recognition():
 
     # Get class names to print when making predictions
@@ -167,27 +123,7 @@ def facial_recognition():
                 # Checks whether a face is detected in the frame and if the width and height of the bounding box is greater than 50 pixels
                 # to filter out false detections
                 if face.size > 0 and width > 50 and height > 50:
-                    # # Save cropped frame as an image
-                    # cv2.imwrite('bbox_image.jpg', face)
-                    # bbox_img = 'bbox_image.jpg'
-                    # result = check_if_img_is_dark(bbox_img)         # Checks if image is dark enough for processing   
-                    # print(result)
-
-                    # if result:
-                    #     counter = counter + 1
-                    #     processed_img = image_processing_1(bbox_img)         # Image goes into a processing function to alter brightness
-                    #     # Resize processed image
-                    #     img_resized = cv2.resize(processed_img, (224, 224))
-                    #     cv2.imwrite(f'processed_imgs/img_{counter}.jpg', img_resized)
-                        # cv2.imshow("processed pic", img_resized)
-                    # else:
-                        # Resize cropped frame
-                    # img_resized = cv2.resize(face, (224, 224))
-
-                    # # Normalize image
-                    # img = np.expand_dims(img_resized, axis=0)
-                    # img = tf.keras.applications.resnet50.preprocess_input(img)
-
+                    
                     # Maintain aspect ratio of image
                     h, w, _ = face.shape
                     scale = max(h, w) / 224
@@ -198,9 +134,23 @@ def facial_recognition():
                     left = (224 - new_w) // 2
                     right = 224 - new_w - left
 
-                    img_resized = cv2.resize(face, (new_w, new_h))
+                    # Save cropped frame as an image to be passed into the check_img_darkness() function
+                    cv2.imwrite('bbox_image.jpg', face)
+                    bbox_img = 'bbox_image.jpg'
+                    result = check_img_darkness(bbox_img)         # Checks if image is dark enough for processing
+
+                    if result:
+                        counter = counter + 1
+                        processed_img = image_processing_1(bbox_img)         # Image goes into a processing function to alter brightness
+                        # Resize processed image
+                        img_resized = cv2.resize(processed_img, (new_w, new_h))
+                    else:
+                        # Resize cropped frame
+                        img_resized = cv2.resize(face, (new_w, new_h))
+
                     img_resized = cv2.copyMakeBorder(img_resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
 
+                    # Normalize image
                     img = tf.keras.preprocessing.image.img_to_array(img_resized)
                     img = np.expand_dims(img, axis=0)
                     img = tf.cast(img, dtype=tf.float32)
