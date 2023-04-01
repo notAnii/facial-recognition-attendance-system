@@ -73,7 +73,7 @@ const Hero = (props: Props) => {
       maxW={"7xl"}
       h={"100%"} //to determine center of the page
     >
-       <Head>
+      <Head>
         <title>Log In Page</title>
         <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </Head>
@@ -87,7 +87,7 @@ const Hero = (props: Props) => {
         alignItems={"center"}
       >
         <Image src={"/logo.png"} alt={""} width={150} height={150} />
-        <Heading mt={4}>Log In</Heading>
+        <Heading mt={4}>Log-in</Heading>
         <VStack spacing={2} mt={8} mb={10}>
           <Box>
             <Text>Username </Text>

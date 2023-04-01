@@ -68,7 +68,7 @@ const Hero = (props: Props) => {
         <title>Dashboard</title>
         <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </Head>
-      
+
       <VStack w="100%">
         <Box //Box Top
           backgroundColor={"white"}
@@ -127,18 +127,18 @@ const Hero = (props: Props) => {
                         variant="unstyled"
                         size={"sm"}
                       >
-                        <Thead>
+                        <Tbody>
                           <Tr>
-                            <Th
-                              textAlign="left"
-                              fontFamily={"Open Sans"}
-                              fontWeight={"bold"}
-                              fontSize={"13px"}
-                            >
-                              Name
-                            </Th>
-
-                            <Th
+                            <Thead>
+                              <Td
+                                textAlign="left"
+                                fontFamily={"Open Sans"}
+                                fontWeight={"bold"}
+                              >
+                                Name
+                              </Td>
+                            </Thead>
+                            <Td
                               textAlign="left"
                               fontFamily={"Open Sans"}
                               fontWeight={"light"}
@@ -148,10 +148,9 @@ const Hero = (props: Props) => {
                                 "teacherName",
                                 item.teacher_name
                               )}
-                            </Th>
+                            </Td>
                           </Tr>
-                        </Thead>
-                        <Tbody>
+
                           <Tr>
                             <Thead>
                               <Td
@@ -174,6 +173,7 @@ const Hero = (props: Props) => {
                               )}
                             </Td>
                           </Tr>
+
                           <Tr>
                             <Td
                               isNumeric
