@@ -1,44 +1,30 @@
 import tensorflow as tf
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import matplotlib.image
-import mtcnn            # for using mtcnn.MTCNN() `detect_faces()`
 import numpy as np
 from keras.models import load_model
 import cv2
-import os
-from datetime import datetime
-from facenet_pytorch import MTCNN       # for using MTCNN() `detect()`
-
-# -------------------------------------------------------------------------------------------------------------
-def load_fr_model():
-    # Load model
-    fr_model = load_model("uni_model_vs0.4_dout2_ar_sp_nofar_rms001")
-    # fr_model = tf.saved_model.load("efficientnet_model")
-
-    return fr_model
+from facenet_pytorch import MTCNN
 
 # -------------------------------------------------------------------------------------------------------------
 def image_processing_1(image):
     
-    #load the image
+    # Load the image
     img = cv2.imread(image)
 
-    #pre-process the image
+    # Pre-process the image
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = np.array(img, dtype=np.float32) / 255.0
     img = np.expand_dims(img, axis=0)
 
-    #create the model
+    # Create the model
     model = tf.keras.Sequential([
         tf.keras.layers.Input(shape=(None, None, 3)),
         tf.keras.layers.Lambda(lambda x: tf.image.adjust_brightness(x, delta=0.5))
     ])
 
-    #apply the model to the image
+    # Apply the model to the image
     new_img = model(img)[0].numpy()
 
-    #post-process the image
+    # Post-process the image
     new_img = np.clip(new_img, 0.0, 1.0)
     new_img = np.uint8(new_img * 255.0)
     new_img = cv2.cvtColor(new_img, cv2.COLOR_RGB2BGR)
@@ -62,7 +48,7 @@ def image_processing_3(image):
 
     gamma = 0.4
 
-    #load the image
+    # Load the image
     img = cv2.imread(image)
 
     gamma_table=[np.power(x/255.0,gamma)*255.0 for x in range(256)]
@@ -91,8 +77,10 @@ def image_processing_3(image):
 
     return exposed_img
 
+
 # -------------------------------------------------------------------------------------------------------------
 def check_if_img_is_dark(image):
+
     # Load the image
     img = cv2.imread(image)
 
@@ -113,29 +101,35 @@ def check_if_img_is_dark(image):
 
     # Check if the image is poorly exposed
     if darkest_percent > 5 or brightest_percent > 5:
-        #True if it is poorly exposed
+        # True if it is poorly exposed
         return True
     else:
-        #False if it is well exposed
+        # False if it is well exposed
         return False
 
 # -------------------------------------------------------------------------------------------------------------
-def live_cropped_DETECT_face_detection():
+def facial_recognition():
 
     # Get class names to print when making predictions
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'extracted_faces_uni'
+    'student_dataset'
     )
     class_names = train_ds.class_names
 
     # Count for managing print statements for when a face is not detected
     count = 0
 
-    # Confidence threshold
-    confidence_threshold = 0.80
+    # Count for checking processed imgs
+    counter = 0
 
-    # Load the saved ResNet50 model
-    model = load_fr_model()
+    # Confidence threshold
+    confidence_threshold = 0.85
+
+    # Load model 1
+    model1 = load_model("vgg19_model")
+
+    # Load model 2
+    model2 = tf.saved_model.load("efficientnetb0_model")
 
     # Initialize MTCNN for face detection
     mtcnn_detector = MTCNN()
@@ -151,55 +145,96 @@ def live_cropped_DETECT_face_detection():
         # Detect faces using MTCNN
         boxes, _ = mtcnn_detector.detect(frame)
 
-        # Create list to store detected faces
+        # Create list to store the detected faces
         faces = []
 
-        # Draw bounding boxes around detected faces
+        # Draw bounding boxes around the detected faces
         if boxes is not None:
             for box in boxes:
                 x1, y1, x2, y2 = box.astype('int')
-                face = frame[y1:y2, x1:x2]          # crops whatever bounding box picks up on
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)        # displays bounding box around face
+                width = x2 - x1
+                height = y2 - y1
+                # Increase width and height of bounding box by 12%
+                x1 -= int(0.12 * width)
+                y1 -= int(0.12 * height)
+                x2 += int(0.12 * width)
+                y2 += int(0.12 * height)
 
-                if face.size > 0:
-                    # save cropped frame as an image
-                    cv2.imwrite('bbox_image.jpg', face)
-                    bbox_img = 'bbox_image.jpg'
-                    result = check_if_img_is_dark(bbox_img)         # checks if image is dark enough for processing   
+
+                face = frame[y1:y2, x1:x2]          # Stores the cropped face within the bounding box into a variable
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)        # Displays bounding box around face
+
+                # Checks whether a face is detected in the frame and if the width and height of the bounding box is greater than 50 pixels
+                # to filter out false detections
+                if face.size > 0 and width > 50 and height > 50:
+                    # # Save cropped frame as an image
+                    # cv2.imwrite('bbox_image.jpg', face)
+                    # bbox_img = 'bbox_image.jpg'
+                    # result = check_if_img_is_dark(bbox_img)         # Checks if image is dark enough for processing   
                     # print(result)
 
-                    if result:
-                        processed_img = image_processing_1(bbox_img)         # image goes into a processing function to alter brightness
-                        # resize processed image
-                        img_resized = cv2.resize(processed_img, (224, 224))
-                    else:
-                        # resize cropped frame
-                        img_resized = cv2.resize(face, (224, 224))
+                    # if result:
+                    #     counter = counter + 1
+                    #     processed_img = image_processing_1(bbox_img)         # Image goes into a processing function to alter brightness
+                    #     # Resize processed image
+                    #     img_resized = cv2.resize(processed_img, (224, 224))
+                    #     cv2.imwrite(f'processed_imgs/img_{counter}.jpg', img_resized)
+                        # cv2.imshow("processed pic", img_resized)
+                    # else:
+                        # Resize cropped frame
+                    # img_resized = cv2.resize(face, (224, 224))
 
-                    # normalize image
-                    img = np.expand_dims(img_resized, axis=0)
-                    img = tf.keras.applications.resnet50.preprocess_input(img)
+                    # # Normalize image
+                    # img = np.expand_dims(img_resized, axis=0)
+                    # img = tf.keras.applications.resnet50.preprocess_input(img)
+
+                    # Maintain aspect ratio of image
+                    h, w, _ = face.shape
+                    scale = max(h, w) / 224
+                    new_h = int(h / scale)
+                    new_w = int(w / scale)
+                    top = (224 - new_h) // 2
+                    bottom = 224 - new_h - top
+                    left = (224 - new_w) // 2
+                    right = 224 - new_w - left
+
+                    img_resized = cv2.resize(face, (new_w, new_h))
+                    img_resized = cv2.copyMakeBorder(img_resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+
+                    img = tf.keras.preprocessing.image.img_to_array(img_resized)
+                    img = np.expand_dims(img, axis=0)
+                    img = tf.cast(img, dtype=tf.float32)
+
+                    # Append all faces detected in the image
                     faces.append(img)
-
+            
+            # Checks whether the faces list contains at least one face
             if len(faces) > 0:
                 count = 0
                 # Concatenate the list of preprocessed faces into an array
                 faces_array = np.concatenate(faces, axis=0)
 
-                # Use the saved ResNet50 model to make a prediction on the preprocessed faces
-                pred = model.predict(faces_array)
-                # pred = model(faces_array)
+                # Use model 1 to make a prediction on the preprocessed faces
+                pred1 = model1.predict(faces_array)
+
+                # Use model 2 to make a prediction on the preprocessed faces
+                pred2 = model2(faces_array)
+
+                # Compute the average prediction of the two models
+                ensemble_preds = np.mean([pred1, pred2], axis=0)
 
                 # Get the predicted classes for each face
-                pred_classes = np.argmax(pred, axis=1)
+                pred_classes = np.argmax(ensemble_preds, axis=1)
+
+                # Obtains predicted class and their respective probability
                 for i, pred_class in enumerate(pred_classes):
                     output_class = class_names[pred_class]
-                    output_prob = pred[i][pred_class]
+                    output_prob = ensemble_preds[i][pred_class]
                     
-                    # Second 'if condition' to eliminate processing of anything other than a face (might not be fullproof)
+                    # Checks whether the predicted probability is above the threshold and below 100% to eliminate processing of anything
+                    # other than a face
                     if ((output_prob >= confidence_threshold) and (output_prob <= 0.99)):
                         print(f"Face {i+1}: {output_class}, Probability: {output_prob:.2f}")
-                        # print(pred[i])        # Prints output_prob of all classes
 
         elif(count == 0):
             count = 1
@@ -217,72 +252,4 @@ def live_cropped_DETECT_face_detection():
     cv2.destroyAllWindows()
 
 
-live_cropped_DETECT_face_detection()
-
-# -------------------------------------------------------------------------------------------------------------
-def live_cropped_DETECTFACE_face_detection():
-     # Get class names to print when making predictions
-    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'extracted_faces_uni'
-    )
-    class_names = train_ds.class_names
-    # with open('class_names', 'rb') as f:
-    #     class_names = pickle.load(f)
-
-    # Confidence threshold
-    confidence_threshold = 0.80
-
-    # Load the saved ResNet50 model
-    model = load_fr_model()
-
-    # Initialize MTCNN for face detection
-    face_detector = mtcnn.MTCNN()
-
-    # Initialize webcam
-    webcam = cv2.VideoCapture(0)
-
-    # Run loop for live face detection
-    while True:
-        # Capture frame from webcam
-        ret, frame = webcam.read()
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        faces = face_detector.detect_faces(rgb)
-
-        for face in faces:
-
-            # Get the bounding box coordinates of the face
-            x, y, w, h = face['box']
-
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
-            # Extract the face ROI from the frame
-            face_roi = rgb[y:y+h, x:x+w]
-
-            # Resize the face ROI to the input size of the classification model
-            face_roi_resized = cv2.resize(face_roi, (224, 224))
-
-            # Preprocess the face ROI
-            face_roi_resized = np.expand_dims(face_roi_resized, axis=0)
-            face_roi_resized = tf.keras.applications.resnet50.preprocess_input(face_roi_resized)
-
-            pred = model.predict(face_roi_resized)
-            output_class = class_names[np.argmax(pred)]
-            output_prob = np.max(pred)
-
-            if output_prob >= confidence_threshold:
-                print(f"{output_class}, Probability: {output_prob:.2f}")
-         
-        # Show frame with bounding boxes
-        cv2.imshow('Live Face Detection', frame)
-
-        # Press 'q' to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Release webcam and close window
-    webcam.release()
-    cv2.destroyAllWindows()
-
-# live_cropped_DETECTFACE_face_detection()
-
+facial_recognition()

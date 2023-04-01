@@ -1,3 +1,5 @@
+dlib==19.24.1
+keras==2.11.0
 keras_applications==1.0.8
 mtcnn==0.1.1
 numpy==1.24.1
@@ -9,4 +11,3 @@ keras-vggface==0.6
 opencv-python==4.7.0.68
 scipy==1.10.0
 facenet_pytorch==2.5.2
-retina-face==0.0.13
