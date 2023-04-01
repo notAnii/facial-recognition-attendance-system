@@ -1,13 +1,3 @@
-# from keras_preprocessing.image import ImageDataGenerator
-# import matplotlib.pyplot as plt
-# import tensorflow as tf
-# from tensorflow import keras
-# from keras import layers, regularizers
-# from tensorflow.python.keras.layers import Dense, Flatten, Dropout
-# from keras.models import Sequential
-# from datetime import datetime
-# from keras.optimizers import RMSprop
-
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from keras import regularizers
