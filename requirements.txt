@@ -1,8 +1,13 @@
+dlib==19.24.1
+keras==2.11.0
+keras_applications==1.0.8
+mtcnn==0.1.1
 numpy==1.24.1
-pandas==1.5.2
-opencv-python==4.7.0.68
-Pillow==9.4.0
+matplotlib==3.6.3
+pillow==9.4.0
 tensorflow==2.11.0
-keras-applications==1.0.8
 keras-preprocessing==1.1.2
+keras-vggface==0.6
+opencv-python==4.7.0.68
 scipy==1.10.0
+facenet_pytorch==2.5.2

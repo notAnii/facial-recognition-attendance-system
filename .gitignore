@@ -3,6 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Random Files
+bbox_image.jpg
+
+# Datasets
+student_dataset
+
+# Directories
+efficientnetb0_model
+vgg19_model
+
 # C extensions
 *.so
 
