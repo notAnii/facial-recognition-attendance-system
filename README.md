@@ -40,17 +40,7 @@
 
 ## Getting Started
 
-Create a new application using `create-next-app` with the `-e | --example` flag pointing to this repository's _url_, like so:
-
-```bash
-yarn create next-app -e https://github.com/vladiusftw/chakra-next-template
-```
-
-> **Tip:** You can find `create-next-app`'s documentation at [https://nextjs.org/docs/api-reference/create-next-app](https://nextjs.org/docs/api-reference/create-next-app).
-
-You can also click on the `Use this template` button.
-
-After that, clone the repository that was created on your account and follow the steps below:
+Clone the repository (FrontEnd) that was created on our account and follow the steps below:
 
 ```bash
 # Installing project dependencies
@@ -59,7 +49,7 @@ yarn
 yarn dev
 ```
 
-Your site is now running at [`http://localhost:3000`](http://localhost:3000)!
+The web app is now running at [`http://localhost:3000`](http://localhost:3000)!
 
 ## License
 
