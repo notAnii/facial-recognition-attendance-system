@@ -25,7 +25,7 @@
 
 ## Getting Started
 
-Clone the repository (FrontEnd) that was created on our account and follow the steps below:
+Clone the repository (FrontEnd) that was created on our account and run the following commands in the terminal:
 
 ```bash
 # Installing yarn
@@ -47,6 +47,6 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/imadatyata
 ## The web app
 So after running the previous commands and the web app is running in the browser, thats the first thing you will see:
 
-
+# Landing Page
 ![landing](https://user-images.githubusercontent.com/107717142/229353047-ac59c2d1-e73f-4594-a691-407c4345fd17.png)
 
