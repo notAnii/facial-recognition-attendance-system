@@ -366,8 +366,8 @@ def check_class_status(subject_code, session_number, week):
         ON Enrolment.enrolment_id = Attendance.enrolment_id
         INNER JOIN Session
         ON Session.session_id = Enrolment.session_id
-        WHERE Session.subject_code = '%s' AND Session.session_number = %S AND Attendance.week = 'Week %s' AND  Attendance.status != 'Pending'
-    ''' ( subject_code, session_number, week)
+        WHERE Session.subject_code = '%s' AND Session.session_number = %s AND Attendance.week = 'Week %s' AND  Attendance.status != 'Pending'
+    ''' % ( subject_code, session_number, week)
 
     result = db.fetchone(check_sql)
 
