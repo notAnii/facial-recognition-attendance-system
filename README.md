@@ -52,16 +52,20 @@ This landing page provides a brief summary of what the web app is all about. If 
 ### Teacher log in page:
 ![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
 
-To log in as a teacher, please enter 123 in the username text field and abshir for the password.
+To log in as a teacher, please enter `123` in the username text field and `abshir` for the password.
+
+To log in as another teacher please enter `456` in the username text field and `naruto` for the password.
 
 After successfully logging in, you will be directed to the teacher dashboard page.
 
 ### Teacher dashboard page:
-![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
+![1](https://user-images.githubusercontent.com/107717142/229368554-7d482533-f9fe-4193-a75b-bce4a92b46e2.png)
 
-On this page, you will see the teacher's name, their department, and their consultation hours. On the right-hand side, there is a bar graph that displays the number of classes per day on the `y-axis` and the days of the week on the `x-axis`. 
+On this page, you will see the teacher's name, their department, and their position. On the right-hand side, there is a bar graph that displays the number of classes per day on the `y-axis` and the days of the week on the `x-axis`. 
 
-At the bottom of the page, the upcoming classes of the day are displayed. Clicking on the email on the sidebar will open a new tab on the browser and direct you to your email.
+At the bottom of the page, the upcoming classes of the day are displayed. There is no classes displayed because this screenshot was taken on sunday which is a holiday.
+
+Clicking on the email on the sidebar will open a new tab on the browser and direct you to your email.
 
 ### Teacher's email page:
 ![mail2](https://user-images.githubusercontent.com/107717142/229353920-f6106252-114f-4978-b719-7d6580a5dd07.png)
@@ -88,6 +92,15 @@ On this page, all the students' attendance that was recorded in the class in wee
 
 Additionally, the teacher will be able to filter the list by present, absent, or excused students.
 ![viewAttendance2](https://user-images.githubusercontent.com/107717142/229355784-e807fc32-df02-49d4-859f-cf620e133c14.png)
+
+If a student has more than 3 absences:
+
+![4](https://user-images.githubusercontent.com/107717142/229369282-2daa8bc8-aee1-4ade-9134-54b5c44d1a66.png)
+
+An email will be sent automatically to that student saying that he\she failed the subject:
+
+![image](https://user-images.githubusercontent.com/107717142/229369349-f0a6adb7-d92d-4ba2-83e4-bf43582802d0.png)
+
 
 ### Searching Attendance Records
 To search attendance records of a specific student, you can use the search bar on top and search by the student's name or student ID.
@@ -117,7 +130,7 @@ After clicking log out, you will go back to the landing page, and then you will 
 ### Admin log-in
 ![logIn](https://user-images.githubusercontent.com/107717142/229356683-686c5e7e-723c-4e54-b4dc-e9469bfb31e5.png)
 
-Enter username `11223344` and password `admin` to log in. After logging in, this page will be displayed:
+Enter username `112233` and password `admin` to log in. After logging in, this page will be displayed:
 
 ### Admin Home page
 ![home](https://user-images.githubusercontent.com/107717142/229356753-a3e66d3a-399b-400a-996b-58daa7a31eb5.png)
@@ -127,7 +140,9 @@ As you can see, the admin has full control of the system, so there are a lot of 
 ### Assign teacher to class page:
 ![AssignTeacher](https://user-images.githubusercontent.com/107717142/229356818-9d94493b-d1ba-4eab-9370-4feaa2a22581.png)
 
-To assign a teacher to a class, simply fill in the required details on the Assign teacher to class page, and the teacher will be assigned to another class. In this example, the teacher will be assigned to CSCI369 Friday class.
+To assign a teacher to a class, simply fill in the required details on the Assign teacher to class page, and the teacher will be assigned to another class. In this example, the teacher will be assigned to CSCI369 Friday class. And if the teacher is already assigned to that class, an error message will appear:
+
+![3](https://user-images.githubusercontent.com/107717142/229368924-9b665f06-9f20-4635-b5ba-da0a03443ff0.png)
 
 ### Edit teacher classes page:
 ![EditTeacherClasses](https://user-images.githubusercontent.com/107717142/229356934-c5e2a35e-6645-445a-b1bf-a663d2f97c2b.png)
@@ -152,7 +167,10 @@ In the students' section, we have three actions we can take. We will begin with 
 ### Add student to class Page:
 ![AddStudenttoclass](https://user-images.githubusercontent.com/107717142/229357244-2e5e09fb-9494-4321-a2fd-ae32b609fe47.png)
 
-By filling out the required text fields, you can enroll a student into a class. If the student is already enrolled in that class, an error message will appear, indicating that the student is already enrolled in that class.
+By filling out the required text fields, you can enroll a student into a class. If the student is already enrolled in that class, an error message will appear, indicating that the student is already enrolled in that class:
+
+![2](https://user-images.githubusercontent.com/107717142/229368851-9c2afa6c-f66e-41ce-b9ee-d90c836172a9.png)
+
 
 Next, let's check the Edit Student Classes option on the Admin home page:
 ![home](https://user-images.githubusercontent.com/107717142/229357527-23f0307d-b5f4-4861-bc96-105938ed3bbe.png)
@@ -181,6 +199,8 @@ If a student was absent from the class, the attendance can be marked accordingly
 
 This concludes the overview of the web application. We hope that this web app will help improve the efficiency of schools/universities.
 
-Kaisen,
+Thank you,
+
+Kaisen.
 
 <img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="10%" height="10%">
