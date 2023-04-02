@@ -62,3 +62,9 @@ After you successfully log in you will be moved to this page:
 In this page you will see the teacher's name, their department, and also the consultation hours, on the right hand side you will see a bar graph:
 `y-axis` = Number of classes per day
 `x-axis` = The days in the week
+At the bottom of the page, the upcoming classes of today will be displayed. If the you click the email on the sidebar ![mail1](https://user-images.githubusercontent.com/107717142/229353896-0b394a3d-491a-420f-8f49-ea37684c08f4.png) you will be moved to your email:
+### Teacher's Email page:
+![mail2](https://user-images.githubusercontent.com/107717142/229353920-f6106252-114f-4978-b719-7d6580a5dd07.png)
+
+
+
