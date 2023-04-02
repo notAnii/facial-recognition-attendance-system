@@ -54,4 +54,4 @@ So this landing page gives a brief summary about what the web app is all about. 
 
 ### Teacher log in page:
 ![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
-To log in as a teacher Please type [`123`] in the username textfield and [`abshir`] for the password.
+To log in as a teacher Please type `123` in the username textfield and `abshir` for the password.
