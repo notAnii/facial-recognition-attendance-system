@@ -26,6 +26,13 @@
 Clone the repository (FrontEnd) that was created on our account and run the following commands in the terminal:
 
 ```bash
+# Installing npm
+npm install -g npm
+# Installing node.js
+https://nodejs.org/en/download
+# Making sure npm and node.js is installed
+node -v
+npm -v
 # Installing yarn
 sudo npm install -g yarn
 # Making sure yarn is installed
