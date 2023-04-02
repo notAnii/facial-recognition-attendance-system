@@ -50,3 +50,7 @@ So after running the previous commands and the web app is running in the browser
 ### Landing Page
 ![landing](https://user-images.githubusercontent.com/107717142/229353047-ac59c2d1-e73f-4594-a691-407c4345fd17.png)
 
+So this landing page gives a brief summary about what the web app is all about. If the teacher wants to log in, then the teacher needs to click the Log-in on the top right, and after that the teacher will be moved to this page:
+
+### Teacher log in page:
+![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
