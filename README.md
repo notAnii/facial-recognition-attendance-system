@@ -6,6 +6,11 @@ This repository contains the files necessary for training the models used to car
 
 * You need to have Python 3.10.0 installed on your computer. You can download that specific version of Python from the official website.
 
+### Setting Up 'models' Folder
+
+1. Download the two models from the 'models' folder provided in the [Google drive link](https://drive.google.com/drive/folders/1WI4EatTVdM62XLkaHFScegSS7ObV4A5p?usp=share_link).
+2. Place the two downloaded models ('vgg19_model' and 'efficientnetb0_model') in the 'models' folder.
+
 ## Installation
 
 * Run the requirements.txt file to install the dependencies.
