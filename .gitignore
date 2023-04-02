@@ -131,7 +131,6 @@ celerybeat.pid
 
 # Environments
 fr_venv
-fr_csit321
 .env
 .venv
 env/
