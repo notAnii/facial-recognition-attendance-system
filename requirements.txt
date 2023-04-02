@@ -2,6 +2,7 @@ dlib==19.24.1
 keras==2.11.0
 keras_applications==1.0.8
 mtcnn==0.1.1
+retina-face==0.0.13
 numpy==1.24.1
 matplotlib==3.6.3
 pillow==9.4.0

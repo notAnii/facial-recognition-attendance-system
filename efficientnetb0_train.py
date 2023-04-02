@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pickle
 import tensorflow as tf
 from keras import regularizers
 from tensorflow.python.keras.layers import Dense, Flatten, Dropout
@@ -53,7 +54,17 @@ test_ds = tf.keras.preprocessing.image.ImageDataGenerator(
 
 # Printing names of folders (student IDs) in dataset
 class_names = train_ds.class_indices
-print(class_names)
+
+# Create a pickle file to write the class names into
+with open('class_names.pkl', 'wb') as f:
+    pickle.dump(class_names, f)
+
+# Read the contents of the pickle file
+with open('class_names.pkl', 'rb') as f:
+    # Load the data from the file
+    data = pickle.load(f)
+
+print(data)
 
 # Creating model
 efficientnet_model = Sequential(name='EfficientNetB0_Model')
@@ -95,7 +106,7 @@ history = efficientnet_model.fit(
 )
 
 # Save model
-tf.saved_model.save(efficientnet_model, 'efficientnetb0_model')
+tf.saved_model.save(efficientnet_model, 'models/efficientnetb0_model')
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)

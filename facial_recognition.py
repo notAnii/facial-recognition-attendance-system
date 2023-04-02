@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import pickle
 from keras.models import load_model
 import cv2
 from facenet_pytorch import MTCNN
@@ -72,20 +73,28 @@ def facial_recognition():
     )
     class_names = train_ds.class_names
 
+    # Create a pickle file to write the class names into
+    with open('class_names.pkl', 'wb') as f:
+        pickle.dump(class_names, f)
+
+    # Read the contents of the pickle file
+    with open('class_names.pkl', 'rb') as f:
+        # Load the data from the file
+        data = pickle.load(f)
+
+    print(data)
+
     # Count for managing print statements for when a face is not detected
     count = 0
-
-    # Count for checking processed imgs
-    counter = 0
 
     # Confidence threshold
     confidence_threshold = 0.85
 
     # Load model 1
-    model1 = load_model("vgg19_model")
+    model1 = load_model("models/vgg19_model")
 
     # Load model 2
-    model2 = tf.saved_model.load("efficientnetb0_model")
+    model2 = tf.saved_model.load("models/efficientnetb0_model")
 
     # Initialize MTCNN for face detection
     mtcnn_detector = MTCNN()
@@ -140,7 +149,6 @@ def facial_recognition():
                     result = check_img_darkness(bbox_img)         # Checks if image is dark enough for processing
 
                     if result:
-                        counter = counter + 1
                         processed_img = image_processing_1(bbox_img)         # Image goes into a processing function to alter brightness
                         # Resize processed image
                         img_resized = cv2.resize(processed_img, (new_w, new_h))

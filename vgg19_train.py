@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import pickle
 from keras import regularizers
 from tensorflow.python.keras.layers import Dense, Flatten, Dropout
 from keras.models import Sequential
@@ -47,7 +48,17 @@ test_ds=tf.keras.preprocessing.image_dataset_from_directory(
 
 # Printing names of folders (student IDs) in dataset
 class_names=train_ds.class_names
-print(class_names)
+
+# Create a pickle file to write the class names into
+with open('class_names.pkl', 'wb') as f:
+  pickle.dump(class_names, f)
+
+# Read the contents of the pickle file
+with open('class_names.pkl', 'rb') as f:
+  # Load the data from the file
+  data = pickle.load(f)
+
+print(data)
 
 # Creating model
 vgg19_model=Sequential(name='VGG19_Model')
@@ -87,7 +98,7 @@ history = vgg19_model.fit(
 )
 
 # Save model
-vgg19_model.save("vgg19_model2")
+vgg19_model.save("models/vgg19_model")
 
 duration = datetime.now() - start
 print("Training completed in time: ", duration)

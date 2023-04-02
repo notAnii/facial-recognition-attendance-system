@@ -3,6 +3,7 @@ import os
 import time
 import numpy as np
 import mtcnn
+from retinaface import RetinaFace
 from keras.models import load_model
 from datetime import datetime
 
@@ -148,75 +149,68 @@ def make_prediction_on_images_in_dir(dir_path, img_height, img_width):
 
 # -------------------------------------------------------------------------------------------------------------------
 
-def crop_faces():
+def extract_faces():
 
-    # This function crops all faces found in a directory and saves those cropped faces in a different directory
+    # This function extracts all faces found in a directory and saves those cropped faces in a different directory
+    # whilst maintaing aspect ratio
 
     start = datetime.now()
+    print("Extracting faces...")
 
     # Define the path to the parent folder of the dataset that you want to crop faces from
-    dataset_path = 'test_samples'
+    root_dir = "test_samples"
 
-    # Define the path for the folder to put extracted images
-    faces_folder_path = 'extracted_faces'
+    # Define the path for the folder to put the extracted faces in
+    output_dir = "student_dataset_extracted"
 
-    # Create the folder to put extracted images if it does not already exist
-    if not os.path.exists(faces_folder_path):
-        os.makedirs(faces_folder_path)
+    # Create the folder to put the extracted faces in if it does not already exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-    # Initialize the MTCNN detector
-    detector = mtcnn.MTCNN()
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        # Create a subdirectory in the output directory for each subdirectory in root_dir
+        subdir_name = os.path.basename(dirpath)
+        subdir_path = os.path.join(output_dir, os.path.relpath(dirpath, root_dir))
+        if not os.path.exists(subdir_path):
+            os.makedirs(subdir_path)
 
-    # Minimum confidence level for face detection
-    confidence_threshold = 0.85
+        face_num = 0
 
-    # Size of the extracted face images
-    face_size = (224, 224)
+        for filename in filenames:
+            if filename.lower().endswith(".png") or filename.lower().endswith(".jpg"):
+                img_path = os.path.join(dirpath, filename)
+                faces = RetinaFace.extract_faces(img_path=img_path, align=False)
 
-    # Loop through each directory in the dataset path
-    for dir_name in os.listdir(dataset_path):
-        
-        # Check if the current item is a directory
-        if os.path.isdir(os.path.join(dataset_path, dir_name)):
-            
-            # Define the path for the class faces folder
-            class_faces_folder_path = os.path.join(faces_folder_path, dir_name)
-            
-            # Create the class faces folder if it does not already exist
-            if not os.path.exists(class_faces_folder_path):
-                os.makedirs(class_faces_folder_path)
+                for i, face in enumerate(faces):
+                    # Resize the extracted face to have a maximum height or width of 224 while preserving the aspect ratio
+                    h, w, _ = face.shape
+                    if h > w:
+                        scale = 224 / h
+                    else:
+                        scale = 224 / w
+                    new_h, new_w = int(h * scale), int(w * scale)
+                    face = cv2.resize(face, (new_w, new_h))
 
-            # Loop through each file in the current directory
-            for filename in os.listdir(os.path.join(dataset_path, dir_name)):
-                
-                # Check if the file is a jpg or png image
-                if filename.lower().endswith('.jpg') or filename.lower().endswith('.png'):
-                    
-                    # Read the image file
-                    image=cv2.imread(os.path.join(dataset_path, dir_name, filename))
+                    # Add padding to the image to make it 224x224
+                    top = (224 - new_h) // 2
+                    bottom = 224 - new_h - top
+                    left = (224 - new_w) // 2
+                    right = 224 - new_w - left
+                    face = cv2.copyMakeBorder(face, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
 
-                    # Detect faces in the image using MTCNN
-                    faces = detector.detect_faces(image)
+                    # Convert the RGB image to BGR format before saving it
+                    face_bgr = cv2.cvtColor(face, cv2.COLOR_RGB2BGR)
 
-                    # Loop through each detected face
-                    for i, face in enumerate(faces):
-                        if face['confidence'] >= confidence_threshold:
-                            # Get the bounding box coordinates for the current face
-                            x1, y1, width, height = face['box']
-                            x2, y2 = x1 + width, y1 + height
-                            
-                            # Extract the face from the image using the bounding box coordinates
-                            extracted_face = image[y1:y2, x1:x2]
-
-                            # Resize the extracted face to the specified size
-                            resized_face = cv2.resize(extracted_face, face_size, interpolation=cv2.INTER_CUBIC)
-                        
-                            # Save the extracted face as a new image file
-                            output_filename = os.path.join(class_faces_folder_path, f"{os.path.splitext(filename)[0]}_cropped{i+1}.jpg")
-                            cv2.imwrite(output_filename, resized_face)
+                    # Save the resized face as an image in the output directory
+                    output_filename = subdir_name + "_extracted_" + str(face_num) + ".jpg"
+                    output_path = os.path.join(subdir_path, output_filename)
+                    cv2.imwrite(output_path, face_bgr)
+                    face_num += 1
 
     duration = datetime.now() - start
     print("Extracting faces completed in time: ", duration)
+
+    cv2.destroyAllWindows()
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -226,4 +220,4 @@ def crop_faces():
 # rename_pics()
 # find_faces_in_directory("path/to/directory/")
 # make_prediction_on_images_in_dir("dir_path", 224, 224)
-# crop_faces()
+# extract_faces()
