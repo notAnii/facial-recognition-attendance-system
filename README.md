@@ -179,8 +179,8 @@ Finally, the last action we can do to a student is edit student attendance:
 
 If a student was absent from the class, the attendance can be marked accordingly. However, if the student was unable to attend due to reasons such as illness or travel, the attendance status can be modified from absent to excused in this page.
 
-This concludes the overview of the web application. We hope that this web app will help improve the efficiency of schools.
+This concludes the overview of the web application. We hope that this web app will help improve the efficiency of schools/universities.
 
 Kaisen,
 
-![logo](https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png)
+<img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="50%" height="50%">
