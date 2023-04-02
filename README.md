@@ -55,3 +55,10 @@ So this landing page gives a brief summary about what the web app is all about. 
 ### Teacher log in page:
 ![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
 To log in as a teacher Please type `123` in the username textfield and `abshir` for the password.
+
+After you successfully log in you will be moved to this page:
+### Teacher Dashboard page:
+![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
+In this page you will see the teacher's name, their department, and also the consultation hours, on the right hand side you will see a bar graph:
+`y-axis` = Number of classes per day
+`x-axis` = The days in the week
