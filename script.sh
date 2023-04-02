@@ -1,5 +1,5 @@
 #!/bin/bash 
-source venapi/Scripts/activate
+source venv/Scripts/activate
 cd backend/api
 python app.py &
 cd ../../frontend
