@@ -183,4 +183,4 @@ This concludes the overview of the web application. We hope that this web app wi
 
 Kaisen,
 
-<img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="10%" height="10%">
