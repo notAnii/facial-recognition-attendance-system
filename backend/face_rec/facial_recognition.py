@@ -4,6 +4,7 @@ import pickle
 from keras.models import load_model
 import cv2
 from facenet_pytorch import MTCNN
+from api.student.crud import set_present_status, completed_attendance
 
 # -------------------------------------------------------------------------------------------------------------
 def image_processing_1(image):
@@ -65,13 +66,7 @@ def check_img_darkness(image):
 
 # -------------------------------------------------------------------------------------------------------------
 
-def facial_recognition():
-
-    # Get class names to print when making predictions
-    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'student_dataset'
-    )
-    class_names = train_ds.class_names
+def facial_recognition(subject_code, session_number, week):
 
     # Create a pickle file to write the class names into
     with open('class_names.pkl', 'wb') as f:
@@ -80,9 +75,9 @@ def facial_recognition():
     # Read the contents of the pickle file
     with open('class_names.pkl', 'rb') as f:
         # Load the data from the file
-        data = pickle.load(f)
+        class_names = pickle.load(f)
 
-    print(data)
+    print(class_names)
 
     # Count for managing print statements for when a face is not detected
     count = 0
@@ -193,6 +188,7 @@ def facial_recognition():
                     # other than a face
                     if ((output_prob >= confidence_threshold) and (output_prob <= 0.99)):
                         print(f"Face {i+1}: {output_class}, Probability: {output_prob:.2f}")
+                        set_present_status(output_class, subject_code, week)
 
         elif(count == 0):
             count = 1
@@ -203,11 +199,9 @@ def facial_recognition():
 
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            completed_attendance(subject_code, session_number, week)
             break
 
     # Release webcam and close window
     webcam.release()
     cv2.destroyAllWindows()
-
-
-facial_recognition()

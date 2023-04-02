@@ -10,7 +10,7 @@ from student.crud import *
 from teacher.crud import *
 from admin.crud import *
 from datetime import datetime
-from face_rec.load_fr_model import facial_recognition
+from face_rec.facial_recognition import facial_recognition
 import threading
 
 app = Flask(__name__)
