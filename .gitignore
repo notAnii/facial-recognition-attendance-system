@@ -11,6 +11,7 @@ students_model
 updated_model
 extracted_model
 test_samples
+bbox_image.jpg
 
 #database config
 config.py
