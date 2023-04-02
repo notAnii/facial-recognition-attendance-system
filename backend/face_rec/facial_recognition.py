@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 import tensorflow as tf
 import numpy as np
 import pickle
@@ -68,12 +70,8 @@ def check_img_darkness(image):
 
 def facial_recognition(subject_code, session_number, week):
 
-    # Create a pickle file to write the class names into
-    with open('class_names.pkl', 'wb') as f:
-        pickle.dump(class_names, f)
-
     # Read the contents of the pickle file
-    with open('class_names.pkl', 'rb') as f:
+    with open('../face_rec/class_names.pkl', 'rb') as f:
         # Load the data from the file
         class_names = pickle.load(f)
 
@@ -86,10 +84,10 @@ def facial_recognition(subject_code, session_number, week):
     confidence_threshold = 0.85
 
     # Load model 1
-    model1 = load_model("models/vgg19_model")
+    model1 = load_model("../face_rec/models/vgg19_model")
 
     # Load model 2
-    model2 = tf.saved_model.load("models/efficientnetb0_model")
+    model2 = tf.saved_model.load("../face_rec/models/efficientnetb0_model")
 
     # Initialize MTCNN for face detection
     mtcnn_detector = MTCNN()
