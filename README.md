@@ -28,8 +28,12 @@
 Clone the repository (FrontEnd) that was created on our account and follow the steps below:
 
 ```bash
-# Installing project dependencies
-yarn
+# Installing yarn
+sudo npm install -g yarn
+# Making sure yarn is installed
+yarn --version
+# installing the libraries needed for the project
+yarn install
 # Starting the project
 yarn dev
 ```
@@ -40,5 +44,7 @@ The web app is now running at [`http://localhost:3000`](http://localhost:3000)!
 
 Distributed under the MIT License. See [`LICENSE`](https://github.com/imadatyatalah/cna-chakra-ui-template/blob/main/LICENSE) for more information.
 
-## Code Documentation 
-so how are you?
+## The web app
+So after running the previous commands and the web app is running in the browser, thats the first thing you will see:
+
+![Screenshot](./image.png)
