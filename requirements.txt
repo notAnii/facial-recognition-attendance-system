@@ -3,8 +3,11 @@ pymysql==1.0.2
 flask-jwt-extended==4.4.4
 flask-cors==3.0.10
 bcrypt==4.0.1
+dlib==19.24.1
+keras==2.11.0
 keras_applications==1.0.8
 mtcnn==0.1.1
+retina-face==0.0.13
 numpy==1.24.1
 matplotlib==3.6.3
 pillow==9.4.0
