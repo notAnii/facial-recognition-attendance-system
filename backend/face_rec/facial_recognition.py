@@ -1,9 +1,12 @@
+import sys
+sys.path.append('..')
 import tensorflow as tf
 import numpy as np
 import pickle
 from keras.models import load_model
 import cv2
 from facenet_pytorch import MTCNN
+from api.student.crud import set_present_status, completed_attendance
 
 # -------------------------------------------------------------------------------------------------------------
 def image_processing_1(image):
@@ -65,10 +68,10 @@ def check_img_darkness(image):
 
 # -------------------------------------------------------------------------------------------------------------
 
-def facial_recognition():
+def facial_recognition(subject_code, session_number, week):
 
     # Read the contents of the pickle file
-    with open('class_names.pkl', 'rb') as f:
+    with open('../face_rec/class_names.pkl', 'rb') as f:
         # Load the data from the file
         class_names = pickle.load(f)
 
@@ -79,10 +82,10 @@ def facial_recognition():
     confidence_threshold = 0.85
 
     # Load model 1
-    model1 = load_model("models/vgg19_model")
+    model1 = load_model("../face_rec/models/vgg19_model")
 
     # Load model 2
-    model2 = tf.saved_model.load("models/efficientnetb0_model")
+    model2 = tf.saved_model.load("../face_rec/models/efficientnetb0_model")
 
     # Initialize MTCNN for face detection
     mtcnn_detector = MTCNN()
@@ -181,6 +184,7 @@ def facial_recognition():
                     # other than a face
                     if ((output_prob >= confidence_threshold) and (output_prob <= 0.99)):
                         print(f"Face {i+1}: {output_class}, Probability: {output_prob:.2f}")
+                        set_present_status(output_class, subject_code, week)
 
         elif(count == 0):
             count = 1
@@ -191,11 +195,9 @@ def facial_recognition():
 
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            completed_attendance(subject_code, session_number, week)
             break
 
     # Release webcam and close window
     webcam.release()
     cv2.destroyAllWindows()
-
-
-facial_recognition()
