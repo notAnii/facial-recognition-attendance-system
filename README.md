@@ -1,26 +1,24 @@
-# Facial Recognition Attendance System - Recognition Part
+# Automated Attendance System (AAS) - Facial Recognition
 
- ## Changelog
+This repository contains the files necessary for training the models used to carry out facial recognition.
+
+## Prerequisites
+
+* You need to have Python 3.10.0 installed on your computer. You can download that specific version of Python from the official website.
+
+## Installation
+
+* Run the requirements.txt file to install the dependencies.
+* Use the following command: 'pip install -r requirements.txt'
+
+## Training the model
  
-* [25/02/2023]
-  * Added a new branch to test facial recognition using the resnet-50 model
-  * Branch includes updated requirements.txt file
-  * Testing using Celebrity Faces Dataset
- 
-* [01/02/2023]
-  * Added scipy to requirements.txt file 
- 
-* [30/01/2023]
-  * Removed unnecessary libraries in requirements.txt file
+* Run the 'vgg19_train.py' and 'efficientnetb0_train.py' files to train the models
 
-  
-## Backlog
+## Running the system
 
-* Find a way to save model after training and how to use it afterwards
+* Run the 'facial_recognition.py' file after training the models to start facial recognition
 
-* Try to implement different datasets and test whether code runs and works
+## Note
 
-* Increase accuracy of facial recognition
-  
-* Backend/Facial-Recognition
-  * Find reasonable size for dataset or decide who's system to running the tranining file in
+* The 'used_functions.py' file contains functions that were used to contribute towards the completed system.
