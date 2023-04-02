@@ -47,4 +47,4 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/imadatyata
 ## The web app
 So after running the previous commands and the web app is running in the browser, thats the first thing you will see:
 
-![Screenshot](./image.png)
+![Screenshot]("C:\Users\Ismail\Desktop\images\images\landing.png")
