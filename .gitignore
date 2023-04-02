@@ -9,6 +9,10 @@ bbox_image.jpg
 # Datasets
 student_dataset
 
+# Models
+efficientnetb0_model
+vgg19_model
+
 # C extensions
 *.so
 

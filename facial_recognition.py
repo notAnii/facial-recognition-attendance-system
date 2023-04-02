@@ -67,22 +67,10 @@ def check_img_darkness(image):
 
 def facial_recognition():
 
-    # Get class names to print when making predictions
-    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'student_dataset'
-    )
-    class_names = train_ds.class_names
-
-    # Create a pickle file to write the class names into
-    with open('class_names.pkl', 'wb') as f:
-        pickle.dump(class_names, f)
-
     # Read the contents of the pickle file
     with open('class_names.pkl', 'rb') as f:
         # Load the data from the file
-        data = pickle.load(f)
-
-    print(data)
+        class_names = pickle.load(f)
 
     # Count for managing print statements for when a face is not detected
     count = 0
