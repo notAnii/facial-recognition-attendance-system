@@ -351,6 +351,7 @@ def start_attendance():
 
         t = threading.Thread(target=live_detection_thread, args=(subject_code, session_number, week))
         t.start()
+        
 
         return "Success", 200
     else:

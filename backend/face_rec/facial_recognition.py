@@ -184,7 +184,7 @@ def facial_recognition(subject_code, session_number, week):
                     # other than a face
                     if ((output_prob >= confidence_threshold) and (output_prob <= 0.99)):
                         print(f"Face {i+1}: {output_class}, Probability: {output_prob:.2f}")
-                        set_present_status(output_class, subject_code, week)
+                        set_present_status(output_class, subject_code, session_number, week)
 
         elif(count == 0):
             count = 1
@@ -196,6 +196,8 @@ def facial_recognition(subject_code, session_number, week):
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             completed_attendance(subject_code, session_number, week)
+            webcam.release()
+            cv2.destroyAllWindows()
             break
 
     # Release webcam and close window
