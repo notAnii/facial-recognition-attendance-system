@@ -1,25 +1,17 @@
-# Datasets
-My_dataset
-student_dataset
-extracted_faces
-
-# Directories
-vgg19_model
-efficientnet_model
-efficientnet_model_2
-students_model
-updated_model
-extracted_model
-test_samples
-bbox_image.jpg
-
-#database config
-config.py
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Random Files
+bbox_image.jpg
+
+# Datasets
+student_dataset
+
+# Models
+efficientnetb0_model
+vgg19_model
 
 # C extensions
 *.so
@@ -100,7 +92,6 @@ target/
 profile_default/
 ipython_config.py
 
-
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:
@@ -139,6 +130,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+fr_venv
 .env
 .venv
 env/
@@ -146,7 +138,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-venapi
 
 # Spyder project settings
 .spyderproject

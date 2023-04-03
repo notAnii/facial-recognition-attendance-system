@@ -1,161 +1,55 @@
-<h1 align="center">
-  <img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="12%" height="12%">
-  <br>
-  Automated Attendance System (AAS)
-</h1>
-<h3 align="center">• Efficiency • Integreity • Precision •</h3>
+<h1 align="center">Next.js Chakra UI Template</h1>
+
+<div align="center">
+
+</div>
+
+<div align="center">
+
+[![CodeFactor](https://www.codefactor.io/repository/github/imadatyatalah/cna-chakra-ui-template/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/imadatyatalah/cna-chakra-ui-template)
+[![MIT License](https://img.shields.io/github/license/imadatyatalah/cna-chakra-ui-template?color=blue&style=for-the-badge)](https://github.com/imadatyatalah/cna-chakra-ui-template/blob/main/LICENSE)
+[![Stargazers](https://img.shields.io/github/stars/imadatyatalah/cna-chakra-ui-template?style=for-the-badge)](https://github.com/imadatyatalah/cna-chakra-ui-template/stargazers)
+[![Forks](https://img.shields.io/github/forks/imadatyatalah/cna-chakra-ui-template?style=for-the-badge)](https://github.com/imadatyatalah/cna-chakra-ui-template/network/members)
+
+</div>
+
+### Built With
+- [Next.js](https://nextjs.org/)
+- [Chakra UI](https://chakra-ui.com/)
 
 
+### Screenshot
+![Screenshot](./image.png)
 
-## Description
-
-Automated Attendance System is a software solution designed to streamline the process of tracking attendance in educational institutions or workplaces using facial recognition technology. The system uses a camera to capture an image of each individual's face, and then uses advanced algorithms to identify and match the face with the stored data to record attendance.
-
-The primary objective of this project is to create a more efficient and accurate system for taking attendance that eliminates the need for manual data entry and reduces the workload for instructors or HR personnel. The system can also help to prevent fraudulent attendance, reduce errors, and save time for both students and teachers.
-
-
-## Built With
-
-The following frameworks and libraries were used to build our Automated Attendance System (AAS):
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Python][Python]][Python-url]
-* [![TensorFlow][TensorFlow]][TensorFlow-url]
-* [![Keras][Keras]][Keras-url]
-* [![opencv][opencv]][opencv-url]
-* [![MySQL][MySQL]][MySQL-url]
-
-
-
-[Next.js]: https://img.shields.io/badge/next.js-ffffff?style=for-the-badge&logo=nextdotjs&logoColor=61DAFB
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=white
-[Python-url]: https://www.python.org/downloads/release/python-3100/
-[TensorFlow]: https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white
-[TensorFlow-url]: https://www.tensorflow.org/?gclid=Cj0KCQjw8qmhBhClARIsANAtbodKvpLsluniotEpkfPPg8MgXXyO4coFCnP5NWGbAi208tBP1LesU44aAnAOEALw_wcB
-[Keras]: https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white
-[Keras-url]: https://keras.io/ 
-[opencv]: https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white
-[opencv-url]: https://github.com/opencv/opencv
-[MySQL]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
-[MySQL-url]: https://www.mysql.com/
-## Features
-
-- Teacher
-    * Start attendance recording
-    * View attendance (student/class)
-    * View attendance statistics
-    * Filter student attendance based on status (absent/present/excused)
-    * View upcoming classes
-    * Access email
-
-- Admin
-    * Enroll student
-    * Edit student classes
-    * Assign teacher to class
-    * Modify student attendance (override)
-    * Modify teacher class (add/remove)
-
-
-## Prerequisites
-Before you begin, you will need to have the following installed and configured on your system:
-
-* Python 3.10.0: You can download and install Python 3.10.0 from the official website: https://www.python.org/downloads/release/python-3100/
-* npm and Node.js: You can download and install these from the official website: https://nodejs.org/en/
-* Pretrained face recognition models: You will need to download two pretrained face recognition models from the following Google Drive link: [Here](https://drive.google.com/drive/folders/1WI4EatTVdM62XLkaHFScegSS7ObV4A5p?usp=share_link). Once downloaded, you will need to place `vgg19_model` and `efficientnetb0_model` in `backend/face_rec/models/` directory of the project.
-* MySQL: You will need to have a MySQL server set up on your system to store data. You can download and install MySQL from the official website: https://dev.mysql.com/downloads/. To fill up database with required data, run the SQL commands present in `backend/api/database/sql.txt`
-* A config.py file: You will need to create a config.py file in `backend/api/database/` with the necessary configurations. You can use the provided config.example.py file as a template.
-
-    ```python
-        # Database connection settings
-        HOST = "<host>"
-        USERNAME = "<username>"
-        PASSWORD = "<password>"
-        DATABASE = "<database>"
-    ```
 ## Getting Started
 
-Clone the project
+Clone the repository (FrontEnd) that was created on our account and run the following commands in the terminal:
 
-```shell
-  git clone https://github.com/notAnii/facial-recognition-attendance-system
+```bash
+# Installing npm
+npm install -g npm
+# Installing node.js
+https://nodejs.org/en/download
+# Making sure npm and node.js is installed
+node -v
+npm -v
+# Installing yarn
+sudo npm install -g yarn
+# Making sure yarn is installed
+yarn --version
+# installing the libraries needed for the project
+yarn install
+# Starting the project
+yarn dev
 ```
 
-Go to the project directory
+The web app is now running at [`http://localhost:3000`](http://localhost:3000)!
 
-```shell
-  cd facial-recognition-attendance-system
-```
+## License
+Distributed under the MIT License. See [`LICENSE`](https://github.com/imadatyatalah/cna-chakra-ui-template/blob/main/LICENSE) for more information.
 
-### Setting up using bash file
-```shell
-  ./setup.sh
-```
-or
-```shell
-  sh setup.sh
-```
-
-
-### Setting up manually
-
-#### Setup API
-Setup and activate virtual environment
-
-```shell
-  python -m venv venv
-```
-```shell
-  source venv/Scripts/activate
-```
-
-Install python packages
-
-```shell
-  pip install requirements.txt
-```
-
-#### Setup Client
-Install yarn
-```shell
-  sudo npm install -g yarn
-```
-
-Go to the frontend directory
-```shell
-  cd frontend
-```
-
-Install frontend dependencies 
-```shell
-  yarn install
-```
-
-## Running Locally
-Go to the project directory
-
-```shell
-  cd facial-recognition-attendance-system
-```
-
-Start Client and Server
-
-```shell
-  ./script.sh
-```
-or
-```shell
-  sh script.sh
-```
-
-Client runs on http://localhost:3000/
-API runs on http://localhost:5000/
-
-## User Guide
-After running the previous commands and the web app / API are running successfully, you will be greeted with a landing page
+## The web app
+After running the previous commands and the web app is running in the browser, the first thing you will see is:
 
 ### Landing page
 ![landing](https://user-images.githubusercontent.com/107717142/229353047-ac59c2d1-e73f-4594-a691-407c4345fd17.png)
@@ -165,17 +59,9 @@ This landing page provides a brief summary of what the web app is all about. If 
 ### Teacher log in page:
 ![login](https://user-images.githubusercontent.com/107717142/229353299-1d9ae4d9-c1a4-41a3-adaa-ec926362268d.png)
 
-To log in as a teacher, use these placeholder credentials:
-```
-Username: '123'
-Password: 'teacher123'
-```
+To log in as a teacher, please enter `123` in the username text field and `abshir` for the password.
 
-Alternate user:
-```
-Username: '456'
-Password: 'teacher456'
-```
+To log in as another teacher please enter `456` in the username text field and `naruto` for the password.
 
 After successfully logging in, you will be directed to the teacher dashboard page.
 
@@ -184,7 +70,9 @@ After successfully logging in, you will be directed to the teacher dashboard pag
 
 On this page, you will see the teacher's name, their department, and their position. On the right-hand side, there is a bar graph that displays the number of classes per day on the `y-axis` and the days of the week on the `x-axis`. 
 
-Clicking on the email on the sidebar will open a new tab on the browser and direct you to your outlook.
+At the bottom of the page, the upcoming classes of the day are displayed. There is no classes displayed because this screenshot was taken on sunday which is a holiday.
+
+Clicking on the email on the sidebar will open a new tab on the browser and direct you to your email.
 
 ### Teacher's email page:
 ![mail2](https://user-images.githubusercontent.com/107717142/229353920-f6106252-114f-4978-b719-7d6580a5dd07.png)
@@ -199,7 +87,7 @@ On this page, all the classes that the teacher is teaching are displayed on the 
 ### Search by day:
 ![searchByDay](https://user-images.githubusercontent.com/107717142/229355915-554a378a-23aa-4ad7-a08e-edbb1e1aa4b8.png)
 
-For each class, there are two options: `View attendance` and `Start attendance`.
+Beside each class, there are two options: `View attendance` and `Start attendance`.
 
 When you click `View attendance`, this page will be displayed:
 
@@ -207,18 +95,16 @@ When you click `View attendance`, this page will be displayed:
 ![viewAttendance](https://user-images.githubusercontent.com/107717142/229355581-b7f88953-3d1a-4822-a975-ae43144ebd6f.png)
 
 On this page, all the students' attendance that was recorded in the class in week 1 will be listed on the screen. If you want to check the students' attendance for a different week, you can click the arrows at the bottom left of the screen.
-
 ![moveWeeks](https://user-images.githubusercontent.com/107717142/229355750-b6594e93-99bd-49ca-8920-29a5ce7890be.png)
 
 Additionally, the teacher will be able to filter the list by present, absent, or excused students.
-
 ![viewAttendance2](https://user-images.githubusercontent.com/107717142/229355784-e807fc32-df02-49d4-859f-cf620e133c14.png)
 
 If a student has more than 3 absences:
 
 ![4](https://user-images.githubusercontent.com/107717142/229369282-2daa8bc8-aee1-4ade-9134-54b5c44d1a66.png)
 
-An email will be sent automatically to that student saying that he/she failed the subject:
+An email will be sent automatically to that student saying that he\she failed the subject:
 
 ![image](https://user-images.githubusercontent.com/107717142/229369349-f0a6adb7-d92d-4ba2-83e4-bf43582802d0.png)
 
@@ -236,7 +122,7 @@ To search attendance records of a specific student, you can use the search bar o
 When a teacher starts a class and wants to record attendance, they can click the `Start attendance` button on this page:
 ![classes](https://user-images.githubusercontent.com/107717142/229355285-0294a68e-e864-4b80-8873-3b349d2062b0.png)
 
-Attendance recording will then begin:</br>
+Attendance recording will then begin:
 ![startAttendance](https://user-images.githubusercontent.com/107717142/229356356-43dcdb93-4947-4b6e-985c-5a0c60ee70d6.png)
 
 On this page, each student who enters the class will be marked as present, and the name of the student will pop up with the attendance percentage in blue, and the time the student's attendance was recorded. If the student's name is not there, then it means that the student is absent. If the student is excused absent, then the admin can change the student's attendance.
@@ -280,7 +166,7 @@ On this page, you can edit the teacher's classes by entering the subject code an
 
 If you click the Delete button, the class will be removed.
 
-Now let's move on to the students:</br>
+Now let's move on to the students:
 ![home](https://user-images.githubusercontent.com/107717142/229357203-02c3cebc-f0d3-4e3e-a6b6-bcd48aed3a6e.png)
 
 In the students' section, we have three actions we can take. We will begin with the following:
@@ -317,3 +203,11 @@ Finally, the last action we can do to a student is edit student attendance:
 ![EditStudentAttendance](https://user-images.githubusercontent.com/107717142/229357893-7182bee1-fbb4-467a-bdc7-b08a153dc961.png)
 
 If a student was absent from the class, the attendance can be marked accordingly. However, if the student was unable to attend due to reasons such as illness or travel, the attendance status can be modified from absent to excused in this page.
+
+This concludes the overview of the web application. We hope that this web app will help improve the efficiency of schools/universities.
+
+Thank you,
+
+Kaisen.
+
+<img src="https://user-images.githubusercontent.com/107717142/229359393-75939ad4-2a2d-456f-a29b-6a1f3237337b.png" alt="logo" width="10%" height="10%">

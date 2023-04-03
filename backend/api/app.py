@@ -10,7 +10,7 @@ from student.crud import *
 from teacher.crud import *
 from admin.crud import *
 from datetime import datetime
-from face_rec.load_fr_model import facial_recognition
+from face_rec.facial_recognition import facial_recognition
 import threading
 
 app = Flask(__name__)
@@ -46,8 +46,8 @@ def refresh_expiring_jwt(response):
 
 
 # populate user 123 with dummy password
-dummy_password('123', hash_password("abshir"))
-dummy_password('456', hash_password("naruto"))
+dummy_password('123', hash_password("teacher123"))
+dummy_password('456', hash_password("teacher456"))
 admin_dummy_password('112233', hash_password("admin"))
 
 #login route to create a jwt token for user
@@ -351,6 +351,7 @@ def start_attendance():
 
         t = threading.Thread(target=live_detection_thread, args=(subject_code, session_number, week))
         t.start()
+        
 
         return "Success", 200
     else:

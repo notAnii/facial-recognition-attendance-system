@@ -1,7 +1,6 @@
-#!/bin/bash
-
-source venapi/Scripts/activate
-
+#!/bin/bash 
+source venv/Scripts/activate
 cd backend/api
-
-python app.py
+python app.py &
+cd ../../frontend
+yarn dev
