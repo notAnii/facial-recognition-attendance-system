@@ -168,13 +168,13 @@ This landing page provides a brief summary of what the web app is all about. If 
 To log in as a teacher, use these placeholder credentials:
 ```
 Username: '123'
-Password: 'abshir'
+Password: 'teacher123'
 ```
 
 Alternate user:
 ```
 Username: '456'
-Password: 'naruto'
+Password: 'teacher456'
 ```
 
 After successfully logging in, you will be directed to the teacher dashboard page.
