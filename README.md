@@ -317,3 +317,11 @@ Finally, the last action we can do to a student is edit student attendance:
 ![EditStudentAttendance](https://user-images.githubusercontent.com/107717142/229357893-7182bee1-fbb4-467a-bdc7-b08a153dc961.png)
 
 If a student was absent from the class, the attendance can be marked accordingly. However, if the student was unable to attend due to reasons such as illness or travel, the attendance status can be modified from absent to excused in this page.
+
+## Giving Credit to Contributors
+
+When using this code in your own projects, we kindly ask that you give credit to the contributors who have contributed to this project. Proper attribution helps acknowledge their hard work and encourages open-source collaboration.
+
+To give credit, you can include a mention or a link to this project's GitHub repository in your project's documentation or wherever appropriate.
+
+
